@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_GROUP" logLevel="write">
+	<columns>
+		<column name="tenant" relationship="many_to_one" resource="tenants" fk="tenant_id"/>
+		<column name="parent" relationship="many_to_one" resource="groups" fk="parent_id"/>
+		<column name="reg_user" relationship="many_to_one" resource="users" fk="reg_user_id"/>
+		<column name="mod_user" relationship="many_to_one" resource="users" fk="mod_user_id"/>
+	</columns>
+	<commands>
+	</commands>
+</resource>

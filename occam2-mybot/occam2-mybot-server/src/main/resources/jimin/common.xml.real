@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<occam>
+	<datasources>
+		<datasource name="default"
+			url="jdbc:oracle:thin:@//72.2.2.118:1701/HSITGSP1" 
+			username="eamapp" password="SHilla21cm!!" 
+			driver="oracle.jdbc.driver.OracleDriver" dialect="ORACLE12C"/>
+	</datasources>
+</occam>

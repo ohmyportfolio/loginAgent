@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource name="base">
+	<commands>
+		<command name="get" type="script"><![CDATA[
+			datas.get(resource, context);
+		]]></command>
+		<command name="select" type="script"><![CDATA[
+			datas.select(resource, context);
+		]]></command>
+		<command name="save" type="script"><![CDATA[
+			datas.save(resource, context.rows);
+		]]></command>
+		<command name="insert" type="script"><![CDATA[			
+			if (!context.row)
+				throw 'insert to ' + resource.name + ' row can not be null'
+			datas.insert(resource, context.row);
+		]]></command>
+		<command name="update" type="script"><![CDATA[
+			datas.update(resource, context.id, context.row);
+		]]></command>
+		<command name="delete" type="script"><![CDATA[
+			if(context.id) {
+				datas.delete(resource, context.id);
+			} else {
+				for each(var row in context.rows) {
+					row._operation = 'DELETE'
+				}
+				datas.save(resource, context.rows);
+			}
+		]]></command>
+		<command name="count" type="script"><![CDATA[
+			datas.count(resource, context);
+		]]></command>
+		
+		<command name="pre_update" type="script"><![CDATA[			
+			eval(context.resource).pre_save(context)
+		]]></command>
+		<command name="pre_insert" type="script"><![CDATA[			
+			eval(context.resource).pre_save(context)
+		]]></command>
+		<command name="pre_save" type="script"><![CDATA[			
+		]]></command>
+		<command name="post_update" type="script"><![CDATA[
+			eval(context.resource).post_save(context)
+		]]></command>
+		<command name="post_insert" type="script"><![CDATA[
+			eval(context.resource).post_save(context)
+		]]></command>
+		<command name="post_save" type="script"><![CDATA[			
+		]]></command>
+	</commands>
+</resource>

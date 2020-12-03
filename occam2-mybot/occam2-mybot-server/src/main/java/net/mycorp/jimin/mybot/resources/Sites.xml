@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_SITE">
+	<columns>
+		<column name="accounts" relationship="one_to_many" resource="accounts" fk="site_id"/>
+	</columns>
+	<commands>
+		<command name="getUsedAcountCount" type="sql" result="result"><![CDATA[
+			select
+			id
+			,name
+			,(select count(*) from oc_account where site_id = s.id) * allow_login_count as total_cnt
+			,(select count(*) from oc_occupied where site_id = s.id) as use_cnt
+			from oc_site s
+		]]></command>
+	</commands>
+</resource>

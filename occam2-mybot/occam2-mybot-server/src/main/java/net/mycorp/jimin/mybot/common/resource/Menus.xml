@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_MENU" cacheable="true" logLevel="write">
+	<columns>
+		<column name="parent" relationship="many_to_one" resource="menus" fk="parent_id"/>
+		<column name="group_ids" relationship="command"/>
+	</columns>
+	<commands>
+		<command name="group_ids" type="sql" result="values"><![CDATA[
+			select g.id from
+			oc_menu_group m join oc_group g on m.group_id = g.id  
+			where m.menu_id = :id
+		]]></command>
+	</commands>
+	<data><![CDATA[
+	[
+		{id: 'root', name: 'Root'},
+		{id: "all", name: "전체", parent_id: "root", icon: "airplane", path: null, seq:0, use_yn:"n"},
+		{id: "home", name: "홈", parent_id: "root", icon: "home", path: "/", seq:1, use_yn:"n"},
+		{id: "asset", name: "대상 관리", parent_id: "root", icon: "box", path:null, seq:2},
+		{id: "assets", name: "대상 관리", parent_id: "asset", icon: null, path: "/assets", seq:1},
+		{id: "assetTypes", name: "대상유형 관리", parent_id: "asset", icon:null,path: "/assetTypes", seq:2},
+		{id: "places", name: "장소 관리", parent_id: "asset", icon:null, path: "/places", seq:3},
+		{id: "check", name: "점검", parent_id: "root", icon: "check", path: null, seq:3},
+		{id: "checkSchedule", name: "점검 계획", parent_id: "check", path: "/checkSchedule", seq:1},
+		{id: "checks", name: "점검 실시", parent_id: "check", path: "/checks", seq:2},
+		{id: "checkItems", name: "점검 조치", parent_id: "check", path: "/checkItems", seq:3},
+		{id: "daily", name: "일일점검 보고", parent_id: "check", path: "/daily", seq:4},
+		{id: "checkReport", name: "점검 현황", parent_id: "check", path: "/checkReport", seq:5},
+		{id: "checklist", name: "체크리스트", parent_id: "root", icon:"bulletlist", seq:6},
+		{id: "checklists", name: "체크리스트 관리", parent_id: "checklist", icon:null,path: "/checklists", seq:1},
+		{id: "checkThemes", name: "점검 테마 관리", parent_id: "checklist", icon:null,path: "/checkThemes", seq:2},
+		{id: "checkCycles", name: "점검 주기 관리", parent_id: "checklist", icon:null,path: "/checkCycles", seq:3},
+		{id: "system", name: "시스템 관리", parent_id: "root", icon: "preferences", path:null, seq:7},
+		{id: "menus", name: "메뉴 관리", parent_id: "system", icon:null,path: "/menus", seq:3},
+		{id: "types", name: "공통코드 관리", parent_id: "system", icon:null,path: "/types", seq:5},
+		{id: "users", name: "사용자 관리", parent_id: "system", icon:null,path: "/users", seq:2},
+		{id: "groups", name: "그룹 관리", parent_id: "system", icon:null,path: "/groups", seq:1},
+		{id: "acls", name: "권한 관리", parent_id: "system", icon:null,path: "/acls", seq:4},
+	]
+	]]></data>
+</resource>

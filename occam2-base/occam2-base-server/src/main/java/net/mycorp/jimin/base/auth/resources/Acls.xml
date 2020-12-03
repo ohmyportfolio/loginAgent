@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_ACL" cacheable="true" logLevel="write">
+	<columns>
+		<column name="reg_user" relationship="many_to_one" resource="users" fk="reg_user_id"/>
+		<column name="mod_user" relationship="many_to_one" resource="users" fk="mod_user_id"/>
+	</columns>
+	<commands>
+		<command name="updatePermItems" type="sql"><![CDATA[
+insert into oc_acl_type 
+  (acl_id, menu_id, owner_permit, group_permit, other_permit)
+select 
+  p.id acl_id, m.id menu_id, '0', '0', '0'
+from 
+  oc_acl p, oc_menu m
+where
+  p.id = :id and
+  (p.id, m.id) not in 
+    (select 
+       acl_id, menu_id
+     from oc_acl_type
+     where
+       acl_id = p.id) and m.id != 'root'
+		]]></command>
+	</commands>
+	<data><![CDATA[
+	[
+		{"id":"default","name":"기본","admin_permit":"4","owner_permit":"4","group_permit":"4","other_permit":"2","guest_permit":"1"}
+	]
+	]]></data>
+</resource>

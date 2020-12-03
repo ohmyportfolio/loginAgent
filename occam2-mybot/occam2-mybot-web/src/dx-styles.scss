@@ -1,0 +1,28 @@
+@import "../../../occam2-base/occam2-base-web/src/dx-styles.scss";
+
+.screen-large .responsive-paddings {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.screen-large .oc-form-widget {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dx-datagrid-group-space {
+  width: 4px !important;
+  min-width: 4px !important;
+  max-width: 4px !important;
+  padding: 0px !important;
+  line-height: 0 !important;
+}
+
+.dx-group-row > td {
+  background: #f5f5f5;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  line-height: 15px !important;
+}

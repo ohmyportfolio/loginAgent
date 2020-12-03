@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_ACCOUNT">
+	<columns>
+		<column name="site" relationship="many_to_one" resource="sites" fk="site_id"/>
+	</columns>
+	<commands>
+	</commands>
+</resource>

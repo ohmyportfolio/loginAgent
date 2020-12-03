@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_OCCUPIED">
+	<columns>
+		<column name="site" relationship="many_to_one" resource="sites" fk="site_id"/>
+		<column name="account" relationship="many_to_one" resource="accounts" fk="account_id"/>
+		<column name="pc" relationship="many_to_one" resource="pcs" fk="pc_ip"/>
+	</columns>
+</resource>

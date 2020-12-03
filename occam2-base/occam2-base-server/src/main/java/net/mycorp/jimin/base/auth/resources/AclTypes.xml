@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_ACL_TYPE" logLevel="write">
+	<columns>
+		<column name="acl" relationship="many_to_one" resource="acls" fk="acl_id"/>
+	</columns>
+	<commands>
+	</commands>
+	<data><![CDATA[
+	[
+		{"acl_id":"default","type_id":"codes","admin_permit":"4","owner_permit":"4","group_permit":"2","other_permit":"2","guest_permit":"2"}
+	]
+	]]></data>
+</resource>

@@ -1,0 +1,60 @@
+{
+  "name": "occam2-base-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build-themes": "devextreme build",
+    "postinstall": "npm run build-themes"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "core-js": "^2.6.5",
+    "devextreme": "19.1-stable",
+    "devextreme-themebuilder": "19.1-stable",
+    "devextreme-vue": "19.1-stable",
+    "file-saver": "^2.0.2",
+    "node-sass": "^4.11.0",
+    "vue": "^2.6.10",
+    "vue-i18n": "^8.14.1",
+    "vue-router": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.1",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "babel-eslint": "^10.0.1",
+    "devextreme-cli": "1.1.6",
+    "devextreme-intl": "^19.1.6",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

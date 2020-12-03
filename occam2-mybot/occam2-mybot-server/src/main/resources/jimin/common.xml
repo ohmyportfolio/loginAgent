@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<occam>
+	<datasources>
+		<!-- 집
+		<datasource name="default"
+			url="jdbc:oracle:thin:@//127.0.0.1:1521/XE" 
+			username="mybot" password="369Wkwks" 
+			driver="oracle.jdbc.driver.OracleDriver" dialect="ORACLE12C"/>
+			
+		 -->
+		<datasource name="default"
+			url="jdbc:oracle:thin:@//211.32.19.210:1521/XE" 
+			username="mybot" password="1qazxsw2" 
+			driver="oracle.jdbc.driver.OracleDriver" dialect="ORACLE12C"/>
+	</datasources>
+</occam>

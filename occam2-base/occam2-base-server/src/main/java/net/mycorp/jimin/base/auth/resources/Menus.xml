@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_MENU" cacheable="true" logLevel="write">
+	<columns>
+		<column name="parent" relationship="many_to_one" resource="menus" fk="parent_id"/>
+		<column name="group_ids" relationship="command"/>
+		<column name="tenant" relationship="many_to_one" resource="tenants" fk="tenant_id"/>
+	</columns>
+	<commands>
+		<command name="group_ids" type="sql" result="values"><![CDATA[
+			select g.id from
+			oc_menu_group m join oc_group g on m.group_id = g.id  
+			where m.menu_id = :id
+		]]></command>
+	</commands>
+	<data><![CDATA[
+	[
+		{id: 'root', name: 'Root'},
+		{id: "system", name: "시스템 관리", parent_id: "root", icon: "preferences", path:null, seq:7},
+		{id: "datasources", name: "데이터소스 관리", parent_id: "system", icon:null, path: "/datasources", seq:1},
+		{id: "resources", name: "테이블 관리", parent_id: "system", icon:null, path: "/resources", seq:2},
+		{id: "menus", name: "메뉴 관리", parent_id: "system", icon:null, path: "/menus", seq:3},
+		{id: "users", name: "사용자 관리", parent_id: "system", icon:null, path: "/users", seq:4},
+		{id: "groups", name: "그룹 관리", parent_id: "system", icon:null, path: "/groups", seq:5},
+		{id: "acls", name: "권한 관리", parent_id: "system", icon:null, path: "/acls", seq:6},
+		{id: "types", name: "공통코드 관리", parent_id: "system", icon:null, path: "/types", seq:7},
+	]
+	]]></data>
+</resource>

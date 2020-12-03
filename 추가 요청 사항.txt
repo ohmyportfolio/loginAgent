@@ -1,0 +1,52 @@
+계정사용현황 고장남(완료)
+
+비밀번호 **** 처리
+
+계정 사용 통계 대시보드 
+
+브라우저 여러개 지원
+
+사용자 프로필 화면 통제 (강종)
+
+서버 이중화 
+
+계정 사용시 계정별로 1개씩 사용 a-1 , b-1 , c-1 , a-2 , b-2 , c-2
+
+매장별 IP 등록 자리번호 등록
+
+wavve 숨김
+
+서버 사양
+
+관리페이지 계정별 권한 
+ - 시스템 관리자
+ - 직원용
+
+오류처리
+ Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is net.exinno.occam2.base.core.OccamException: java.lang.NullPointerException] with root cause [o.a.c.c.C.[.[.[.[dispatcherServlet] http-nio-8090-exec-9]
+java.lang.NullPointerException: null
+	at net.exinno.occam2.mybot.services.Sites.selectAvailableAccount(Sites.java:28)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.exinno.occam2.base.service.CommandService.executeService(CommandService.java:107)
+	at net.exinno.occam2.base.service.CommandService.execute(CommandService.java:61)
+	at net.exinno.occam2.base.domain.OcContext.execute(OcContext.java:311)
+	at net.exinno.occam2.base.controller.ApiController.execute(ApiController.java:151)
+	at net.exinno.occam2.base.controller.ApiController$$FastClassBySpringCGLIB$$77d9326e.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:295)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:98)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
+	at net.exinno.occam2.base.controller.ApiController$$EnhancerBySpringCGLIB$$e724a749.execute(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocable

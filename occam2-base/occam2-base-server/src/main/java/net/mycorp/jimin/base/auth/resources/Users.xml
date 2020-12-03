@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_USER" bean="net.mycorp.jimin.base.auth.OcUser" logLevel="write">
+	<columns>
+		<column name="ocgroup" relationship="many_to_one" resource="groups" fk="group_id"/>
+		<column name="acl" relationship="many_to_one" resource="acls" fk="acl_id"/>
+		<column name="place" relationship="many_to_one" resource="places" fk="place_id"/>
+		<column name="group_ids" relationship="command"/>
+		<column name="all_group_ids" relationship="command"/>
+		<column name="is_password_use" sql="nvl2(encrypted_password, 1, 0)"/>
+		<column name="reg_user" relationship="many_to_one" resource="users" fk="reg_user_id"/>
+		<column name="mod_user" relationship="many_to_one" resource="users" fk="mod_user_id"/>
+		<column name="tenant" relationship="many_to_one" resource="tenants" fk="tenant_id"/>
+	</columns>
+	<commands>
+		<command name="group_ids" type="sql" result="values"><![CDATA[
+		    select group_id from oc_group_member where user_id = :id
+		]]></command>
+		<command name="all_group_ids" type="sql" result="values"><![CDATA[
+			select distinct id from oc_group
+			start with
+			  id in (
+			    select group_id from oc_user where id = :id
+			    union 
+			    select group_id from oc_group_member where user_id = :id
+			  )
+			connect by prior parent_id = id
+		]]></command>
+	</commands>
+	<data><![CDATA[
+	[
+	    { id: "admin", tenant_id: "default", user_id: "admin", name: "관리자", user_type: "admin", encrypted_password: "$2a$10$ISKnnYTXL3Yjwy/h2MflcOOxGEFbgkt604SHn8ogPqLgMeX55r6.O"} // password 1234
+	]
+	]]></data>
+</resource>

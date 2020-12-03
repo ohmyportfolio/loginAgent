@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_EVENT">
+	<columns>
+		<column name="type" relationship="many_to_one" resource="types" fk="type_id"/>
+		<column name="owner" relationship="many_to_one" resource="users" fk="owner_id"/>
+		<column name="ocgroup" relationship="many_to_one" resource="groups" fk="group_id"/>
+		<column name="ocresource" relationship="many_to_one" resource="resources" fk="resource_name"/>
+		<column name="tenant" relationship="many_to_one" resource="tenants" fk="tenant_id"/>
+		<column name="task" relationship="many_to_one" resource="tasks" fk="task_id"/>
+		<column name="project" relationship="many_to_one" resource="projects" fk="project_id"/>
+	</columns>
+	<commands>
+	</commands>
+</resource>

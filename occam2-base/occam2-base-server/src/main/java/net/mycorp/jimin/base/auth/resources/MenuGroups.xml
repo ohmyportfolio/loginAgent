@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_MENU_GROUP" logLevel="write">
+	<columns>
+		<column name="_group" relationship="many_to_one" resource="groups" fk="group_id"/>
+		<column name="menu" relationship="many_to_one" resource="menus" fk="menu_id"/>
+	</columns>
+</resource>

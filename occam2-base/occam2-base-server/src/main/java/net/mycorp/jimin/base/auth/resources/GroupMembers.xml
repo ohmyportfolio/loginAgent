@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_GROUP_MEMBER" logLevel="write">
+	<columns>
+		<column name="_group" relationship="many_to_one" resource="groups" fk="group_id"/>
+		<column name="user" relationship="many_to_one" resource="users" fk="user_id"/>
+	</columns>
+	<commands>
+		<command name="deleteByUserId" type="sql"><![CDATA[
+			delete oc_group_member where user_id = :user_id 
+		]]></command>
+	</commands>
+</resource>

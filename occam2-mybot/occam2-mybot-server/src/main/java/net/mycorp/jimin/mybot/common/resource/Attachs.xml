@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_ATTACH" logLevel="all">
+	<columns>
+		<column name="type" relationship="many_to_one" resource="types" fk="type_id"/>
+		<column name="reg_user" relationship="many_to_one" resource="users" fk="reg_user_id"/>
+		<column name="mod_user" relationship="many_to_one" resource="users" fk="mod_user_id"/>
+		<column name="tenant" relationship="many_to_one" resource="tenants" fk="tenant_id"/>
+		<column name="check_item" relationship="many_to_one" resource="checkItems" fk="target_id"/>
+		<column name="occheck" relationship="many_to_one" resource="checks" fk="target_id"/>
+	</columns>
+	<commands>
+	</commands>
+</resource>

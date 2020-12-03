@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_COLUMN" pk="type_id,column_id" orderby="type_id,seq">
+	<columns>
+		<column name="type" relationship="many_to_one" resource="types" fk="type_id"/>
+	</columns>
+	<commands>
+	</commands>
+</resource>

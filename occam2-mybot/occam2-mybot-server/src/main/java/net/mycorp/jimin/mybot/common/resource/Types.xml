@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_TYPE" orderby="this.seq">
+	<columns>
+	</columns>
+	<commands>
+	</commands>
+	<data><![CDATA[
+	[
+		{id: 'yn', name: '여부', type_cat: 'code', seq: 1},
+		{id: 'yna', name: '여부(N/A)', type_cat: 'code', seq: 2},
+		{id: 'user_type', name: '사용자 유형', type_cat: 'code', seq: 99},
+		{id: 'group_type', name: '그룹 유형', type_cat: 'code', seq: 99},
+		{id: 'user_status', name: '사용자 상태', type_cat: 'code', seq: 99},
+		{id: 'group_status', name: '그룹 상태', type_cat: 'code', seq: 99},
+		{id: 'permit', name: '권한', type_cat: 'code', seq: 99},
+		{id: 'cycle_type', name: '반복 유형', type_cat: 'code', seq: 99},
+		{id: 'week_of_month', name: '주차', type_cat: 'code', seq: 99},
+		{id: 'day_of_week', name: '요일', type_cat: 'code', seq: 99},
+		{id: 'type_cat', name: '타입 유형', type_cat: 'code', seq: 99},
+		{id: 'resource', name: '리소스', type_cat: 'code', seq: 99},
+		{id: 'command', name: '명령', type_cat: 'code', seq: 99},
+		{id: 'prop_type', name: '속성 유형', type_cat: 'code', seq: 99},
+	]
+	]]></data>
+</resource>

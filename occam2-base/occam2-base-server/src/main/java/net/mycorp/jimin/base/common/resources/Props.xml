@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_PROP" pk="view_id,prop_id" orderby="view_id,seq,reg_date" depends="types" cacheable="true">
+	<columns>
+		<column name="ocview" relationship="many_to_one" resource="views" fk="view_id"/>
+		<column name="type_resource" relationship="many_to_one" resource="resources" fk="type_detail"/>
+		<column name="type_code" relationship="many_to_one" resource="types" fk="type_detail"/>
+		<column name="reg_user" relationship="many_to_one" resource="users" fk="reg_user_id"/>
+		<column name="mod_user" relationship="many_to_one" resource="users" fk="mod_user_id"/>
+		<column name="tenant" relationship="many_to_one" resource="tenants" fk="tenant_id"/>
+	</columns>
+	<commands>
+	</commands>
+</resource>

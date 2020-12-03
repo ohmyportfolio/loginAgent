@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource table="OC_CODE" pk="type_id,code" orderby="type_id,seq,code" depends="types" cacheable="true" logLevel="write">
+	<columns>
+		<column name="mytype" relationship="many_to_one" resource="types" fk="type_id"/>
+		<column name="parent" relationship="many_to_one" resource="codes" fk="parent_code"/>
+		<column name="reg_user" relationship="many_to_one" resource="users" fk="reg_user_id"/>
+		<column name="mod_user" relationship="many_to_one" resource="users" fk="mod_user_id"/>
+	</columns>
+	<commands>
+	</commands>
+	<data><![CDATA[
+	[
+	    { "type_id": "group_status", "code": "normal", "name": "정상"}, 
+	    { "type_id": "group_status", "code": "abolished", "name": "폐지" },
+	    
+	    { "type_id": "group_type", "code": "dept", "name": "부서"}, 
+	    { "type_id": "group_type", "code": "project", "name": "프로젝트" }, 
+	    
+	    { "type_id": "permit", "code": "0", "name": "상속"}, 
+	    { "type_id": "permit", "code": "1", "name": "없음"}, 
+	    { "type_id": "permit", "code": "2", "name": "읽기"}, 
+	    { "type_id": "permit", "code": "3", "name": "쓰기"}, 
+	    { "type_id": "permit", "code": "4", "name": "삭제"}, 
+	    
+	    { "type_id": "user_type", "code": "admin", "name": "관리자" }, 
+	    { "type_id": "user_type", "code": "employee", "name": "임직원" }, 
+	    { "type_id": "user_type", "code": "outsourcing", "name": "외주" }, 
+	    
+	    { "type_id": "user_status", "code": "normal", "name": "재직"}, 
+	    { "type_id": "user_status", "code": "retirement", "name": "퇴직" },
+	    
+	    { "type_id": "yn", "code": "n", "name": "X"}, 
+	    { "type_id": "yn", "code": "y", "name": "O"}, 
+	    
+	    { "type_id": "yna", "code": "y", "name": "O", seq: 1}, 
+	    { "type_id": "yna", "code": "n", "name": "X", seq: 2}, 
+	    { "type_id": "yna", "code": "na", "name": "N/A", seq: 3}, 
+	    
+	    { "type_id": "week_of_month", "code": "1", "name": "1주차", seq: 1},
+	    { "type_id": "week_of_month", "code": "2", "name": "2주차", seq: 2},
+	    { "type_id": "week_of_month", "code": "3", "name": "3주차", seq: 3},
+	    { "type_id": "week_of_month", "code": "4", "name": "4주차", seq: 4},
+	    
+	    { "type_id": "day_of_week", "code": "mon", "name": "월", seq: 1},
+	    { "type_id": "day_of_week", "code": "tue", "name": "화", seq: 2},
+	    { "type_id": "day_of_week", "code": "wed", "name": "수", seq: 3},
+	    { "type_id": "day_of_week", "code": "thu", "name": "목", seq: 4},
+	    { "type_id": "day_of_week", "code": "fri", "name": "금", seq: 5},
+	    
+	    { "type_id": "cycle_type", "code": "d", "name": "일", seq: 1},
+	    { "type_id": "cycle_type", "code": "w", "name": "주", seq: 2},
+	    { "type_id": "cycle_type", "code": "m", "name": "월", seq: 3},
+	    { "type_id": "cycle_type", "code": "q", "name": "분기", seq: 4},
+	    { "type_id": "cycle_type", "code": "y", "name": "연", seq: 5},
+	    { "type_id": "cycle_type", "code": "e", "name": "발생시", seq: 6},
+	    
+		{ "type_id": "type_cat", "code": "code", "name": "코드", seq: 1},
+		{ "type_id": "type_cat", "code": "list", "name": "리스트", seq: 2},
+		{ "type_id": "type_cat", "code": "resource", "name": "리소스", seq: 3},
+		
+	    { "type_id": "prop_type", "code": "string", "name": "문자열", seq: 1},
+	    { "type_id": "prop_type", "code": "textArea", "name": "텍스트", seq: 2},
+	    { "type_id": "prop_type", "code": "checkBox", "name": "체크박스", seq: 3},
+	    { "type_id": "prop_type", "code": "code", "name": "코드(콤보)", seq: 4},
+	    { "type_id": "prop_type", "code": "codeRadio", "name": "코드(라디오)", seq: 5},
+	    { "type_id": "prop_type", "code": "resource", "name": "리소스(콤보)", seq: 6},
+	    { "type_id": "prop_type", "code": "resourceTag", "name": "리소스(태그)", seq: 7},
+		{ "type_id": "prop_type", "code": "list", "name": "목록(콤보)", seq: 8},
+	    { "type_id": "prop_type", "code": "listRadio", "name": "목록(라디오)", seq: 9},
+	    { "type_id": "prop_type", "code": "integer", "name": "정수", seq: 10},
+	    { "type_id": "prop_type", "code": "float", "name": "실수", seq: 11},
+	    { "type_id": "prop_type", "code": "fileSize", "name": "파일크기", seq: 12},
+	    { "type_id": "prop_type", "code": "percent", "name": "퍼센트", seq: 13},
+	    { "type_id": "prop_type", "code": "date", "name": "일자", seq: 14},
+	    { "type_id": "prop_type", "code": "datetime", "name": "일시", seq: 15},
+	    { "type_id": "prop_type", "code": "dateMonth", "name": "년월", seq: 16},
+	    { "type_id": "prop_type", "code": "time", "name": "시간", seq: 17},
+	    
+	    { "type_id": "log_level", "code": "all", "name": "조회", seq: 1},
+	    { "type_id": "log_level", "code": "list", "name": "목록", seq: 2},
+	    { "type_id": "log_level", "code": "write", "name": "변경", seq: 3},
+	    { "type_id": "log_level", "code": "none", "name": "없음", seq: 4},
+	    
+	    { "type_id": "enabled_functions", "code": "enableAttach", "name": "첨부 파일", val_1: true, seq: 0},
+	    { "type_id": "enabled_functions", "code": "hasForm", "name": "폼 화면", val_1: true, seq: 1},
+	    { "type_id": "enabled_functions", "code": "enableFilterRow", "name": "필터 행", val_1: true, seq: 2},
+	    { "type_id": "enabled_functions", "code": "enableFilterPanel", "name": "필터 패널", val_1: true, seq: 3},
+	    { "type_id": "enabled_functions", "code": "enableSearchPanel", "name": "검색 패널", val_1: true, seq: 4},
+	    { "type_id": "enabled_functions", "code": "allowAdding", "name": "행 추가", val_1: true, seq: 5},
+	    { "type_id": "enabled_functions", "code": "allowUpdating", "name": "행 편집", val_1: true, seq: 6},
+	    { "type_id": "enabled_functions", "code": "allowDeleting", "name": "행 삭제", val_1: true, seq: 7},
+	    { "type_id": "enabled_functions", "code": "showToolbar", "name": "툴바 보임", val_1: true, seq: 8},
+	    { "type_id": "enabled_functions", "code": "showAddButton", "name": "추가 버튼", val_1: true, seq: 9},
+	    { "type_id": "enabled_functions", "code": "showEditButton", "name": "편집 버튼", val_1: true, seq: 10},
+	    { "type_id": "enabled_functions", "code": "showRefresh", "name": "새로고침", val_1: true, seq: 11},
+	    { "type_id": "enabled_functions", "code": "enableImport", "name": "엑셀 불러오기", val_1: false, seq: 12},
+	    { "type_id": "enabled_functions", "code": "enableExport", "name": "엑셀 내보내기", val_1: false, seq: 13},
+	    { "type_id": "enabled_functions", "code": "enableSelection", "name": "선택 체크박스", val_1: false, seq: 14},
+	    { "type_id": "enabled_functions", "code": "showBulkUpdate", "name": "일괄변경", val_1: false, seq: 15},
+	    { "type_id": "enabled_functions", "code": "showBulkDelete", "name": "선택삭제", val_1: false, seq: 16},
+	    { "type_id": "enabled_functions", "code": "enableDblClickOpen", "name": "더블클릭 오픈", val_1: false, seq: 17},
+	    { "type_id": "enabled_functions", "code": "enableFilterByQuery", "name": "URL로 필터링", val_1: false, seq: 18},
+	    { "type_id": "enabled_functions", "code": "enableDragging", "name": "드래그 가능", val_1: false, seq: 19},
+	    { "type_id": "enabled_functions", "code": "allowDropInsideItem", "name": "드래그 내부로 이동", val_1: false, seq: 20},
+	    { "type_id": "enabled_functions", "code": "allowReordering", "name": "드래그 정렬", val_1: false, seq: 21},
+	    { "type_id": "enabled_functions", "code": "showDragIcons", "name": "드래그 아이콘", val_1: false, seq: 22},
+	    { "type_id": "enabled_functions", "code": "enabledColumnChooser", "name": "열 선택", val_1: false, seq: 23},
+	    { "type_id": "enabled_functions", "code": "showUrlButton", "name": "주소 복사", val_1: false, seq: 24}
+	    
+	]
+	]]></data>
+</resource>

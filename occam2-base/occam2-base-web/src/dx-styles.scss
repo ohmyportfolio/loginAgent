@@ -1,0 +1,448 @@
+body{
+  overflow: hidden;
+}
+.content {
+  line-height: 1.5;
+
+  h2 {
+    font-size: 27px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.content-block {
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 20px;
+
+  .screen-x-small & {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+.responsive-paddings {
+  padding: 0px;
+
+  .screen-large & {
+    padding: 40px;
+  }
+}
+.app{
+  -ms-flex-direction: column;
+}
+
+.dx-card.wide-card {
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 0;
+  border-right: 0;
+  border-left: 0;
+}
+
+$side-panel-min-width: 60px;
+
+.dx-form-group-with-caption .dx-form-group-content {
+  padding-bottom: 25px;
+  padding-top: 0px;
+  margin-top: 6px;
+}
+
+.dx-toolbar .dx-toolbar-items-container {
+  height: 60px;
+  overflow: visible;
+}
+
+.screen-large .responsive-paddings {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.dx-form-group-caption {
+  font-size: 18px;
+} 
+
+.dx-datagrid-header-panel {
+  .screen-x-small & {
+    padding-left: 10px;
+    padding-right: 0px;
+  }
+}
+
+.dx-tab.dx-tab-selected:before {
+  background-color:initial;
+}
+.dx-tab.dx-tab-selected {
+  background-color: none;
+  background: linear-gradient(#f7f7f7 98%, #a1886f 2%);
+}
+
+.login-header .title {
+  color: #a1886f;
+  font-weight: bold;
+  font-size: 18px;
+
+}
+.h-box{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  .dx-widget{
+    margin: 0 0px;
+  }
+  div[column-auto-width]{
+    flex: 1;
+    width: 0px;
+  }
+  &.gap-5{
+    .dx-widget{
+      margin: 0 5px;
+    }
+  }
+}
+.v-box{
+  display: flex;
+  flex-direction: column;
+  margin: 5 0px;
+  &.gap-20{
+    .dx-widget{
+      margin: 5 0px;
+    }
+  }
+  .dx-swatch-additional {
+    background: #f1e3c4;
+  }
+}
+
+.dx-fileuploader-wrapper {
+  padding: 0px;
+}
+
+.dx-datagrid .dx-row>td {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.dx-treelist .dx-row>td {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.dx-editor-cell .dx-texteditor .dx-texteditor-input {
+  line-height: 24px
+}
+
+.dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td, .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td.dx-cell-modified:not(.dx-field-item-content), .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td.dx-datagrid-invalid:not(.dx-field-item-content) {
+  padding-right: 4px;
+  padding-left: 10px;
+}
+
+.dx-field-item-label-location-top {
+  padding: 8px 0 0px;
+}
+
+.dx-layout-manager .dx-field-item:not(.dx-first-row) {
+  padding-top: 5px;
+}
+
+.dx-device-mobile .dx-popup-content {
+  padding: 2px;
+}
+
+.dx-device-mobile .dx-toolbar .dx-toolbar-items-container {
+  height: 60px;
+}
+
+.dx-device-mobile .dx-toolbar-after .dx-toolbar-item {
+  padding: 0px;
+}
+
+.dx-popup-content {
+  padding: 15px;
+}
+
+.dx-single-column-item-content > .dx-field-item {
+  padding-bottom: 0px;
+}
+
+.dx-device-mobile .dx-toolbar .dx-toolbar-before {
+  padding-left: 0px;
+}
+
+.dx-device-mobile .dx-toolbar .dx-toolbar-after {
+  padding-left: 0px;
+}
+
+.dx-device-mobile .content-block {
+  margin: 0px;
+}
+
+.dx-button-has-icon.dx-button-has-text .dx-button-content {
+  padding-top: 6px;
+  padding-right: 6px;
+  padding-bottom: 6px;
+  padding-left: 6px;
+}
+
+.dx-device-mobile .hidden-mobile {
+  display: none;
+}
+
+.dx-button-has-text .dx-button-content {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.dx-fileuploader-input-wrapper {
+  padding: 0px;
+  border: 0px;
+}
+
+.oc-form-widget {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dx-dropdowneditor-overlay .dx-overlay-content {  
+  min-width: 100px;  
+}
+
+.dx-dropdownlist-popup-wrapper .dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item-content {
+  padding-left: 5px;
+  padding-right: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 10px;
+}
+
+datagrid-content .dx-datagrid-table .dx-row > td.dx-datagrid-invalid:not(.dx-field-item-content):last-of-type {
+  padding-right: 4px;
+}
+
+.oc-title {
+  font-size: 20px;
+  font-weight: 500;
+  padding-left: 20px;
+  padding-top: 20px
+}
+
+.oc-form-widget {
+  position: relative;
+}
+
+.dx-datebox.dx-auto-width.dx-dropdowneditor-button-visible.dx-editor-underlined .dx-texteditor-input, .dx-datebox:not(.dx-texteditor-empty).dx-auto-width.dx-dropdowneditor-button-visible.dx-editor-underlined .dx-texteditor-input {
+  padding-right: 0px;
+}
+
+.dx-dropdowneditor-input-wrapper .dx-texteditor-input {
+  text-overflow: clip;
+}
+
+.dx-radio-value-container {
+  padding-right: 3px;
+  padding-left: 4px;
+}
+
+.dx-radiogroup-horizontal .dx-radiobutton {
+  margin-right: 3px;
+}
+
+.dx-radiogroup {
+  margin-left: -4px;
+}
+
+.dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td:first-of-type, .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td.dx-cell-modified:not(.dx-field-item-content):first-of-type, .dx-datagrid .dx-datagrid-content .dx-datagrid-table .dx-row > td.dx-datagrid-invalid:not(.dx-field-item-content):first-of-type {
+  padding-left: 13px;
+}
+
+@media screen and (min-width:0\0){
+  .dx-toast-content {
+    display: inherit;
+    padding: 10px;
+  }
+  .dx-toast-message{
+    line-height: 2em;
+  }
+  .mergecells{
+    border:none;
+  }
+  .dx-datagrid .dx-row-lines > td{
+    &.mergecells{
+      border: none;
+    }
+    border: none;
+    outline:#e0e0e0 solid 0.5px;
+  }
+}
+
+.dx-fileuploader-files-container {
+  display: none;
+}
+
+.dx-datagrid .dx-error-row {
+  display: none;
+}
+
+.dx-datagrid-edit-popup .dx-error-message {
+  display: none;
+}
+
+.dx-treelist .dx-error-row {
+  display: none;
+}
+
+.dx-texteditor-input-auto-resize {
+  min-height: 37px;
+}
+
+.dx-device-mobile .dx-toolbar .dx-toolbar-menu-container {
+  padding: 0 0 0 0px;
+}
+
+// form 마지막 line validation message 안보이는 문제
+.dx-box-flex {
+  .dx-item .dx-box-item:last-child {
+    margin-bottom: 10px;
+  }
+}
+
+// textarea height 문제
+.dx-datagrid-focus-overlay {
+  display: none;
+}
+
+// toolbar 메뉴 숨김시 custom은 left padding이 먹는 문제
+.dx-toolbar-menu-section .dx-toolbar-item-auto-hide {
+  padding: 0px;
+}
+
+.dx-toolbar-menu-section .dx-list-item-content {
+  padding-left: 0px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+}
+
+.dx-datagrid-toolbar-button.dx-apply-button {
+  display: none;
+}
+
+// heder row height 줄이기
+.dx-header-row > td {
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+  line-height: 16px;
+  background-color: #eeeeee;
+}
+
+.dx-header-row > td > .dx-datagrid-text-content {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.dx-datagrid-select-all .dx-checkbox,
+.dx-treelist-select-all .dx-checkbox {
+  left: 42px;
+  top: 10px;
+}
+
+// filter row height 줄이기
+.dx-editor-cell .dx-texteditor .dx-texteditor-input {
+  height: 33px;
+}
+
+.dx-datagrid .dx-editor-with-menu,
+.dx-treelist .dx-editor-with-menu, 
+.dx-treelist-container .dx-editor-with-menu {
+  height: 33px;
+}
+
+.dx-datagrid .dx-menu .dx-menu-item .dx-menu-item-content, 
+.dx-treelist .dx-menu .dx-menu-item .dx-menu-item-content, 
+.dx-treelist-container .dx-menu .dx-menu-item .dx-menu-item-content {
+  padding-top: 5px !important;
+}
+
+// override dx
+.dx-treelist .dx-command-drag .dx-treelist-drag-icon {
+  font-size: 18px;
+  color: #a1886f;
+}
+
+.dx-treelist .dx-command-drag {
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  padding-left: 2px !important;
+}
+
+.dx-toolbar .dx-texteditor {
+  width: unset;
+}
+
+.dx-list-item-content {
+  font-size: 13px;
+  padding: 10px 12px 10px;
+}
+
+.dx-treelist .dx-row > td, .dx-datagrid .dx-row > td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 13px;
+}
+
+// checkbox 사이즈 줄이기
+.dx-checkbox-icon {
+  margin-top: 3px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #aaaaaa;
+  border-radius: 2px;
+}
+
+.dx-treelist-icon-container.dx-editor-inline-block {
+  padding-right: 22px;
+}
+
+.dx-treelist-rowsview .dx-treelist-empty-space {
+  width: 19px;
+}
+
+.dx-treelist .dx-treelist-content .dx-treelist-table .dx-row > td, 
+.dx-treelist .dx-treelist-content .dx-treelist-table .dx-row > td.dx-cell-modified:not(.dx-field-item-content), 
+.dx-treelist .dx-treelist-content .dx-treelist-table .dx-row > td.dx-treelist-invalid:not(.dx-field-item-content) {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+// form 타이트 하게
+.dx-field-item {
+  padding-bottom: 0px !important;
+  padding-right: 0px !important;
+}
+
+.dx-toolbar .dx-toolbar-items-container {
+  height: 50px;
+}
+
+.dx-treelist-cell-expandable {
+  padding-left: 20px !important;
+}
+
+.dx-treelist-rowsview .dx-treelist-collapsed span:before,
+.dx-treelist-rowsview .dx-treelist-expanded span:before {
+  margin-left: -15px!important;
+}
+
+.dx-treelist-rowsview .dx-treelist-empty-space {
+  width: 10px!important;
+}

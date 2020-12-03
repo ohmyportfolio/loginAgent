@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "key": "@base-accent",
+      "value": "rgba(161, 136, 111, 1)"
+    },
+    {
+        "key": "@base-border-color",
+        "value": "rgba(224, 224, 224, 1)"
+    },
+    {
+      "key": "@toast-info-bg",
+      "value": "rgba(128, 185, 228, 1)"
+    },
+    {
+        "key": "@toast-warning-bg",
+        "value": "rgba(255, 178, 119, 1)"
+    },
+    {
+        "key": "@toast-error-bg",
+        "value": "rgba(255, 119, 119, 1)"
+    },
+    {
+        "key": "@toast-success-bg",
+        "value": "rgba(110, 200, 129, 1)"
+    }
+  ],
+  "baseTheme": "material.orange.light",
+  "assetsBasePath": "../../../node_modules/devextreme/dist/css/",
+  "outputColorScheme": "base"
+}

@@ -1,0 +1,169 @@
+<template>
+  <div class="side-nav-outer-toolbar">
+    <dx-drawer
+      class="drawer"
+      position="before"
+      template="menu"
+      :opened.sync="menuOpened"
+      :opened-state-mode="drawerOptions.menuMode"
+      :reveal-mode="drawerOptions.menuRevealMode"
+      :min-size="drawerOptions.minMenuSize"
+      :shading="drawerOptions.shaderEnabled"
+      :close-on-outside-click="drawerOptions.closeOnOutsideClick">
+      <div class="container">
+        <header-toolbar v-if="!isLarge"
+          :menu-toggle-enabled="headerMenuTogglerEnabled"
+          :toggle-menu-func="toggleMenu"
+        />
+        <dx-scroll-view class="layout-body with-footer">
+          <slot />
+          <slot name="footer" />
+        </dx-scroll-view>
+      </div>
+      <!-- eslint-disable vue/no-unused-vars -->
+      <side-nav-menu
+        slot="menu"
+        slot-scope="_"
+        class="dx-swatch-additional"
+        :compact-mode="!menuOpened"
+        :items="menuItems"
+        @click="handleSideBarClick">
+        <!-- eslint-enable-->
+        <header-toolbar v-if="isLarge"
+          :menu-toggle-enabled="headerMenuTogglerEnabled"
+          :toggle-menu-func="toggleMenu"
+        />
+      </side-nav-menu>
+    </dx-drawer>
+  </div>
+</template>
+
+<script>
+import DxDrawer from "devextreme-vue/drawer";
+import DxScrollView from "devextreme-vue/scroll-view";
+
+import HeaderToolbar from "../components/header-toolbar";
+import SideNavMenu from "../components/side-nav-menu";
+import client from '../../../../occam2-base/occam2-base-web/src/services/client'
+
+export default {
+  props: {
+    title: String,
+    isXSmall: Boolean,
+    isLarge: Boolean
+  },
+  methods: {
+    toggleMenu(e) {
+      const pointerEvent = e.event;
+      pointerEvent.stopPropagation();
+      if (this.menuOpened) {
+        this.menuTemporaryOpened = false;
+      }
+      this.menuOpened = !this.menuOpened;
+    },
+    handleSideBarClick() {
+      if (this.menuOpened === false) this.menuTemporaryOpened = true;
+      this.menuOpened = true;
+    },
+    async loadItem() {
+      let result = await client.request({ method: 'get', url: '/api/menus/any/tree', params: {orderby: 'seq asc'}});
+      this.menuItems = result;
+    },
+    onLogoutClick() {
+      this.auth.logout();
+      this.$router.push({
+        path: "/login",
+        query: { redirect: this.$route.path }
+      });
+    },
+	  onResetPasswordClick() {
+      this.$router.push({
+        path: "/password"
+      });
+    }
+  },
+  data() {
+    return {
+      menuOpened: this.isLarge,
+      menuTemporaryOpened: false,
+      menuItems: [{}],
+      userMenuItems: [
+		    {
+          text: "비밀번호 변경",
+          icon: "key",
+          onClick: this.onResetPasswordClick
+        },
+        {
+          text: "로그아웃",
+          icon: "runner",
+          onClick: this.onLogoutClick
+        }
+      ]
+    };
+  },
+  mounted() {
+    this.loadItem();
+    this.$root.$on("loadMenu", () => {
+      this.loadItem();
+    });
+  },
+  computed: {
+    drawerOptions() {
+      const shaderEnabled = !this.isLarge;
+      return {
+        menuMode: this.isLarge ? "shrink" : "overlap",
+        menuRevealMode: this.isXSmall ? "slide" : "expand",
+        minMenuSize: this.isXSmall ? 0 : 60,
+        menuOpened: this.isLarge,
+        closeOnOutsideClick: shaderEnabled,
+        shaderEnabled
+      };
+    },
+    headerMenuTogglerEnabled() {
+      return this.isXSmall;
+    }
+  },
+  watch: {
+    isLarge() {
+      if (!this.menuTemporaryOpened) {
+        this.menuOpened = this.isLarge;
+      }
+    },
+    $route() {
+      if (this.menuTemporaryOpened || !this.isLarge) {
+        this.menuOpened = false;
+        this.menuTemporaryOpened = false;
+      }
+    }
+  },
+  components: {
+    DxDrawer,
+    DxScrollView,
+    HeaderToolbar,
+    SideNavMenu,
+  }
+};
+</script>
+
+<style lang="scss">
+.side-nav-outer-toolbar {
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.layout-header {
+  z-index: 1501;
+}
+
+.layout-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+</style>

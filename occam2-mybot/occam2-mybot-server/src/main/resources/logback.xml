@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} %-5level - %msg [%logger{5} %thread]%n"/>
+	
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+
+	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" />
+	<logger name="org.jooq" level="DEBUG" />
+	<logger name="net.mycorp" level="DEBUG" />
+
+	<root level="INFO" />
+
+</configuration>

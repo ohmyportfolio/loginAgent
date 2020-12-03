@@ -1,0 +1,43 @@
+ALTER TABLE MYBOT.OC_SITE
+ ADD (ALLOW_LOGIN_COUNT  NUMBER);
+ 
+Insert into OC_MENU
+   (ID, NAME, MENU_TYPE, PARENT_ID, ICON, 
+    PATH, SEQ, USE_YN, REG_DATE, REG_USER_ID, 
+    MOD_DATE, MOD_USER_ID)
+ Values
+   ('occupied', '계정사용현황', NULL, 'root', 'video', 
+    '/occupieds', NULL, 'y', NULL, NULL, 
+    NULL, 'admin');
+COMMIT;
+
+
+CREATE TABLE MYBOT.OC_OCCUPIED
+(
+  id          VARCHAR2(100 BYTE),
+  name        VARCHAR2(100 BYTE),
+  account_id  VARCHAR2(100),
+  start_date  DATE,
+  end_date    DATE,
+  pc_ip       VARCHAR2(50),
+  site_id     VARCHAR2(50)
+)
+RESULT_CACHE (MODE DEFAULT)
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+NOMONITORING;
+
+
+ALTER TABLE MYBOT.OC_OCCUPIED
+ ADD (USER_ID  VARCHAR2(100 BYTE));
+ 
+ 
+ 
+ ------------- 완료 --------------
