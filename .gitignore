@@ -2,3 +2,6 @@ node_modules
 /LoginAgentClient/bin/Debug
 /LoginAgentClient/obj/Debug
 target
+bin
+/LoginAgentClient/.vs
+/LoginAgentClient/obj
