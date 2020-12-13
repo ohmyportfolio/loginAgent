@@ -90,7 +90,7 @@ Section "LoginAgent (required)"
   	
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\LoginAgent "Install_Dir" "$INSTDIR"
-  ;WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "LoginAgent" "$INSTDIR\LoginAgent.exe"
+  ;WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "LoginAgent" '"$INSTDIR\LoginAgent.exe"'
 
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "DisplayName" "LoginAgent"
@@ -115,6 +115,7 @@ Section "LoginAgent (required)"
   WriteRegStr HKLM "Software\LoginAgent" "Uninstall" "$INSTDIR\uninstall.exe"
   CreateDirectory "$SMPROGRAMS\LoginAgent"
   CreateShortCut "$SMPROGRAMS\LoginAgent\LoginAgent.lnk" "$INSTDIR\LoginAgent.exe"
+  CreateShortCut "$SMPROGRAMS\Startup\LoginAgent.lnk" "$INSTDIR\LoginAgent.exe"
   
   Processes::KillProcess "LoginAgent" ;without ".exe"
     YES:
