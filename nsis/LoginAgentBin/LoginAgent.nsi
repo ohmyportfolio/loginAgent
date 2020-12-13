@@ -15,7 +15,7 @@ Var /GLOBAL switch_overwrite
 Name "LoginAgent Installer"
 
 ; The file to write
-OutFile "setup-LoginAgent.exe"
+OutFile "setup-LA.exe"
 
 ; The default installation directory
 InstallDir $PROGRAMFILES\LoginAgent
@@ -86,7 +86,7 @@ Section "LoginAgent (required)"
   File "WebDriver.Support.xml"
   File "WebDriver.xml"
   File "Microsoft.Edge.SeleniumTools.dll"
-  File "msedgedriver.exe"
+  File "chromedriver.exe"
   
   	
   ; Write the installation path into the registry
@@ -162,7 +162,7 @@ Section "Uninstall"
   Delete "$INSTDIR\WebDriver.Support.xml"
   Delete "$INSTDIR\WebDriver.xml"
   Delete "$INSTDIR\Microsoft.Edge.SeleniumTools.dll"
-  Delete "$INSTDIR\msedgedriver.exe"
+  Delete "$INSTDIR\chromedriver.exe"
   
   ; Remove registry keys
   DeleteRegKey /ifempty HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent"
