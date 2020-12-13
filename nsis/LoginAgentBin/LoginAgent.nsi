@@ -64,8 +64,7 @@ Section "LoginAgent (required)"
   ;RMDir /r "$INSTDIR\lua3"
   Delete "$INSTDIR\*.nsi"
   Delete "$SMSTARTUP\LoginAgent.lnk"
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Run\LoginAgent"
-  DeleteRegValue HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "LoginAgent"
+  
   ; Put file there
   ${EnvVarUpdate} $0 "PATH" "P" "HKCU" "%WinDir%\System32"  
   File "config.ini"
@@ -91,12 +90,14 @@ Section "LoginAgent (required)"
   	
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\LoginAgent "Install_Dir" "$INSTDIR"
+  ;WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Run" "LoginAgent" "$INSTDIR\LoginAgent.exe"
 
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "DisplayName" "LoginAgent"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "NoRepair" 1
+  
 
   WriteUninstaller "uninstall.exe"
 

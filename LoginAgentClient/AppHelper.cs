@@ -10,6 +10,9 @@ namespace LoginAgent
 {
     static class AppHelper
     {
+
+        public static String version = null;
+
         public static string GetLocalIp()
         {
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
@@ -33,6 +36,23 @@ namespace LoginAgent
             String url = ini["server"]["url"].GetString();
             Console.WriteLine("server url = " + url);
             return url;
+        }
+
+        public static string GetVersion()
+        {
+            if(version == null)
+            {
+                IniFile ini = new IniFile();
+                ini.Load("config.ini");
+                String _version = ini["application"]["version"].GetString();
+                Console.WriteLine("version = " + version);
+                return _version;
+            }
+            else
+            {
+                return version;
+            }
+            
         }
     }
 }

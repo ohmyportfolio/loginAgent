@@ -190,12 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\launcher_img.jpg" />
-    <EmbeddedResource Include="msedgedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="IEDriverServer.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="Pixelresort-Peely-Video.ico" />
     <None Include="Resources\tv icon.png" />
     <None Include="Resources\tv-youtube-icon-with-png-and-vector-format-for-free-unlimited-3888121.png" />

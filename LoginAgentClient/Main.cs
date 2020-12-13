@@ -34,22 +34,17 @@ namespace LoginAgent
             _driverService = ChromeDriverService.CreateDefaultService();
             _driverService.HideCommandPromptWindow = true;
 
-
             List<string> ls = new List<string>();
             ls.Add("enable-automation");
 
             _options = new ChromeOptions();
             _options.AddArgument("disable-gpu");
             _options.AddExcludedArguments(ls);
-
+            
             SiteUsageStatus();
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {   
-
-        }
-
+        
         private void NetFlixBtnClick(object sender, EventArgs e)
         {
             DoLogin("netflix");
@@ -143,6 +138,8 @@ namespace LoginAgent
                 LoginAccount(data.GetValue("id").ToString(), data.GetValue("account_id").ToString(), data.GetValue("user_id").ToString());
             }
         }
+
+        
 
 
         private JObject GetObjectData(string uri)

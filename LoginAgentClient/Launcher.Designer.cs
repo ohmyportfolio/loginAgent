@@ -33,6 +33,7 @@ namespace LoginAgent
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.versionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // metroButton1
@@ -55,6 +56,19 @@ namespace LoginAgent
             this.metroButton1.UseSelectable = true;
             this.metroButton1.Click += new System.EventHandler(this.OpenMainBtnClick);
             // 
+            // versionLabel
+            // 
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.BackColor = System.Drawing.Color.Black;
+            this.versionLabel.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.versionLabel.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.versionLabel.Location = new System.Drawing.Point(267, 228);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(81, 13);
+            this.versionLabel.TabIndex = 1;
+            this.versionLabel.Text = "0000";
+            
+            // 
             // Launcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -65,6 +79,7 @@ namespace LoginAgent
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(350, 250);
             this.ControlBox = false;
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.metroButton1);
             this.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -86,5 +101,6 @@ namespace LoginAgent
         #endregion
 
         private MetroFramework.Controls.MetroButton metroButton1;
+        private Label versionLabel;
     }
 }

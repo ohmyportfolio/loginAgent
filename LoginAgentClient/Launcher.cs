@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -23,12 +24,36 @@ namespace LoginAgent
 
         public Launcher()
         {
+
+            Process[] procs = Process.GetProcessesByName("LoginAgent");
+            // 두번 이상 실행되었을 때 처리할 내용을 작성합니다.
+            if (procs.Length > 1)
+            {
+                //MessageBox.Show("프로그램이 이미 실행되고 있습니다.\n다시 한번 확인해주시기 바랍니다.");
+                Application.ExitThread();
+                Environment.Exit(0);
+            }
+
+            foreach (Process process in Process.GetProcessesByName("chromedriver"))
+            {
+                try
+                {
+                    process.Kill();
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error :: Kill chromedriver");
+                }
+            }
+
+
+            UpdateCheck();
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.Location = new Point(workingArea.Right - Size.Width,
                                       workingArea.Bottom - Size.Height);
             this.ShowInTaskbar = false;
-
+            this.versionLabel.Text = AppHelper.GetVersion();
             
         }
 
@@ -281,5 +306,62 @@ namespace LoginAgent
             }
             Console.WriteLine(responseText);
         }
+
+        private void UpdateCheck()
+        {
+            var uri = "http://" + AppHelper.GetServerUrl() + "/dist/_CHECK";
+            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+            var webResponse = (HttpWebResponse)webRequest.GetResponse();
+            var reader = new StreamReader(webResponse.GetResponseStream());
+            string s = reader.ReadToEnd();
+
+            String str = "서버 버전 : " + s + "\r";
+            str = str + "설치 버전 : " + AppHelper.GetVersion() + "\r";
+
+            if (long.Parse(s) > long.Parse(AppHelper.GetVersion()))
+            {
+                updateLoginAgent(s); 
+            }
+           
+        }
+
+        private string filename = null;
+        private void updateLoginAgent(String version)
+        {
+            Uri uri = new Uri("http://" + AppHelper.GetServerUrl() + "/dist/setup-LA-" + version + ".exe");
+            filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp/setup-LA.exe");
+
+            try
+            {
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+
+                WebClient wc = new WebClient();
+                wc.DownloadFileAsync(uri, filename);
+                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        
+        private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                Process.Start(filename);
+                Close();
+                Application.Exit();
+            }
+            else
+            {
+                MessageBox.Show("Unable to download exe, please check your connection", "Download failed!");
+            }
+        }
+
     }
 }
