@@ -224,10 +224,6 @@ namespace LoginAgent
                 {
                     labelNetflix.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
                 }
-                else if (row.GetValue("id").ToString().Equals("uflix"))
-                {
-                    labelUflix.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
-                }
                 else if (row.GetValue("id").ToString().Equals("tving"))
                 {
                     labelTving.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
