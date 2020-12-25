@@ -162,7 +162,9 @@ namespace LoginAgent
 
                         Console.WriteLine("CH Url for '" + process.MainWindowTitle + "' is " + url);
                         if (url.Contains("netflix.com/YourAccount") || url.Contains("uflix.co.kr/uws/web/mine/userInfo")
-                            || url.Contains("member.wavve.com/me") || url.Contains("tving.com/my/main"))
+                            || url.Contains("member.wavve.com/me") || url.Contains("tving.com/my/main")
+                            || url.Contains("netflix.com/ManageProfiles")
+                            )
                         {
                             process.Kill();
                         }
