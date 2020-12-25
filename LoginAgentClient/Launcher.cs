@@ -152,7 +152,7 @@ namespace LoginAgent
             {
                 Console.WriteLine("Check Account Page and Kill");
                 Thread.Sleep(3000);
-                foreach (Process process in Process.GetProcessesByName("msedge"))
+                foreach (Process process in Process.GetProcessesByName("chrome"))
                 {
                     try
                     {
