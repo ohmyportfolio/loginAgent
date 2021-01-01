@@ -34,7 +34,9 @@ RequestExecutionLevel admin
 
 Function .onInit
  ; call UpD
-  Processes::KillProcess "LoginAgent" ;without ".exe"
+  Processes::KillProcess "LoginAgent" ;without ".exe"  
+  exec 'taskkill /IM LoginAgent.exe /F'
+  exec 'taskkill /IM chromedriver.exe /F'
   Sleep 3000
 FunctionEnd
 
@@ -56,7 +58,7 @@ UninstPage instfiles
 Section "LoginAgent (required)"
   SetShellVarContext all
   SectionIn RO
-	Processes::KillProcess "LoginAgent" ;without ".exe"
+	Processes::KillProcess "LoginAgent" ;without ".exe"	
 
   ;CreateDirectory $TEMP\agent8
   ; Set output path to the installation directory.

@@ -313,16 +313,28 @@ namespace LoginAgent
         {
             var uri = "http://" + AppHelper.GetServerUrl() + "/dist/_CHECK";
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            var webResponse = (HttpWebResponse)webRequest.GetResponse();
-            var reader = new StreamReader(webResponse.GetResponseStream());
-            string s = reader.ReadToEnd();
-
-            String str = "서버 버전 : " + s + "\r";
-            str = str + "설치 버전 : " + AppHelper.GetVersion() + "\r";
-
-            if (long.Parse(s) > long.Parse(AppHelper.GetVersion()))
+            webRequest.Timeout = 5000;
+            try
             {
-                updateLoginAgent(s); 
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
+
+                var reader = new StreamReader(webResponse.GetResponseStream());
+                string s = reader.ReadToEnd();
+                String str = "서버 버전 : " + s + "\r";
+                str = str + "설치 버전 : " + AppHelper.GetVersion() + "\r";
+
+                if (long.Parse(s) > long.Parse(AppHelper.GetVersion()))
+                {
+                    updateLoginAgent(s);
+                }
+
+
+            }
+            catch(WebException webException)
+            {
+                MessageBox.Show("영화보기 서버 연결 실패");
+                Application.ExitThread();
+                Environment.Exit(0);
             }
            
         }
