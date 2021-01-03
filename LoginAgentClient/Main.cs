@@ -27,19 +27,25 @@ namespace LoginAgent
         protected ChromeOptions _options = null;
         protected ChromeDriver _driver = null;
 
+        public Action KillBrowser;
+
         public Main()
         {
             InitializeComponent();
 
             _driverService = ChromeDriverService.CreateDefaultService();
             _driverService.HideCommandPromptWindow = true;
+            //_driverService.EnableVerboseLogging = true;
 
             List<string> ls = new List<string>();
             ls.Add("enable-automation");
 
             _options = new ChromeOptions();
-            _options.AddArgument("disable-gpu");
-            _options.AddExcludedArguments(ls);
+
+            //_options.AddArgument("disable-gpu");
+            
+            //_options.AddArguments("chrome.switches", "--disable-notifications --disable-extensions --disable-extensions-file-access-check --disable-extensions-http-throttling --disable-infobars --start-maximized");
+            //_options.AddExcludedArguments(ls);
             
             SiteUsageStatus();
         }
@@ -47,25 +53,22 @@ namespace LoginAgent
         
         private void NetFlixBtnClick(object sender, EventArgs e)
         {
+            this.KillBrowser();
             DoLogin("netflix");
             SiteUsageStatus();
         }
 
         private void WavveBtnClick(object sender, EventArgs e)
         {
+            this.KillBrowser();
             DoLogin("wavve");
             SiteUsageStatus();
         }
 
-        private void UFlixBtnClick(object sender, EventArgs e)
-        {
-            MessageBox.Show("서비스 준비 중 입니다.");
-            //DoLogin("uflix");
-            //SiteUsageStatus();
-        }
 
         private void TvingBtnClick(object sender, EventArgs e)
         {
+            this.KillBrowser();
             DoLogin("tving");
             SiteUsageStatus();
         }
@@ -83,7 +86,8 @@ namespace LoginAgent
             
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
+            
+            
             var element = _driver.FindElementByXPath(idXpath);
             element.SendKeys(id);
             element = _driver.FindElementByXPath(pwXpath);

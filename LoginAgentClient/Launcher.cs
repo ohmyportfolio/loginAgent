@@ -84,6 +84,7 @@ namespace LoginAgent
 
             main = new Main();
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
+            main.KillBrowser = this.KillAllSite;
             
             if (t1 == null || !t1.IsAlive)
             {
@@ -116,21 +117,10 @@ namespace LoginAgent
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
-        private void KillAllSite()
+        public void KillAllSite()
         {
             
-            foreach (Process process in Process.GetProcessesByName("msedge"))
-            {
-                try
-                {
-                    process.Kill();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Error :: KillAccountPage");
-                }
-            }
-            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
+            foreach (Process process in Process.GetProcessesByName("chrome"))
             {
                 try
                 {

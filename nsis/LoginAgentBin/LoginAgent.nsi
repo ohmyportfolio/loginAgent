@@ -98,7 +98,7 @@ Section "LoginAgent (required)"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "DisplayName" "LoginAgent"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent" "NoRepair" 1
+  WriteRegDWORD HKLM "SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" "DisabledComponents" 0x00000020
   
 
   WriteUninstaller "uninstall.exe"
