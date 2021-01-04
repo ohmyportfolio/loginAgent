@@ -23,9 +23,13 @@ namespace LoginAgent
     public partial class Main : Form
     {
 
-        protected ChromeDriverService _driverService = null;
-        protected ChromeOptions _options = null;
-        protected ChromeDriver _driver = null;
+        protected InternetExplorerDriverService _driverService = null;
+        protected InternetExplorerOptions _options = null;
+        protected InternetExplorerDriver _driver = null;
+
+        //protected ChromeDriverService _driverService = null;
+        //protected ChromeOptions _options = null;
+        //protected ChromeDriver _driver = null;
 
         public Action KillBrowser;
 
@@ -33,19 +37,31 @@ namespace LoginAgent
         {
             InitializeComponent();
 
-            _driverService = ChromeDriverService.CreateDefaultService();
-            _driverService.HideCommandPromptWindow = true;
-            //_driverService.EnableVerboseLogging = true;
+
+            _driverService = InternetExplorerDriverService.CreateDefaultService();
+            //_driverService = ChromeDriverService.CreateDefaultService();
+
+            if (AppHelper.GetChromedriverDebugMode() == "true")
+            {
+                _driverService.HideCommandPromptWindow = false;
+              //  _driverService.EnableVerboseLogging = true;
+            }
+            else
+            {
+                _driverService.HideCommandPromptWindow = true;   
+            }
 
             List<string> ls = new List<string>();
             ls.Add("enable-automation");
 
-            _options = new ChromeOptions();
+            _options = new InternetExplorerOptions();
 
             //_options.AddArgument("disable-gpu");
-            
+
             //_options.AddArguments("chrome.switches", "--disable-notifications --disable-extensions --disable-extensions-file-access-check --disable-extensions-http-throttling --disable-infobars --start-maximized");
             //_options.AddExcludedArguments(ls);
+            
+            
             
             SiteUsageStatus();
         }
@@ -82,7 +98,7 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
 
-            _driver = new ChromeDriver(_driverService, _options);
+            _driver = new InternetExplorerDriver(_driverService, _options);
             
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
