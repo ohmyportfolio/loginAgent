@@ -15,7 +15,7 @@ namespace LoginAgent
 
         public static String url = null;
 
-        public static String chromedriverDebugMode = null;
+        public static String webDriverDebugMode = null;
 
         static AppHelper()
         {
@@ -23,7 +23,7 @@ namespace LoginAgent
             ini.Load("config.ini");
             version = ini["application"]["version"].GetString();
             url = ini["server"]["url"].GetString();
-            chromedriverDebugMode = ini["chromedriver"]["debug"].GetString();
+            webDriverDebugMode = ini["webdriver"]["debug"].GetString();
 
         }
 
@@ -53,9 +53,9 @@ namespace LoginAgent
             return version; 
         }
 
-        public static string GetChromedriverDebugMode()
+        public static string GetWebDriverDebugMode()
         {
-            return chromedriverDebugMode;
+            return webDriverDebugMode;
         }
     }
 }

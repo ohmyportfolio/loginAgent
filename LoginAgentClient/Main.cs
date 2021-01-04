@@ -15,22 +15,18 @@ using OpenQA.Selenium;
 using System.Windows.Automation;
 using System.Text.RegularExpressions;
 using System.Threading;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.IE;
+using Microsoft.Edge.SeleniumTools;
 
 namespace LoginAgent
 {
     public partial class Main : Form
     {
 
-        protected InternetExplorerDriverService _driverService = null;
-        protected InternetExplorerOptions _options = null;
-        protected InternetExplorerDriver _driver = null;
+        protected EdgeDriverService _driverService = null;
+        protected EdgeOptions _options = null;
+        protected EdgeDriver _driver = null;
 
-        //protected ChromeDriverService _driverService = null;
-        //protected ChromeOptions _options = null;
-        //protected ChromeDriver _driver = null;
-
+        
         public Action KillBrowser;
 
         public Main()
@@ -38,10 +34,10 @@ namespace LoginAgent
             InitializeComponent();
 
 
-            _driverService = InternetExplorerDriverService.CreateDefaultService();
-            //_driverService = ChromeDriverService.CreateDefaultService();
+            _driverService = EdgeDriverService.CreateChromiumService();
+            
 
-            if (AppHelper.GetChromedriverDebugMode() == "true")
+            if (AppHelper.GetWebDriverDebugMode() == "true")
             {
                 _driverService.HideCommandPromptWindow = false;
               //  _driverService.EnableVerboseLogging = true;
@@ -51,16 +47,9 @@ namespace LoginAgent
                 _driverService.HideCommandPromptWindow = true;   
             }
 
-            List<string> ls = new List<string>();
-            ls.Add("enable-automation");
 
-            _options = new InternetExplorerOptions();
-
-            //_options.AddArgument("disable-gpu");
-
-            //_options.AddArguments("chrome.switches", "--disable-notifications --disable-extensions --disable-extensions-file-access-check --disable-extensions-http-throttling --disable-infobars --start-maximized");
-            //_options.AddExcludedArguments(ls);
-            
+            _options = new EdgeOptions();
+            _options.UseChromium = true;
             
             
             SiteUsageStatus();
@@ -98,7 +87,7 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
 
-            _driver = new InternetExplorerDriver(_driverService, _options);
+            _driver = new EdgeDriver(_driverService, _options);
             
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -121,9 +110,7 @@ namespace LoginAgent
             element = _driver.FindElementByXPath("//*[@class='account-menu-item']");
             Console.WriteLine(element.ToString());
             */
-
-
-
+            
         }
 
         private void DoLogin(string site)
@@ -158,9 +145,6 @@ namespace LoginAgent
                 LoginAccount(data.GetValue("id").ToString(), data.GetValue("account_id").ToString(), data.GetValue("user_id").ToString());
             }
         }
-
-        
-
 
         private JObject GetObjectData(string uri)
         {
