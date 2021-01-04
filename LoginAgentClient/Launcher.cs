@@ -318,13 +318,12 @@ namespace LoginAgent
                     updateLoginAgent(s);
                 }
 
-
             }
             catch(WebException webException)
             {
-                MessageBox.Show("영화보기 서버 연결 실패");
-                Application.ExitThread();
-                Environment.Exit(0);
+                //MessageBox.Show("영화보기 서버 연결 실패");
+                //Application.ExitThread();
+                //Environment.Exit(0);
             }
            
         }
