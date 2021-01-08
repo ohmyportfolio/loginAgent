@@ -75,8 +75,17 @@ namespace LoginAgent
             EdgeDriver _driver = null;
 
             _driverService = EdgeDriverService.CreateChromiumService();
-            _driverService.HideCommandPromptWindow = true;
-            _driverService.UseVerboseLogging = false;
+
+            if (AppHelper.GetWebDriverDebugMode() == "true")
+            {
+                _driverService.HideCommandPromptWindow = false;
+                _driverService.UseVerboseLogging = true;
+            }
+            else
+            {
+                _driverService.HideCommandPromptWindow = true;
+                _driverService.UseVerboseLogging = false;
+            }
 
             _options = new EdgeOptions();
 

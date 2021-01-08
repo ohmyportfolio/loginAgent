@@ -330,8 +330,8 @@ namespace LoginAgent
         private string filename = null;
         private void updateLoginAgent(String version)
         {
-            Uri uri = new Uri("http://" + AppHelper.GetServerUrl() + "/dist/setup-LA-" + version + ".exe");
-            filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp/setup-LA.exe");
+            Uri uri = new Uri("http://" + AppHelper.GetServerUrl() + "/dist/setup-LA-updater.exe");
+            filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp/setup-LA-updater.exe");
 
             try
             {
