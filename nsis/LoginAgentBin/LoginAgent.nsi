@@ -119,11 +119,10 @@ Section "LoginAgent (required)"
   CreateShortCut "$SMPROGRAMS\LoginAgent\LoginAgent.lnk" "$INSTDIR\LoginAgent.exe"
   CreateShortCut "$SMPROGRAMS\Startup\LoginAgent.lnk" "$INSTDIR\LoginAgent.exe"
   
-  Processes::KillProcess "LoginAgent" ;without ".exe"
-    YES:
-  Sleep 3000
+  YES:
   
   MessageBox MB_OK '설치가 완료되었습니다.'
+  
   Quit
   NO:
   MessageBox MB_OK '인스톨이 잘못되었습니다. 다시 설치해 주십시요'
