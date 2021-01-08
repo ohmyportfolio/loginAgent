@@ -87,11 +87,18 @@ namespace LoginAgent
             //_options.UseInPrivateBrowsing = true;
             //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
 
-            //_options.AddArguments("--disable-infobars");
+            _options.AddArguments("--disable-session-crashed-bubble");
+
+
             _options.AddExcludedArgument("enable-automation");
             _options.AddAdditionalCapability("useAutomationExtension", false);
             _options.AddUserProfilePreference("credentials_enable_service", false);
             _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+
+            _options.AddUserProfilePreference("profile.exited_cleanly", true);
+            _options.AddUserProfilePreference("profile.exit_type", "Normal");
+
+
 
             _driver = new EdgeDriver(_driverService, _options);
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.

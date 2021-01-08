@@ -246,11 +246,7 @@ namespace LoginAgent
                     {
                         netflix = true;
                     }
-                    if (urlname.Contains("U+영화월정액") == true)
-                    {
-                        uflix = true;
-                    }
-                    if (urlname.Contains("TVING｜오늘의 노는 법") == true)
+                    if (urlname.Contains("TVING") == true)
                     {
                         tving = true;
                     }
