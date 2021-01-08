@@ -93,6 +93,7 @@ namespace LoginAgent
                 t1.Start();
             }
 
+            /*
             if (t2 == null || !t2.IsAlive)
             {
                 //t2 = new Thread(new ThreadStart(CheckOpenedSite));
@@ -101,6 +102,7 @@ namespace LoginAgent
 
             }
 
+            
             if (t3 == null || !t3.IsAlive)
             {
                 t3 = new Thread(new ThreadStart(ThreadManager));
@@ -108,6 +110,7 @@ namespace LoginAgent
                 t3.Start();
 
             }
+            */
 
             main.ShowDialog();
         }

@@ -22,42 +22,22 @@ namespace LoginAgent
     public partial class Main : Form
     {
 
-        protected EdgeDriverService _driverService = null;
-        protected EdgeOptions _options = null;
-        protected EdgeDriver _driver = null;
 
         
+
         public Action KillBrowser;
 
         public Main()
         {
             InitializeComponent();
 
-
-            _driverService = EdgeDriverService.CreateChromiumService();
-            
-
-            if (AppHelper.GetWebDriverDebugMode() == "true")
-            {
-                _driverService.HideCommandPromptWindow = false;
-              //  _driverService.EnableVerboseLogging = true;
-            }
-            else
-            {
-                _driverService.HideCommandPromptWindow = true;   
-            }
-
-
-            _options = new EdgeOptions();
-            _options.UseChromium = true;
-            
-            
             SiteUsageStatus();
         }
 
         
         private void NetFlixBtnClick(object sender, EventArgs e)
         {
+            
             this.KillBrowser();
             DoLogin("netflix");
             SiteUsageStatus();
@@ -65,6 +45,7 @@ namespace LoginAgent
 
         private void WavveBtnClick(object sender, EventArgs e)
         {
+            
             this.KillBrowser();
             DoLogin("wavve");
             SiteUsageStatus();
@@ -73,6 +54,7 @@ namespace LoginAgent
 
         private void TvingBtnClick(object sender, EventArgs e)
         {
+            
             this.KillBrowser();
             DoLogin("tving");
             SiteUsageStatus();
@@ -80,6 +62,7 @@ namespace LoginAgent
 
         private void LoginSite(JObject data)
         {
+
             string id = data.GetValue("user_id").ToString();
             string pw = data.GetValue("user_password").ToString();
             string url = data.GetValue("login_url").ToString();
@@ -87,8 +70,30 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
 
+            EdgeDriverService _driverService = null;
+            EdgeOptions _options = null;
+            EdgeDriver _driver = null;
+
+            _driverService = EdgeDriverService.CreateChromiumService();
+            _driverService.HideCommandPromptWindow = true;
+            _driverService.UseVerboseLogging = false;
+
+            _options = new EdgeOptions();
+
+            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+            _options.AddArguments("user-data-dir=" + userDataPath);
+
+            _options.UseChromium = true;
+            //_options.UseInPrivateBrowsing = true;
+            //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+
+            //_options.AddArguments("--disable-infobars");
+            _options.AddExcludedArgument("enable-automation");
+            _options.AddAdditionalCapability("useAutomationExtension", false);
+            _options.AddUserProfilePreference("credentials_enable_service", false);
+            _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+
             _driver = new EdgeDriver(_driverService, _options);
-            
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             
@@ -99,6 +104,7 @@ namespace LoginAgent
             element.SendKeys(pw);
             element = _driver.FindElementByXPath(logXpath);
             element.Click();
+            
 
             /*
              * todo : selenium 으로 tag remove 하는 방법
@@ -110,12 +116,12 @@ namespace LoginAgent
             element = _driver.FindElementByXPath("//*[@class='account-menu-item']");
             Console.WriteLine(element.ToString());
             */
-            
+
         }
 
         private void DoLogin(string site)
         {
-            JObject data = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site +"/selectAvailableAccount?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
+            JObject data = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
              
             if (data == null)
             {
