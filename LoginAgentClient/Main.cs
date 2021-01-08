@@ -22,9 +22,6 @@ namespace LoginAgent
     public partial class Main : Form
     {
 
-
-        
-
         public Action KillBrowser;
 
         public Main()
