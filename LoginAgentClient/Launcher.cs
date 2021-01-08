@@ -34,7 +34,7 @@ namespace LoginAgent
                 Environment.Exit(0);
             }
 
-            foreach (Process process in Process.GetProcessesByName("chromedriver"))
+            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
             {
                 try
                 {
@@ -42,7 +42,7 @@ namespace LoginAgent
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Error :: Kill chromedriver");
+                    Console.WriteLine("Error :: Kill msedgedriver");
                 }
             }
 
@@ -93,6 +93,7 @@ namespace LoginAgent
                 t1.Start();
             }
 
+            /*
             if (t2 == null || !t2.IsAlive)
             {
                 //t2 = new Thread(new ThreadStart(CheckOpenedSite));
@@ -101,6 +102,7 @@ namespace LoginAgent
 
             }
 
+            
             if (t3 == null || !t3.IsAlive)
             {
                 t3 = new Thread(new ThreadStart(ThreadManager));
@@ -108,6 +110,7 @@ namespace LoginAgent
                 t3.Start();
 
             }
+            */
 
             main.ShowDialog();
         }
@@ -120,7 +123,7 @@ namespace LoginAgent
         public void KillAllSite()
         {
             
-            foreach (Process process in Process.GetProcessesByName("chrome"))
+            foreach (Process process in Process.GetProcessesByName("msedge"))
             {
                 try
                 {
@@ -142,7 +145,7 @@ namespace LoginAgent
             {
                 Console.WriteLine("Check Account Page and Kill");
                 Thread.Sleep(3000);
-                foreach (Process process in Process.GetProcessesByName("chrome"))
+                foreach (Process process in Process.GetProcessesByName("msedge"))
                 {
                     try
                     {
@@ -199,7 +202,7 @@ namespace LoginAgent
                     Process[] procsChrome = Process.GetProcessesByName("msedge");
                     if (procsChrome.Length <= 0)
                     {
-                        Console.WriteLine("Chrome is not running");
+                        Console.WriteLine("msedge is not running");
                     }
                     else
                     {
@@ -318,13 +321,12 @@ namespace LoginAgent
                     updateLoginAgent(s);
                 }
 
-
             }
             catch(WebException webException)
             {
-                MessageBox.Show("영화보기 서버 연결 실패");
-                Application.ExitThread();
-                Environment.Exit(0);
+                //MessageBox.Show("영화보기 서버 연결 실패");
+                //Application.ExitThread();
+                //Environment.Exit(0);
             }
            
         }

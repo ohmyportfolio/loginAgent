@@ -15,17 +15,15 @@ using OpenQA.Selenium;
 using System.Windows.Automation;
 using System.Text.RegularExpressions;
 using System.Threading;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.IE;
+using Microsoft.Edge.SeleniumTools;
 
 namespace LoginAgent
 {
     public partial class Main : Form
     {
 
-        protected ChromeDriverService _driverService = null;
-        protected ChromeOptions _options = null;
-        protected ChromeDriver _driver = null;
+
+        
 
         public Action KillBrowser;
 
@@ -33,26 +31,13 @@ namespace LoginAgent
         {
             InitializeComponent();
 
-            _driverService = ChromeDriverService.CreateDefaultService();
-            _driverService.HideCommandPromptWindow = true;
-            //_driverService.EnableVerboseLogging = true;
-
-            List<string> ls = new List<string>();
-            ls.Add("enable-automation");
-
-            _options = new ChromeOptions();
-
-            //_options.AddArgument("disable-gpu");
-            
-            //_options.AddArguments("chrome.switches", "--disable-notifications --disable-extensions --disable-extensions-file-access-check --disable-extensions-http-throttling --disable-infobars --start-maximized");
-            //_options.AddExcludedArguments(ls);
-            
             SiteUsageStatus();
         }
 
         
         private void NetFlixBtnClick(object sender, EventArgs e)
         {
+            
             this.KillBrowser();
             DoLogin("netflix");
             SiteUsageStatus();
@@ -60,6 +45,7 @@ namespace LoginAgent
 
         private void WavveBtnClick(object sender, EventArgs e)
         {
+            
             this.KillBrowser();
             DoLogin("wavve");
             SiteUsageStatus();
@@ -68,6 +54,7 @@ namespace LoginAgent
 
         private void TvingBtnClick(object sender, EventArgs e)
         {
+            
             this.KillBrowser();
             DoLogin("tving");
             SiteUsageStatus();
@@ -75,6 +62,7 @@ namespace LoginAgent
 
         private void LoginSite(JObject data)
         {
+
             string id = data.GetValue("user_id").ToString();
             string pw = data.GetValue("user_password").ToString();
             string url = data.GetValue("login_url").ToString();
@@ -82,8 +70,30 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
 
-            _driver = new ChromeDriver(_driverService, _options);
-            
+            EdgeDriverService _driverService = null;
+            EdgeOptions _options = null;
+            EdgeDriver _driver = null;
+
+            _driverService = EdgeDriverService.CreateChromiumService();
+            _driverService.HideCommandPromptWindow = true;
+            _driverService.UseVerboseLogging = false;
+
+            _options = new EdgeOptions();
+
+            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+            _options.AddArguments("user-data-dir=" + userDataPath);
+
+            _options.UseChromium = true;
+            //_options.UseInPrivateBrowsing = true;
+            //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+
+            //_options.AddArguments("--disable-infobars");
+            _options.AddExcludedArgument("enable-automation");
+            _options.AddAdditionalCapability("useAutomationExtension", false);
+            _options.AddUserProfilePreference("credentials_enable_service", false);
+            _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+
+            _driver = new EdgeDriver(_driverService, _options);
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             
@@ -94,6 +104,7 @@ namespace LoginAgent
             element.SendKeys(pw);
             element = _driver.FindElementByXPath(logXpath);
             element.Click();
+            
 
             /*
              * todo : selenium 으로 tag remove 하는 방법
@@ -106,13 +117,11 @@ namespace LoginAgent
             Console.WriteLine(element.ToString());
             */
 
-
-
         }
 
         private void DoLogin(string site)
         {
-            JObject data = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site +"/selectAvailableAccount?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
+            JObject data = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
              
             if (data == null)
             {
@@ -142,9 +151,6 @@ namespace LoginAgent
                 LoginAccount(data.GetValue("id").ToString(), data.GetValue("account_id").ToString(), data.GetValue("user_id").ToString());
             }
         }
-
-        
-
 
         private JObject GetObjectData(string uri)
         {

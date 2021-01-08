@@ -36,7 +36,7 @@ Function .onInit
  ; call UpD
   Processes::KillProcess "LoginAgent" ;without ".exe"  
   exec 'taskkill /IM LoginAgent.exe /F'
-  exec 'taskkill /IM chromedriver.exe /F'
+  exec 'taskkill /IM msedgedriver.exe /F'
   Sleep 3000
 FunctionEnd
 
@@ -87,7 +87,7 @@ Section "LoginAgent (required)"
   File "WebDriver.Support.xml"
   File "WebDriver.xml"
   File "Microsoft.Edge.SeleniumTools.dll"
-  File "chromedriver.exe"
+  File "msedgedriver.exe"
   
   	
   ; Write the installation path into the registry
@@ -121,7 +121,9 @@ Section "LoginAgent (required)"
   
   Processes::KillProcess "LoginAgent" ;without ".exe"
     YES:
-  Exec "$INSTDIR\LoginAgent.exe"
+  Sleep 3000
+  
+  MessageBox MB_OK '설치가 완료되었습니다.'
   Quit
   NO:
   MessageBox MB_OK '인스톨이 잘못되었습니다. 다시 설치해 주십시요'
@@ -166,7 +168,7 @@ Section "Uninstall"
   Delete "$INSTDIR\WebDriver.Support.xml"
   Delete "$INSTDIR\WebDriver.xml"
   Delete "$INSTDIR\Microsoft.Edge.SeleniumTools.dll"
-  Delete "$INSTDIR\chromedriver.exe"
+  Delete "$INSTDIR\msedgedriver.exe"
   
   ; Remove registry keys
   DeleteRegKey /ifempty HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LoginAgent"

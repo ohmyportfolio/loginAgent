@@ -13,6 +13,20 @@ namespace LoginAgent
 
         public static String version = null;
 
+        public static String url = null;
+
+        public static String webDriverDebugMode = null;
+
+        static AppHelper()
+        {
+            IniFile ini = new IniFile();
+            ini.Load("config.ini");
+            version = ini["application"]["version"].GetString();
+            url = ini["server"]["url"].GetString();
+            webDriverDebugMode = ini["webdriver"]["debug"].GetString();
+
+        }
+
         public static string GetLocalIp()
         {
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
@@ -31,28 +45,17 @@ namespace LoginAgent
 
         public static string GetServerUrl()
         {
-            IniFile ini = new IniFile();
-            ini.Load("config.ini");
-            String url = ini["server"]["url"].GetString();
-            Console.WriteLine("server url = " + url);
             return url;
         }
 
         public static string GetVersion()
         {
-            if(version == null)
-            {
-                IniFile ini = new IniFile();
-                ini.Load("config.ini");
-                String _version = ini["application"]["version"].GetString();
-                Console.WriteLine("version = " + version);
-                return _version;
-            }
-            else
-            {
-                return version;
-            }
-            
+            return version; 
+        }
+
+        public static string GetWebDriverDebugMode()
+        {
+            return webDriverDebugMode;
         }
     }
 }
