@@ -46,8 +46,6 @@ namespace LoginAgent
                 }
             }
 
-
-            UpdateCheck();
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.Location = new Point(workingArea.Right - Size.Width,
@@ -296,73 +294,6 @@ namespace LoginAgent
                 }
             }
             Console.WriteLine(responseText);
-        }
-
-        private void UpdateCheck()
-        {
-            var uri = "http://" + AppHelper.GetServerUrl() + "/dist/_CHECK";
-            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            webRequest.Timeout = 5000;
-            try
-            {
-                var webResponse = (HttpWebResponse)webRequest.GetResponse();
-
-                var reader = new StreamReader(webResponse.GetResponseStream());
-                string s = reader.ReadToEnd();
-                String str = "서버 버전 : " + s + "\r";
-                str = str + "설치 버전 : " + AppHelper.GetVersion() + "\r";
-
-                if (long.Parse(s) > long.Parse(AppHelper.GetVersion()))
-                {
-                    updateLoginAgent(s);
-                }
-
-            }
-            catch(WebException webException)
-            {
-                //MessageBox.Show("영화보기 서버 연결 실패");
-                //Application.ExitThread();
-                //Environment.Exit(0);
-            }
-           
-        }
-
-        private string filename = null;
-        private void updateLoginAgent(String version)
-        {
-            Uri uri = new Uri("http://" + AppHelper.GetServerUrl() + "/dist/setup-LA-updater.exe");
-            filename = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp/setup-LA-updater.exe");
-
-            try
-            {
-                if (File.Exists(filename))
-                {
-                    File.Delete(filename);
-                }
-
-                WebClient wc = new WebClient();
-                wc.DownloadFileAsync(uri, filename);
-                wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString());
-            }
-        }
-
-        
-        private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            if (e.Error == null)
-            {
-                Process.Start(filename);
-                Close();
-                Application.Exit();
-            }
-            else
-            {
-                MessageBox.Show("Unable to download exe, please check your connection", "Download failed!");
-            }
         }
 
     }
