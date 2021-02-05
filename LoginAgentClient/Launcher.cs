@@ -294,6 +294,12 @@ namespace LoginAgent
                 }
             }
             Console.WriteLine(responseText);
+            if (responseText.Contains("false"))
+            {
+                MessageBox.Show("등록 되지 않은 IP");
+                System.Windows.Forms.Application.Exit();
+            }
+
         }
 
     }
