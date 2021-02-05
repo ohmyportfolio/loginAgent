@@ -5,3 +5,4 @@ target
 bin
 /LoginAgentClient/.vs
 /LoginAgentClient/obj
+static
