@@ -47,7 +47,6 @@
       </div>
       -->
         <div class="dx-field" style="display: flex;justify-content: center;">
-        <img src="../../assets/logo.png"/>
       </div>
     </dx-validation-group>
   </form>
