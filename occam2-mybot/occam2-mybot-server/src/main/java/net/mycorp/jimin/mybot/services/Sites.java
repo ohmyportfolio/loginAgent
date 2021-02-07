@@ -90,6 +90,8 @@ public class Sites extends BaseService{
 				minCount = count;
 			}
 		}
+		
+		// need encrypt password 
 		return result;
 	}
 }
