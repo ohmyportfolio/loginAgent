@@ -12,6 +12,7 @@ import net.mycorp.jimin.base.domain.OcContext;
 import net.mycorp.jimin.base.domain.OcMap;
 import net.mycorp.jimin.base.domain.OcResult;
 import net.mycorp.jimin.base.service.BaseService;
+import net.mycorp.jimin.mybot.util.AppHelper;
 
 @Service
 public class Sites extends BaseService{
@@ -57,7 +58,7 @@ public class Sites extends BaseService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public OcMap selectAvailableAccountSeq(OcContext ctx) {
+	public OcMap selectAvailableAccountSeq(OcContext ctx) throws Exception {
 		OcMap result = super.get(ctx);
 		
 		OcMap registeredPc = pcs.get(condition("ip" , ctx.getString("pc_ip")));
@@ -92,6 +93,8 @@ public class Sites extends BaseService{
 		}
 		
 		// need encrypt password 
+		result.remove("accounts");
+		result.put("user_password", AppHelper.Encrypt((String) result.get("user_password"), AppHelper.M_K));
 		return result;
 	}
 }
