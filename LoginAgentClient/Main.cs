@@ -62,6 +62,9 @@ namespace LoginAgent
 
             string id = data.GetValue("user_id").ToString();
             string pw = data.GetValue("user_password").ToString();
+
+            pw = AppHelper.Decrypt(pw, AppHelper.M_K);
+
             string url = data.GetValue("login_url").ToString();
             string idXpath = data.GetValue("id_xpath").ToString();
             string pwXpath = data.GetValue("pw_xpath").ToString();
