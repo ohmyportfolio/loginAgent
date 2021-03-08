@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8090'
+        target: 'http://211.32.19.210:8088/'
       }
     },
     disableHostCheck: true
