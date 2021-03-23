@@ -24,6 +24,8 @@ namespace LoginAgent
 
         public Action KillBrowser;
 
+        public Action KillDriver;
+
         public Main()
         {
             InitializeComponent();
@@ -38,6 +40,8 @@ namespace LoginAgent
             this.KillBrowser();
             DoLogin("netflix");
             SiteUsageStatus();
+            this.KillDriver();
+
         }
 
         private void WavveBtnClick(object sender, EventArgs e)
@@ -46,6 +50,7 @@ namespace LoginAgent
             this.KillBrowser();
             DoLogin("wavve");
             SiteUsageStatus();
+            this.KillDriver();
         }
 
 
@@ -55,6 +60,7 @@ namespace LoginAgent
             this.KillBrowser();
             DoLogin("tving");
             SiteUsageStatus();
+            this.KillDriver();
         }
 
         private void LoginSite(JObject data)
@@ -138,7 +144,7 @@ namespace LoginAgent
         private void DoLogin(string site)
         {
             JObject data = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
-             
+
             if (data == null)
             {
                 MessageBox.Show("서버에 오류가 발생했습니다. 카운터에 문의 하세요");
@@ -150,6 +156,7 @@ namespace LoginAgent
                 MessageBox.Show("계정을 모두 사용 중입니다. 카운터에 문의 하세요");
                 return;
             }
+
 
             try
             {
@@ -188,6 +195,8 @@ namespace LoginAgent
 
         private void LoginAccount(string siteId , string accountId , string userId)
         {
+          
+
             string url = "http://" + AppHelper.GetServerUrl() + "/api/occupieds";
             string localIp = AppHelper.GetLocalIp();
 
@@ -259,6 +268,7 @@ namespace LoginAgent
                     labelWavve.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
                 }
             }
+            
         }
     }
 }

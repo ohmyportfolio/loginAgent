@@ -34,6 +34,20 @@ namespace LoginAgent
                 Environment.Exit(0);
             }
 
+            KillDriver();
+
+            InitializeComponent();
+            Rectangle workingArea = Screen.GetWorkingArea(this);
+            this.Location = new Point(workingArea.Right - Size.Width,
+                                      workingArea.Bottom - Size.Height);
+            this.ShowInTaskbar = false;
+            this.versionLabel.Text = AppHelper.GetVersion();
+            
+        }
+
+
+        public void KillDriver()
+        {
             foreach (Process process in Process.GetProcessesByName("msedgedriver"))
             {
                 try
@@ -45,14 +59,6 @@ namespace LoginAgent
                     Console.WriteLine("Error :: Kill msedgedriver");
                 }
             }
-
-            InitializeComponent();
-            Rectangle workingArea = Screen.GetWorkingArea(this);
-            this.Location = new Point(workingArea.Right - Size.Width,
-                                      workingArea.Bottom - Size.Height);
-            this.ShowInTaskbar = false;
-            this.versionLabel.Text = AppHelper.GetVersion();
-            
         }
 
         private void ThreadManager()
@@ -83,6 +89,7 @@ namespace LoginAgent
             main = new Main();
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
             main.KillBrowser = this.KillAllSite;
+            main.KillDriver = this.KillDriver;
             
             if (t1 == null || !t1.IsAlive)
             {
