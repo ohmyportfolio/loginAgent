@@ -309,5 +309,14 @@ namespace LoginAgent
 
         }
 
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BringToFront();
+        }
     }
 }

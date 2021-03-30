@@ -31,9 +31,14 @@ namespace LoginAgent
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Launcher));
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
             this.versionLabel = new System.Windows.Forms.Label();
+            this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroButton1
@@ -67,7 +72,28 @@ namespace LoginAgent
             this.versionLabel.Size = new System.Drawing.Size(81, 13);
             this.versionLabel.TabIndex = 1;
             this.versionLabel.Text = "0000";
-            
+            // 
+            // trayIcon
+            // 
+            this.trayIcon.ContextMenuStrip = this.contextMenuStrip1;
+            this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
+            this.trayIcon.Text = "PC 영화관";
+            this.trayIcon.Visible = true;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(105, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
             // Launcher
             // 
@@ -93,6 +119,7 @@ namespace LoginAgent
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TransparencyKey = System.Drawing.Color.LightPink;
             this.Load += new System.EventHandler(this.Launcher_Load);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,5 +129,8 @@ namespace LoginAgent
 
         private MetroFramework.Controls.MetroButton metroButton1;
         private Label versionLabel;
+        private NotifyIcon trayIcon;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem showToolStripMenuItem;
     }
 }
