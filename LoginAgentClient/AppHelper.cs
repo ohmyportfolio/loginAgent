@@ -14,6 +14,8 @@ namespace LoginAgent
 
         public static String version = null;
 
+        public static String driverVer = null;
+
         public static String url = null;
 
         public static String webDriverDebugMode = null;
@@ -25,6 +27,7 @@ namespace LoginAgent
             IniFile ini = new IniFile();
             ini.Load("config.ini");
             version = ini["application"]["version"].GetString();
+            driverVer = ini["application"]["driverVer"].GetString();
             url = ini["server"]["url"].GetString();
             webDriverDebugMode = ini["webdriver"]["debug"].GetString();
 
@@ -59,6 +62,11 @@ namespace LoginAgent
         public static string GetWebDriverDebugMode()
         {
             return webDriverDebugMode;
+        }
+
+        public static string GetDriverVer()
+        {
+            return driverVer;
         }
 
         public static string Decrypt(string textToDecrypt, string key)

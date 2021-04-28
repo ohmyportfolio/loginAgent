@@ -38,6 +38,7 @@ namespace LoginAgent
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.driverVer = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,9 +70,10 @@ namespace LoginAgent
             this.versionLabel.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.versionLabel.Location = new System.Drawing.Point(267, 228);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(81, 13);
+            this.versionLabel.Size = new System.Drawing.Size(35, 13);
             this.versionLabel.TabIndex = 1;
             this.versionLabel.Text = "0000";
+            
             // 
             // trayIcon
             // 
@@ -95,6 +97,19 @@ namespace LoginAgent
             this.showToolStripMenuItem.Text = "Show";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
+            // driverVer
+            // 
+            this.driverVer.AutoSize = true;
+            this.driverVer.BackColor = System.Drawing.Color.Black;
+            this.driverVer.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.driverVer.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.driverVer.Location = new System.Drawing.Point(267, 215);
+            this.driverVer.Name = "driverVer";
+            this.driverVer.Size = new System.Drawing.Size(35, 13);
+            this.driverVer.TabIndex = 1;
+            this.driverVer.Text = "0000";
+            
+            // 
             // Launcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 16F);
@@ -105,6 +120,7 @@ namespace LoginAgent
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(350, 250);
             this.ControlBox = false;
+            this.Controls.Add(this.driverVer);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.metroButton1);
             this.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -132,5 +148,6 @@ namespace LoginAgent
         private NotifyIcon trayIcon;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem showToolStripMenuItem;
+        private Label driverVer;
     }
 }

@@ -42,6 +42,7 @@ namespace LoginAgent
                                       workingArea.Bottom - Size.Height);
             this.ShowInTaskbar = false;
             this.versionLabel.Text = AppHelper.GetVersion();
+            this.driverVer.Text = AppHelper.GetDriverVer();
             
         }
 
@@ -318,5 +319,7 @@ namespace LoginAgent
         {
             BringToFront();
         }
+
+      
     }
 }
