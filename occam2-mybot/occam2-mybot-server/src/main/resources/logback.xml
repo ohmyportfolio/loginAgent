@@ -11,8 +11,8 @@
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>d:\Logs\mybot.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>mybot.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <fileNamePattern>d:\Logs\mybot.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>180</maxHistory>
         </rollingPolicy>
 
         <encoder>
