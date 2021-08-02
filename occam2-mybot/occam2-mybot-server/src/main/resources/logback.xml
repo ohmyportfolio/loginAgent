@@ -7,7 +7,21 @@
 	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" />
 	<logger name="org.jooq" level="DEBUG" />
 	<logger name="net.mycorp" level="DEBUG" />
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>d:\Logs\mybot.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>d:\Logs\mybot.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
 
-	<root level="INFO" />
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-4relative --- [ %thread{10} ] %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <root level="INFO">
+        <appender-ref ref="FILE"/> <!-- File로 로그를 남기고자 할 때 사용 -->
+    </root>
 
 </configuration>

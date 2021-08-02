@@ -9,7 +9,7 @@
 			
 		 -->
 		<datasource name="default"
-			url="jdbc:oracle:thin:@//127.0.0.1:1521/XE" 
+			url="jdbc:oracle:thin:@//127.0.0.1:1701/XE" 
 			username="mybot" password="1qazxsw2" 
 			driver="oracle.jdbc.driver.OracleDriver" dialect="ORACLE12C"/>
 	</datasources>
