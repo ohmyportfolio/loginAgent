@@ -89,6 +89,7 @@
             this.labelNetflix.Size = new System.Drawing.Size(31, 12);
             this.labelNetflix.TabIndex = 3;
             this.labelNetflix.Text = "0 / 0";
+            this.labelNetflix.Visible = false;
             // 
             // labelTving
             // 
@@ -98,6 +99,7 @@
             this.labelTving.Size = new System.Drawing.Size(31, 12);
             this.labelTving.TabIndex = 3;
             this.labelTving.Text = "0 / 0";
+            this.labelTving.Visible = false;
             // 
             // labelWavve
             // 
@@ -107,6 +109,7 @@
             this.labelWavve.Size = new System.Drawing.Size(31, 12);
             this.labelWavve.TabIndex = 3;
             this.labelWavve.Text = "0 / 0";
+            this.labelWavve.Visible = false;
             // 
             // Main
             // 
