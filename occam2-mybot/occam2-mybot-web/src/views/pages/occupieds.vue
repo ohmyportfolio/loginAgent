@@ -6,8 +6,9 @@
       <oc-column data-field="account_id" caption="계정 ID" width="200" target-type="resource" type-id="accounts" calculate-display-value="account__user_id" :read-only="true"/>
       <oc-column data-field="site_id" caption="사이트" width="200" target-type="resource" type-id="sites" calculate-display-value="site__name" :read-only="true"/>
       <oc-column data-field="pc_ip" caption="PC IP" width="200" :read-only="true"/>
+      <oc-column data-field="pc__name" caption="자리번호" width="200" target-type="resource" type-id="pcs" :read-only="true"/>
+      <oc-column data-field="pc__store__name" caption="매장" width="200" target-type="resource" type-id="pcs" :read-only="true"/>
       <oc-column data-field="start_date" caption="시작시간" width="200" target-type="datetime" :read-only="true"/>
-      
       <dx-filter-row :visible="true" apply-filter="onClick"/>
       <dx-filter-panel :visible="true" />
       <dx-search-panel :visible="true"/>
