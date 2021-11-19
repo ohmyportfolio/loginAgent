@@ -66,8 +66,10 @@ namespace LoginAgent
         private void LoginSite(JObject data)
         {
 
+
             string id = data.GetValue("user_id").ToString();
             string pw = data.GetValue("user_password").ToString();
+            string siteId = data.GetValue("id").ToString();
 
             pw = AppHelper.Decrypt(pw, AppHelper.M_K);
 
@@ -120,13 +122,19 @@ namespace LoginAgent
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             
             
-            var element = _driver.FindElementByXPath(idXpath);
-            element.SendKeys(id);
-            element = _driver.FindElementByXPath(pwXpath);
-            element.SendKeys(pw);
-            element = _driver.FindElementByXPath(logXpath);
-            element.Click();
-            
+            if(siteId == "disney")
+            {
+
+            }
+            else
+            {
+                var element = _driver.FindElementByXPath(idXpath);
+                element.SendKeys(id);
+                element = _driver.FindElementByXPath(pwXpath);
+                element.SendKeys(pw);
+                element = _driver.FindElementByXPath(logXpath);
+                element.Click();
+            }
 
             /*
              * todo : selenium 으로 tag remove 하는 방법
@@ -269,6 +277,16 @@ namespace LoginAgent
                 }
             }
             
+        }
+
+        private void disneyBtn_Click(object sender, EventArgs e)
+        {
+
+            this.KillBrowser();
+            DoLogin("disney");
+            SiteUsageStatus();
+            this.KillDriver();
+
         }
     }
 }

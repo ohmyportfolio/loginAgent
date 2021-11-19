@@ -189,6 +189,7 @@
     <None Include="Resources\Button.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\disney.PNG" />
     <None Include="Resources\launcher_img.jpg" />
     <Content Include="Pixelresort-Peely-Video.ico" />
     <None Include="Resources\tv icon.png" />
