@@ -43,7 +43,7 @@
             this.metroButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.metroButton1.FontSize = MetroFramework.MetroButtonSize.Tall;
             this.metroButton1.Highlight = true;
-            this.metroButton1.Location = new System.Drawing.Point(356, 484);
+            this.metroButton1.Location = new System.Drawing.Point(251, 484);
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Size = new System.Drawing.Size(185, 55);
             this.metroButton1.Style = MetroFramework.MetroColorStyle.Black;
@@ -90,6 +90,7 @@
             this.disneyBtn.Size = new System.Drawing.Size(198, 399);
             this.disneyBtn.TabIndex = 4;
             this.disneyBtn.UseSelectable = true;
+            this.disneyBtn.Visible = false;
             this.disneyBtn.Click += new System.EventHandler(this.disneyBtn_Click);
             // 
             // metroButton2
@@ -127,7 +128,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.metroButton1;
-            this.ClientSize = new System.Drawing.Size(889, 551);
+            this.ClientSize = new System.Drawing.Size(688, 551);
             this.Controls.Add(this.disneyBtn);
             this.Controls.Add(this.labelWavve);
             this.Controls.Add(this.labelTving);
