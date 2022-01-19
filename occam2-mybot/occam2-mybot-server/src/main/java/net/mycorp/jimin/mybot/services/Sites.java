@@ -94,6 +94,7 @@ public class Sites extends BaseService{
 		
 		// need encrypt password 
 		result.remove("accounts");
+		//계정이 모두 사용중이면 result.get("user_password") 이 null 인경우가 있음 null 처리 해줘야함
 		result.put("user_password", AppHelper.Encrypt((String) result.get("user_password"), AppHelper.M_K));
 		return result;
 	}
