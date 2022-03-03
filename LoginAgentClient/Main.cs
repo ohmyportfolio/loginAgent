@@ -1,20 +1,10 @@
-﻿using OpenQA.Selenium.Chrome;
-using System;
+﻿using System;
 using System.Windows.Forms;
-using System.Diagnostics;
-using MetroFramework.Forms;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Net.Sockets;
-using System.Collections.Generic;
-using System.Linq;
-using OpenQA.Selenium;
-using System.Windows.Automation;
-using System.Text.RegularExpressions;
-using System.Threading;
 using Microsoft.Edge.SeleniumTools;
 
 namespace LoginAgent
@@ -78,6 +68,7 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
 
+            
             EdgeDriverService _driverService = null;
             EdgeOptions _options = null;
             EdgeDriver _driver = null;
