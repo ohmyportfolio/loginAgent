@@ -5,7 +5,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using Microsoft.Edge.SeleniumTools;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium;
 
 namespace LoginAgent
 {
@@ -73,7 +74,7 @@ namespace LoginAgent
             EdgeOptions _options = null;
             EdgeDriver _driver = null;
 
-            _driverService = EdgeDriverService.CreateChromiumService();
+            _driverService = EdgeDriverService.CreateDefaultService();
 
             if (AppHelper.GetWebDriverDebugMode() == "true")
             {
@@ -91,7 +92,8 @@ namespace LoginAgent
             var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
             _options.AddArguments("user-data-dir=" + userDataPath);
 
-            _options.UseChromium = true;
+            
+            
             //_options.UseInPrivateBrowsing = true;
             //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
 
@@ -119,11 +121,13 @@ namespace LoginAgent
             }
             else
             {
-                var element = _driver.FindElementByXPath(idXpath);
+                //var element = _driver.FindElementByXPath(idXpath);
+                var element = _driver.FindElement(By.XPath(idXpath));
+
                 element.SendKeys(id);
-                element = _driver.FindElementByXPath(pwXpath);
+                element = _driver.FindElement(By.XPath(pwXpath));
                 element.SendKeys(pw);
-                element = _driver.FindElementByXPath(logXpath);
+                element = _driver.FindElement(By.XPath(logXpath));
                 element.Click();
             }
 
