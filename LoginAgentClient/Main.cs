@@ -101,7 +101,7 @@ namespace LoginAgent
 
 
             _options.AddExcludedArgument("enable-automation");
-            _options.AddAdditionalCapability("useAutomationExtension", false);
+            _options.AddAdditionalOption("useAutomationExtension", false);
             _options.AddUserProfilePreference("credentials_enable_service", false);
             _options.AddUserProfilePreference("profile.password_manager_enabled", false);
 
