@@ -6,3 +6,4 @@ bin
 /LoginAgentClient/.vs
 /LoginAgentClient/obj
 static
+/LoginAgentClient/packages
