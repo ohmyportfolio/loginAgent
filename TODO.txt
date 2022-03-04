@@ -1,0 +1,3 @@
+Selenium.WebDriver.MSEdgeDriver Auto update.
+	- https://chashtag.tistory.com/82
+
