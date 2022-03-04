@@ -68,8 +68,9 @@ namespace LoginAgent
             string idXpath = data.GetValue("id_xpath").ToString();
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
+            string logXpath2 = data.GetValue("login_xpath2").ToString();
 
-            
+
             EdgeDriverService _driverService = null;
             EdgeOptions _options = null;
             EdgeDriver _driver = null;
@@ -117,6 +118,14 @@ namespace LoginAgent
             
             if(siteId == "disney")
             {
+                var element = _driver.FindElement(By.XPath(idXpath));
+                element.SendKeys(id);
+                element = _driver.FindElement(By.XPath(logXpath));
+                element.Click();
+                element = _driver.FindElement(By.XPath(pwXpath));
+                element.SendKeys(pw);
+                element = _driver.FindElement(By.XPath(logXpath2));
+                element.Click();
 
             }
             else
