@@ -155,14 +155,18 @@ namespace LoginAgent
                 {
                     try
                     {
-                        string url = GetChromeUrl(process);
+                        string url = GetEdgeBrowserUrl(process);
                         if (url == null)
                             continue;
 
-                        Console.WriteLine("CH Url for '" + process.MainWindowTitle + "' is " + url);
+
+                        //DB화해서 관리하도록 변경 해야함.
+                        Console.WriteLine("Edge Url for '" + process.MainWindowTitle + "' is " + url);
                         if (url.Contains("netflix.com/YourAccount") || url.Contains("uflix.co.kr/uws/web/mine/userInfo")
                             || url.Contains("member.wavve.com/me") || url.Contains("tving.com/my/main") || url.Contains("tving.com/my/watch")
                             || url.Contains("netflix.com/ManageProfiles") || url.Contains("edit-profiles")
+                            || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
+                            || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
 
                             )
                         {
@@ -179,7 +183,7 @@ namespace LoginAgent
 
             } while (true);
         }
-        public string GetChromeUrl(Process process)
+        public string GetEdgeBrowserUrl(Process process)
         {
             if (process == null)
                 throw new ArgumentNullException("process");
