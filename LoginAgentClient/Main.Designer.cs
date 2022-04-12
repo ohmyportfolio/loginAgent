@@ -137,6 +137,7 @@
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.tvingBtn);
             this.Controls.Add(this.netFlixBtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;
