@@ -167,6 +167,9 @@ namespace LoginAgent
                             || url.Contains("netflix.com/ManageProfiles") || url.Contains("edit-profiles")
                             || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
                             || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
+                            || url.Contains("app-settings") || url.Contains("/account") || url.Contains("help.disneyplus.com")  //disney
+
+                            
 
                             )
                         {
