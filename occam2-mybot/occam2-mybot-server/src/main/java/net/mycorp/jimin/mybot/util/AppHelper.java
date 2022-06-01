@@ -6,6 +6,8 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import net.mycorp.jimin.base.util.Helper;
+import net.mycorp.jimin.base.util.StringHelper;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -39,6 +41,11 @@ public class AppHelper {
 	}
 
 	public static String Encrypt(String text, String key) throws Exception {
+		
+		if(text == null || text == "") {
+			return null;
+		}
+		
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		byte[] keyBytes = new byte[16];
 		byte[] b = key.getBytes("UTF-8");
