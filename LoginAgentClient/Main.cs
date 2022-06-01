@@ -189,11 +189,18 @@ namespace LoginAgent
 
         private JObject GetObjectData(string uri)
         {
-            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            var webResponse = (HttpWebResponse)webRequest.GetResponse();
-            var reader = new StreamReader(webResponse.GetResponseStream());
-            string s = reader.ReadToEnd();
-            return JsonConvert.DeserializeObject<JObject>(s);
+            try
+            {
+                var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+                var webResponse = (HttpWebResponse)webRequest.GetResponse();
+                var reader = new StreamReader(webResponse.GetResponseStream());
+                string s = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<JObject>(s);
+            }
+            catch(Exception e) {
+                return null;
+            }
+            
         }
 
         private JArray GetListData(string uri)
@@ -259,6 +266,12 @@ namespace LoginAgent
         private void SiteUsageStatus()
         {
             JObject result = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/any/getUsedAcountCount");
+
+            if(result == null)
+            {
+                return;
+            }
+
             JArray accounList = (JArray)result.GetValue("data");
 
             foreach (JObject row in accounList)
