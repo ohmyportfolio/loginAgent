@@ -7,3 +7,4 @@ bin
 /LoginAgentClient/obj
 static
 /LoginAgentClient/packages
+/occam2-mybot/occam2-mybot-server/src/main/resources/dist/*.zip
