@@ -305,5 +305,10 @@ namespace LoginAgent
             this.KillDriver();
 
         }
+
+        private void metroButton3_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://누누.com");
+        }
     }
 }

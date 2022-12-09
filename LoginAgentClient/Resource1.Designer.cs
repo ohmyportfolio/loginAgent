@@ -113,6 +113,26 @@ namespace LoginAgent {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap noonoo {
+            get {
+                object obj = ResourceManager.GetObject("noonoo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap noonoo1 {
+            get {
+                object obj = ResourceManager.GetObject("noonoo1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pngegg {
             get {
                 object obj = ResourceManager.GetObject("pngegg", resourceCulture);
