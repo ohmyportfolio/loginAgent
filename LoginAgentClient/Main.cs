@@ -155,7 +155,8 @@ namespace LoginAgent
 
         private void DoLogin(string site)
         {
-            JObject data = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
+
+            JObject data = getSiteData(site);
 
             if (data == null)
             {
@@ -185,6 +186,12 @@ namespace LoginAgent
             {
                 LoginAccount(data.GetValue("id").ToString(), data.GetValue("account_id").ToString(), data.GetValue("user_id").ToString());
             }
+        }
+
+        private JObject getSiteData(string site)
+        {
+             return GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
+
         }
 
         private JObject GetObjectData(string uri)
@@ -308,7 +315,10 @@ namespace LoginAgent
 
         private void metroButton3_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://누누.com");
+            JObject data = getSiteData("noonoo");
+            string url = data.GetValue("login_url").ToString();
+            System.Diagnostics.Process.Start(url);
+
         }
     }
 }

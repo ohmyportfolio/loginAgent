@@ -86,11 +86,12 @@
             // disneyBtn
             // 
             this.disneyBtn.BackgroundImage = global::LoginAgent.Resource1.disney;
-            this.disneyBtn.Location = new System.Drawing.Point(673, 27);
+            this.disneyBtn.Location = new System.Drawing.Point(616, 469);
             this.disneyBtn.Name = "disneyBtn";
             this.disneyBtn.Size = new System.Drawing.Size(198, 399);
             this.disneyBtn.TabIndex = 4;
             this.disneyBtn.UseSelectable = true;
+            this.disneyBtn.Visible = false;
             this.disneyBtn.Click += new System.EventHandler(this.disneyBtn_Click);
             // 
             // metroButton2
@@ -106,12 +107,11 @@
             // tvingBtn
             // 
             this.tvingBtn.BackgroundImage = global::LoginAgent.Resource1.tving;
-            this.tvingBtn.Location = new System.Drawing.Point(-57, 376);
+            this.tvingBtn.Location = new System.Drawing.Point(239, 27);
             this.tvingBtn.Name = "tvingBtn";
             this.tvingBtn.Size = new System.Drawing.Size(199, 399);
             this.tvingBtn.TabIndex = 0;
             this.tvingBtn.UseSelectable = true;
-            this.tvingBtn.Visible = false;
             this.tvingBtn.Click += new System.EventHandler(this.TvingBtnClick);
             // 
             // netFlixBtn
@@ -127,7 +127,7 @@
             // metroButton3
             // 
             this.metroButton3.BackgroundImage = global::LoginAgent.Resource1.noonoo1;
-            this.metroButton3.Location = new System.Drawing.Point(245, 27);
+            this.metroButton3.Location = new System.Drawing.Point(673, 27);
             this.metroButton3.Name = "metroButton3";
             this.metroButton3.Size = new System.Drawing.Size(198, 399);
             this.metroButton3.TabIndex = 5;
