@@ -320,5 +320,15 @@ namespace LoginAgent
             System.Diagnostics.Process.Start(url);
 
         }
+
+        private void youtubeBtn_Click(object sender, EventArgs e)
+        {
+
+            this.KillBrowser();
+            DoLogin("youtube");
+            SiteUsageStatus();
+            this.KillDriver();
+
+        }
     }
 }
