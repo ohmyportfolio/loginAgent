@@ -93,7 +93,7 @@
             this.disneyBtn.TabIndex = 4;
             this.disneyBtn.UseSelectable = true;
             this.disneyBtn.Visible = false;
-            this.disneyBtn.Click += new System.EventHandler(this.disneyBtn_Click);
+            this.disneyBtn.Click += new System.EventHandler(this.DisneyBtn_Click);
             // 
             // metroButton2
             // 
@@ -133,7 +133,7 @@
             this.metroButton3.Size = new System.Drawing.Size(198, 399);
             this.metroButton3.TabIndex = 5;
             this.metroButton3.UseSelectable = true;
-            this.metroButton3.Click += new System.EventHandler(this.metroButton3_Click);
+            this.metroButton3.Click += new System.EventHandler(this.NoonooBtnClick);
             // 
             // youtubeBtn
             // 
@@ -144,7 +144,7 @@
             this.youtubeBtn.TabIndex = 6;
             this.youtubeBtn.UseSelectable = true;
             this.youtubeBtn.Visible = false;
-            this.youtubeBtn.Click += new System.EventHandler(this.youtubeBtn_Click);
+            this.youtubeBtn.Click += new System.EventHandler(this.YoutubeBtnClick);
             // 
             // Main
             // 

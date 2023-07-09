@@ -9,11 +9,10 @@ public struct IniValue
 {
     private static bool TryParseInt(string text, out int value)
     {
-        int res;
         if (Int32.TryParse(text,
             System.Globalization.NumberStyles.Integer,
             System.Globalization.CultureInfo.InvariantCulture,
-            out res))
+            out int res))
         {
             value = res;
             return true;
@@ -24,11 +23,10 @@ public struct IniValue
 
     private static bool TryParseDouble(string text, out double value)
     {
-        double res;
         if (Double.TryParse(text,
             System.Globalization.NumberStyles.Float,
             System.Globalization.CultureInfo.InvariantCulture,
-            out res))
+            out double res))
         {
             value = res;
             return true;
@@ -41,14 +39,13 @@ public struct IniValue
 
     public IniValue(object value)
     {
-        var formattable = value as IFormattable;
-        if (formattable != null)
+        if (value is IFormattable formattable)
         {
             Value = formattable.ToString(null, System.Globalization.CultureInfo.InvariantCulture);
         }
         else
         {
-            Value = value != null ? value.ToString() : null;
+            Value = value?.ToString();
         }
     }
 
@@ -71,7 +68,7 @@ public struct IniValue
     {
         if (Value == null)
         {
-            result = default(bool);
+            result = default;
             return false;
         }
         var boolStr = Value.Trim().ToLowerInvariant();
@@ -85,7 +82,7 @@ public struct IniValue
             result = false;
             return true;
         }
-        result = default(bool);
+        result = default;
         return false;
     }
 
@@ -103,7 +100,7 @@ public struct IniValue
     {
         if (Value == null)
         {
-            result = default(int);
+            result = default;
             return false;
         }
         if (TryParseInt(Value.Trim(), out result))
@@ -127,7 +124,7 @@ public struct IniValue
     {
         if (Value == null)
         {
-            result = default(double);
+            result = default;
             return false; ;
         }
         if (TryParseDouble(Value.Trim(), out result))

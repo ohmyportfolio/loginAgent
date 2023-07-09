@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System.Text;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
+using System.Linq;
 
 namespace LoginAgent
 {
@@ -69,13 +70,7 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
-
-
-            EdgeDriverService _driverService = null;
-            EdgeOptions _options = null;
-            EdgeDriver _driver = null;
-
-            _driverService = EdgeDriverService.CreateDefaultService();
+            EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
             if (AppHelper.GetWebDriverDebugMode() == "true")
             {
@@ -88,7 +83,7 @@ namespace LoginAgent
                 _driverService.UseVerboseLogging = false;
             }
 
-            _options = new EdgeOptions();
+            EdgeOptions _options = new EdgeOptions();
 
             var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
             _options.AddArguments("user-data-dir=" + userDataPath);
@@ -111,7 +106,7 @@ namespace LoginAgent
 
 
 
-            _driver = new EdgeDriver(_driverService, _options);
+            EdgeDriver _driver = new EdgeDriver(_driverService, _options);
             _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             
@@ -156,7 +151,7 @@ namespace LoginAgent
         private void DoLogin(string site)
         {
 
-            JObject data = getSiteData(site);
+            JObject data = GetSiteData(site);
 
             if (data == null)
             {
@@ -188,7 +183,7 @@ namespace LoginAgent
             }
         }
 
-        private JObject getSiteData(string site)
+        private JObject GetSiteData(string site)
         {
              return GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
 
@@ -204,19 +199,11 @@ namespace LoginAgent
                 string s = reader.ReadToEnd();
                 return JsonConvert.DeserializeObject<JObject>(s);
             }
-            catch(Exception e) {
+            catch (Exception)
+            {
                 return null;
             }
             
-        }
-
-        private JArray GetListData(string uri)
-        {
-            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            var webResponse = (HttpWebResponse)webRequest.GetResponse();
-            var reader = new StreamReader(webResponse.GetResponseStream());
-            string s = reader.ReadToEnd();
-            return JsonConvert.DeserializeObject<JArray>(s);
         }
 
         private void LoginAccount(string siteId , string accountId , string userId)
@@ -281,7 +268,7 @@ namespace LoginAgent
 
             JArray accounList = (JArray)result.GetValue("data");
 
-            foreach (JObject row in accounList)
+            foreach (JObject row in accounList.Cast<JObject>())
             {
                 Console.WriteLine(row.GetValue("id"));
                 Console.WriteLine(row.GetValue("total_cnt"));
@@ -303,7 +290,7 @@ namespace LoginAgent
             
         }
 
-        private void disneyBtn_Click(object sender, EventArgs e)
+        private void DisneyBtn_Click(object sender, EventArgs e)
         {
 
             this.KillBrowser();
@@ -313,15 +300,15 @@ namespace LoginAgent
 
         }
 
-        private void metroButton3_Click(object sender, EventArgs e)
+        private void NoonooBtnClick(object sender, EventArgs e)
         {
-            JObject data = getSiteData("noonoo");
+            JObject data = GetSiteData("noonoo");
             string url = data.GetValue("login_url").ToString();
             System.Diagnostics.Process.Start(url);
 
         }
 
-        private void youtubeBtn_Click(object sender, EventArgs e)
+        private void YoutubeBtnClick(object sender, EventArgs e)
         {
 
             this.KillBrowser();

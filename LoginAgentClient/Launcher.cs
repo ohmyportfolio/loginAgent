@@ -43,7 +43,7 @@ namespace LoginAgent
             this.ShowInTaskbar = false;
             this.versionLabel.Text = AppHelper.GetVersion();
             this.driverVer.Text = AppHelper.GetDriverVer();
-            
+
         }
 
 
@@ -62,10 +62,6 @@ namespace LoginAgent
             }
         }
 
-        private void ThreadManager()
-        {
-           
-        }
 
         private void MainFormCloedEvent(object sender, FormClosedEventArgs e)
         {
@@ -91,7 +87,7 @@ namespace LoginAgent
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
             main.KillBrowser = this.KillAllSite;
             main.KillDriver = this.KillDriver;
-            
+
             if (t1 == null || !t1.IsAlive)
             {
                 t1 = new Thread(new ThreadStart(KillAccountPage));
@@ -128,7 +124,7 @@ namespace LoginAgent
 
         public void KillAllSite()
         {
-            
+
             foreach (Process process in Process.GetProcessesByName("msedge"))
             {
                 try
@@ -167,10 +163,8 @@ namespace LoginAgent
                             || url.Contains("netflix.com/ManageProfiles") || url.Contains("edit-profiles")
                             || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
                             || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
-                            || url.Contains("app-settings") ||  url.Contains("help.disneyplus.com")  //disney
+                            || url.Contains("app-settings") || url.Contains("help.disneyplus.com")  //disney
 
-
-                            
 
                             )
                         {
@@ -206,44 +200,6 @@ namespace LoginAgent
             return vp;
         }
 
-        private void CheckOpenedSite()
-        {
-            do
-            {
-                try
-                {
-                    Console.WriteLine("Check Opened Site");
-                    Thread.Sleep(10000);
-                    Process[] procsChrome = Process.GetProcessesByName("msedge");
-                    if (procsChrome.Length <= 0)
-                    {
-                        Console.WriteLine("msedge is not running");
-                    }
-                    else
-                    {
-                        foreach (Process proc in procsChrome)
-                        {
-                            // the chrome process must have a window
-                            if (proc.MainWindowHandle == IntPtr.Zero)
-                            {
-                                continue;
-                            }
-                            AutomationElement root = AutomationElement.FromHandle(proc.MainWindowHandle);
-                            Condition condition = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
-                            var tabs = root.FindAll(TreeScope.Descendants, condition);
-                            CheckAndSendUseInfo(tabs);
-
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                }
-            } while (true);
-
-        }
-
         private void CheckAndSendUseInfo(AutomationElementCollection tabs)
         {
 
@@ -252,7 +208,7 @@ namespace LoginAgent
             Boolean uflix = false;
             Boolean tving = false;
             Boolean wavve = false;
-            if(tabs != null)
+            if (tabs != null)
             {
                 foreach (AutomationElement tabitem in tabs)
                 {
@@ -319,16 +275,16 @@ namespace LoginAgent
 
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
         }
 
-        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BringToFront();
         }
 
-      
+
     }
 }
