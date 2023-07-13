@@ -22,7 +22,7 @@ def decrypt(cipher_text, key):
     plain_bytes = unpad(cipher.decrypt(cipher_text[AES.block_size:]), AES.block_size)  # Decrypt and unpad the result
     return plain_bytes.decode()  # Convert bytes to string
 
-def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None):
+def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     driver = My_Chrome()
 
     # If these are encrypted, you can use your decrypt function to decrypt them before use
@@ -30,24 +30,25 @@ def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None):
     xpath2_decrypted = decrypt(xpath2, 'your_key_here') if xpath2 else None
     dkdlel_decrypted = decrypt(dkdlel, 'your_key_here') if dkdlel else None
     alqjs_decrypted = decrypt(alqjs, 'your_key_here') if alqjs else None
+    loginPath_decrypted = decrypt(loginPath, 'your_key_here') if loginPath else None
 
     # Here you would use the decrypted arguments to set up your browser
     # For example:
     driver.get('https://www.youtube.com/account')
 
   
-    input_element = driver.find_element(By.XPATH,'//*[@name="identifier"]')
-    input_element.send_keys("hurxxxx@gmail.com")
+    input_element = driver.find_element(By.XPATH,xpath_decrypted)
+    input_element.send_keys(dkdlel_decrypted)
     input_element.send_keys(Keys.ENTER)
 
        # wait for the password field to be visible
-    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.NAME, "Passwd")))
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, xpath2_decrypted)))
 
-    input_element2 = driver.find_element(By.XPATH,'//*[@name="Passwd"]')
-    input_element2.send_keys("godd8013!@")
+    input_element2 = driver.find_element(By.XPATH,xpath2_decrypted)
+    input_element2.send_keys(alqjs_decrypted)
     input_element2.send_keys(Keys.ENTER)
 
-    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "avatar-btn")))
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID,loginPath_decrypted)))
 
     driver.get('https://www.youtube.com')
     
@@ -63,6 +64,7 @@ if __name__ == '__main__':
     parser.add_argument('--xpath2', default=None, help='The encrypted xpath2 argument')
     parser.add_argument('--dkdlel', default=None, help='The encrypted dkdlel argument')
     parser.add_argument('--alqjs', default=None, help='The encrypted alqjs argument')
+    parser.add_argument('--loginPath',default=None, help='The encrypted loginPath argument')
 
     args = parser.parse_args()
-    main(args.xpath, args.xpath2, args.dkdlel, args.alqjs)
+    main(args.xpath, args.xpath2, args.dkdlel, args.alqjs , args.loginPath)

@@ -222,6 +222,7 @@
     <None Include="Resources\Button.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="py\test.py" />
     <None Include="Resources\youtube.PNG" />
     <None Include="Resources\noonoo.PNG" />
     <None Include="Resources\disney.PNG" />
