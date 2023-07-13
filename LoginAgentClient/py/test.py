@@ -1,9 +1,15 @@
 import argparse
 import undetected_chromedriver as uc
-from pycryptodome.Cipher import AES
-from pycryptodome.Util.Padding import unpad
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
 from base64 import b64decode
 import hashlib
+
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.remote.webdriver import By
+import selenium.webdriver.support.expected_conditions as EC  # noqa
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 
 class My_Chrome(uc.Chrome):
     def __del__(self):
@@ -16,28 +22,47 @@ def decrypt(cipher_text, key):
     plain_bytes = unpad(cipher.decrypt(cipher_text[AES.block_size:]), AES.block_size)  # Decrypt and unpad the result
     return plain_bytes.decode()  # Convert bytes to string
 
-def main(xpath, xpath2, dkdlel, alqjs):
+def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None):
     driver = My_Chrome()
 
     # If these are encrypted, you can use your decrypt function to decrypt them before use
-    xpath_decrypted = decrypt(xpath, 'your_key_here')
-    xpath2_decrypted = decrypt(xpath2, 'your_key_here')
-    dkdlel_decrypted = decrypt(dkdlel, 'your_key_here')
-    alqjs_decrypted = decrypt(alqjs, 'your_key_here')
+    xpath_decrypted = decrypt(xpath, 'your_key_here') if xpath else None
+    xpath2_decrypted = decrypt(xpath2, 'your_key_here') if xpath2 else None
+    dkdlel_decrypted = decrypt(dkdlel, 'your_key_here') if dkdlel else None
+    alqjs_decrypted = decrypt(alqjs, 'your_key_here') if alqjs else None
 
     # Here you would use the decrypted arguments to set up your browser
     # For example:
     driver.get('https://www.youtube.com/account')
+
+  
+    input_element = driver.find_element(By.XPATH,'//*[@name="identifier"]')
+    input_element.send_keys("hurxxxx@gmail.com")
+    input_element.send_keys(Keys.ENTER)
+
+       # wait for the password field to be visible
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.NAME, "Passwd")))
+
+    input_element2 = driver.find_element(By.XPATH,'//*[@name="Passwd"]')
+    input_element2.send_keys("godd8013!@")
+    input_element2.send_keys(Keys.ENTER)
+
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "avatar-btn")))
+
+    driver.get('https://www.youtube.com')
+    
+
+
     # driver.find_element_by_xpath(xpath_decrypted)
     # ...
     # ...
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Decrypt args and launch browser.')
-    parser.add_argument('xpath', help='The encrypted xpath argument')
-    parser.add_argument('xpath2', help='The encrypted xpath2 argument')
-    parser.add_argument('dkdlel', help='The encrypted dkdlel argument')
-    parser.add_argument('alqjs', help='The encrypted alqjs argument')
+    parser.add_argument('--xpath', default=None, help='The encrypted xpath argument')
+    parser.add_argument('--xpath2', default=None, help='The encrypted xpath2 argument')
+    parser.add_argument('--dkdlel', default=None, help='The encrypted dkdlel argument')
+    parser.add_argument('--alqjs', default=None, help='The encrypted alqjs argument')
 
     args = parser.parse_args()
     main(args.xpath, args.xpath2, args.dkdlel, args.alqjs)
