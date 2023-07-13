@@ -25,12 +25,20 @@ def decrypt(cipher_text, key):
 def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     driver = My_Chrome()
 
+    offset = '!QAZxsw2';
+
     # If these are encrypted, you can use your decrypt function to decrypt them before use
-    xpath_decrypted = decrypt(xpath, 'your_key_here') if xpath else None
-    xpath2_decrypted = decrypt(xpath2, 'your_key_here') if xpath2 else None
-    dkdlel_decrypted = decrypt(dkdlel, 'your_key_here') if dkdlel else None
-    alqjs_decrypted = decrypt(alqjs, 'your_key_here') if alqjs else None
-    loginPath_decrypted = decrypt(loginPath, 'your_key_here') if loginPath else None
+    # xpath_decrypted = decrypt(xpath, offset) if xpath else None
+    # xpath2_decrypted = decrypt(xpath2, offset) if xpath2 else None
+    # dkdlel_decrypted = decrypt(dkdlel,offset) if dkdlel else None
+    # alqjs_decrypted = decrypt(alqjs, offset) if alqjs else None
+    # loginPath_decrypted = decrypt(loginPath, offset) if loginPath else None
+
+    xpath_decrypted = xpath 
+    xpath2_decrypted = xpath2
+    dkdlel_decrypted = dkdlel
+    alqjs_decrypted = alqjs
+    loginPath_decrypted = loginPath
 
     # Here you would use the decrypted arguments to set up your browser
     # For example:
@@ -59,6 +67,8 @@ def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     # ...
 
 if __name__ == '__main__':
+
+    ## test.exe --xpath '//*[@name="identifier"]' --xpath2 '//*[@name="Passwd"]' --dkdlel 'kw.hur@exinno.net' --alqjs '12341234' --loginPath avatar-btn
     parser = argparse.ArgumentParser(description='Decrypt args and launch browser.')
     parser.add_argument('--xpath', default=None, help='The encrypted xpath argument')
     parser.add_argument('--xpath2', default=None, help='The encrypted xpath2 argument')

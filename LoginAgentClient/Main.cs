@@ -135,17 +135,6 @@ namespace LoginAgent
                 element.Click();
             }
 
-            /*
-             * todo : selenium 으로 tag remove 하는 방법
-             * https://stackoverflow.com/questions/53376933/how-to-remove-an-element-attribute-using-selenium-and-c 참고
-             * 
-            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            wait.Until(driver => driver.Url.Contains("browse"));
-            Console.WriteLine("Wailttttttttttttttttttttttttttttttttt");
-            element = _driver.FindElementByXPath("//*[@class='account-menu-item']");
-            Console.WriteLine(element.ToString());
-            */
-
         }
 
         private void DoLogin(string site)
