@@ -1,7 +1,7 @@
 import argparse
 import undetected_chromedriver as uc
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import unpad
+from pycryptodome.Cipher import AES
+from pycryptodome.Util.Padding import unpad
 from base64 import b64decode
 import hashlib
 
