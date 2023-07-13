@@ -68,7 +68,7 @@ def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
 
 if __name__ == '__main__':
 
-    ## test.exe --xpath '//*[@name="identifier"]' --xpath2 '//*[@name="Passwd"]' --dkdlel 'kw.hur@exinno.net' --alqjs '12341234' --loginPath avatar-btn
+    ## test.exe --xpath "//*[@name='identifier']" --xpath2 "//*[@name='Passwd']" --dkdlel "kw.hur@exinno.net" --alqjs "12341234" --loginPath "avatar-btn"
     parser = argparse.ArgumentParser(description='Decrypt args and launch browser.')
     parser.add_argument('--xpath', default=None, help='The encrypted xpath argument')
     parser.add_argument('--xpath2', default=None, help='The encrypted xpath2 argument')
