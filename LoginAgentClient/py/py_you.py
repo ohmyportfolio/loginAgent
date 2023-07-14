@@ -28,7 +28,7 @@ def decrypt(cipher_text, key):
 def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     
     
-    driver = uc.Chrome(service_creationflags=subprocess.CREATE_NO_WINDOW)
+    driver = uc.Chrome(headless=True,use_subprocess=False)
    
 
     offset = '!QAZxsw2';

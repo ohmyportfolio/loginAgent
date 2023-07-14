@@ -75,11 +75,26 @@
     <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Python.Runtime">
+      <HintPath>..\..\..\Program Files\Python311\Lib\site-packages\pythonnet\runtime\Python.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Selenium.Extensions, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Sl.Selenium.Extensions.2.1.1\lib\netstandard2.0\Selenium.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Selenium.WebDriver.UndetectedChromeDriver, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Selenium.WebDriver.UndetectedChromeDriver.2.3.0\lib\netstandard2.0\Selenium.WebDriver.UndetectedChromeDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="Sl.Selenium.Extensions.Chrome, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Sl.Selenium.Extensions.Chrome.2.3.0\lib\netstandard2.0\Sl.Selenium.Extensions.Chrome.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -240,8 +255,10 @@
     <Error Condition="!Exists('packages\Selenium.WebDriver.MicrosoftDriver.17.17134.0\build\Selenium.WebDriver.MicrosoftDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Selenium.WebDriver.MicrosoftDriver.17.17134.0\build\Selenium.WebDriver.MicrosoftDriver.targets'))" />
     <Error Condition="!Exists('packages\Selenium.WebDriver.MSEdgeDriver.114.0.1823.58\build\Selenium.WebDriver.MSEdgeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Selenium.WebDriver.MSEdgeDriver.114.0.1823.58\build\Selenium.WebDriver.MSEdgeDriver.targets'))" />
     <Error Condition="!Exists('packages\Selenium.WebDriver.4.10.0\build\Selenium.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Selenium.WebDriver.4.10.0\build\Selenium.WebDriver.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
   </Target>
   <Import Project="packages\Selenium.WebDriver.MicrosoftDriver.17.17134.0\build\Selenium.WebDriver.MicrosoftDriver.targets" Condition="Exists('packages\Selenium.WebDriver.MicrosoftDriver.17.17134.0\build\Selenium.WebDriver.MicrosoftDriver.targets')" />
   <Import Project="packages\Selenium.WebDriver.MSEdgeDriver.114.0.1823.58\build\Selenium.WebDriver.MSEdgeDriver.targets" Condition="Exists('packages\Selenium.WebDriver.MSEdgeDriver.114.0.1823.58\build\Selenium.WebDriver.MSEdgeDriver.targets')" />
   <Import Project="packages\Selenium.WebDriver.4.10.0\build\Selenium.WebDriver.targets" Condition="Exists('packages\Selenium.WebDriver.4.10.0\build\Selenium.WebDriver.targets')" />
+  <Import Project="packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
 </Project>
