@@ -30,13 +30,13 @@ def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     # If these are encrypted, you can use your decrypt function to decrypt them before use
     # xpath_decrypted = decrypt(xpath, offset) if xpath else None
     # xpath2_decrypted = decrypt(xpath2, offset) if xpath2 else None
-    # dkdlel_decrypted = decrypt(dkdlel,offset) if dkdlel else None
+    dkdlel_decrypted = decrypt(dkdlel,offset) if dkdlel else None
     # alqjs_decrypted = decrypt(alqjs, offset) if alqjs else None
     # loginPath_decrypted = decrypt(loginPath, offset) if loginPath else None
 
     xpath_decrypted = xpath 
     xpath2_decrypted = xpath2
-    dkdlel_decrypted = dkdlel
+    #dkdlel_decrypted = dkdlel
     alqjs_decrypted = alqjs
     loginPath_decrypted = loginPath
 
