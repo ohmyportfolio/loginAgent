@@ -8,6 +8,7 @@ using System.Text;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
 using System.Linq;
+using System.Diagnostics;
 
 namespace LoginAgent
 {
@@ -57,83 +58,109 @@ namespace LoginAgent
 
         private void LoginSite(JObject data)
         {
-
-
             string id = data.GetValue("user_id").ToString();
-            string pw = data.GetValue("user_password").ToString();
+            string pw_enc = data.GetValue("user_password").ToString();
             string siteId = data.GetValue("id").ToString();
 
-            pw = AppHelper.Decrypt(pw, AppHelper.M_K);
+            string pw = AppHelper.Decrypt(pw_enc, AppHelper.M_K);
 
             string url = data.GetValue("login_url").ToString();
             string idXpath = data.GetValue("id_xpath").ToString();
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
-            EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
-            if (AppHelper.GetWebDriverDebugMode() == "true")
+            if(siteId == "youtube")
             {
-                _driverService.HideCommandPromptWindow = false;
-                _driverService.UseVerboseLogging = true;
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = "py_you.exe", // Or the full path to the test.exe if not in PATH
+                    Arguments = $"--xpath \"{idXpath}\" --xpath2 \"{pwXpath}\" --dkdlel \"{id}\" --alqjs \"{pw}\" --loginPath \"{logXpath}\"",
+                    UseShellExecute = true,
+                
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+               
+                };
+                startInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                using (Process process = new Process { StartInfo = startInfo })
+                {
+                    process.Start();
+
+                }
             }
             else
             {
-                _driverService.HideCommandPromptWindow = true;
-                _driverService.UseVerboseLogging = false;
+                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
+
+                if (AppHelper.GetWebDriverDebugMode() == "true")
+                {
+                    _driverService.HideCommandPromptWindow = false;
+                    _driverService.UseVerboseLogging = true;
+                }
+                else
+                {
+                    _driverService.HideCommandPromptWindow = true;
+                    _driverService.UseVerboseLogging = false;
+                }
+
+                EdgeOptions _options = new EdgeOptions();
+
+                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+
+
+                _options.AddArguments("user-data-dir=" + userDataPath);
+
+
+
+                //_options.UseInPrivateBrowsing = true;
+                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+
+                _options.AddArguments("--disable-session-crashed-bubble");
+
+
+                _options.AddExcludedArgument("enable-automation");
+                _options.AddAdditionalOption("useAutomationExtension", false);
+                _options.AddUserProfilePreference("credentials_enable_service", false);
+                _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+
+                _options.AddUserProfilePreference("profile.exited_cleanly", true);
+                _options.AddUserProfilePreference("profile.exit_type", "Normal");
+
+
+                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
+                _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+
+
+
+                if (siteId == "disney")
+                {
+                    var element = _driver.FindElement(By.XPath(idXpath));
+                    element.SendKeys(id);
+                    element = _driver.FindElement(By.XPath(logXpath));
+                    element.Click();
+                    element = _driver.FindElement(By.XPath(pwXpath));
+                    element.SendKeys(pw);
+                    element = _driver.FindElement(By.XPath(logXpath2));
+                    element.Click();
+
+                }
+                else
+                {
+                    //var element = _driver.FindElementByXPath(idXpath);
+                    var element = _driver.FindElement(By.XPath(idXpath));
+
+                    element.SendKeys(id);
+                    element = _driver.FindElement(By.XPath(pwXpath));
+                    element.SendKeys(pw);
+                    element = _driver.FindElement(By.XPath(logXpath));
+                    element.Click();
+                }
             }
 
-            EdgeOptions _options = new EdgeOptions();
-
-            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
-            _options.AddArguments("user-data-dir=" + userDataPath);
-
-            
-            
-            //_options.UseInPrivateBrowsing = true;
-            //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-
-            _options.AddArguments("--disable-session-crashed-bubble");
-
-
-            _options.AddExcludedArgument("enable-automation");
-            _options.AddAdditionalOption("useAutomationExtension", false);
-            _options.AddUserProfilePreference("credentials_enable_service", false);
-            _options.AddUserProfilePreference("profile.password_manager_enabled", false);
-
-            _options.AddUserProfilePreference("profile.exited_cleanly", true);
-            _options.AddUserProfilePreference("profile.exit_type", "Normal");
-
-
-
-            EdgeDriver _driver = new EdgeDriver(_driverService, _options);
-            _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            
-            
-            if(siteId == "disney")
-            {
-                var element = _driver.FindElement(By.XPath(idXpath));
-                element.SendKeys(id);
-                element = _driver.FindElement(By.XPath(logXpath));
-                element.Click();
-                element = _driver.FindElement(By.XPath(pwXpath));
-                element.SendKeys(pw);
-                element = _driver.FindElement(By.XPath(logXpath2));
-                element.Click();
-
-            }
-            else
-            {
-                //var element = _driver.FindElementByXPath(idXpath);
-                var element = _driver.FindElement(By.XPath(idXpath));
-
-                element.SendKeys(id);
-                element = _driver.FindElement(By.XPath(pwXpath));
-                element.SendKeys(pw);
-                element = _driver.FindElement(By.XPath(logXpath));
-                element.Click();
-            }
+           
 
         }
 

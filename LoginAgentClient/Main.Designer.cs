@@ -45,9 +45,10 @@
             this.metroButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.metroButton1.FontSize = MetroFramework.MetroButtonSize.Tall;
             this.metroButton1.Highlight = true;
-            this.metroButton1.Location = new System.Drawing.Point(355, 484);
+            this.metroButton1.Location = new System.Drawing.Point(406, 605);
+            this.metroButton1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.metroButton1.Name = "metroButton1";
-            this.metroButton1.Size = new System.Drawing.Size(185, 55);
+            this.metroButton1.Size = new System.Drawing.Size(211, 69);
             this.metroButton1.Style = MetroFramework.MetroColorStyle.Black;
             this.metroButton1.TabIndex = 1;
             this.metroButton1.Text = "영상보기 종료";
@@ -57,9 +58,9 @@
             // labelNetflix
             // 
             this.labelNetflix.AutoSize = true;
-            this.labelNetflix.Location = new System.Drawing.Point(82, 438);
+            this.labelNetflix.Location = new System.Drawing.Point(94, 548);
             this.labelNetflix.Name = "labelNetflix";
-            this.labelNetflix.Size = new System.Drawing.Size(31, 12);
+            this.labelNetflix.Size = new System.Drawing.Size(39, 15);
             this.labelNetflix.TabIndex = 3;
             this.labelNetflix.Text = "0 / 0";
             this.labelNetflix.Visible = false;
@@ -67,9 +68,9 @@
             // labelTving
             // 
             this.labelTving.AutoSize = true;
-            this.labelTving.Location = new System.Drawing.Point(315, 439);
+            this.labelTving.Location = new System.Drawing.Point(360, 549);
             this.labelTving.Name = "labelTving";
-            this.labelTving.Size = new System.Drawing.Size(31, 12);
+            this.labelTving.Size = new System.Drawing.Size(39, 15);
             this.labelTving.TabIndex = 3;
             this.labelTving.Text = "0 / 0";
             this.labelTving.Visible = false;
@@ -77,9 +78,9 @@
             // labelWavve
             // 
             this.labelWavve.AutoSize = true;
-            this.labelWavve.Location = new System.Drawing.Point(541, 439);
+            this.labelWavve.Location = new System.Drawing.Point(618, 549);
             this.labelWavve.Name = "labelWavve";
-            this.labelWavve.Size = new System.Drawing.Size(31, 12);
+            this.labelWavve.Size = new System.Drawing.Size(39, 15);
             this.labelWavve.TabIndex = 3;
             this.labelWavve.Text = "0 / 0";
             this.labelWavve.Visible = false;
@@ -87,9 +88,10 @@
             // disneyBtn
             // 
             this.disneyBtn.BackgroundImage = global::LoginAgent.Resource1.disney;
-            this.disneyBtn.Location = new System.Drawing.Point(616, 469);
+            this.disneyBtn.Location = new System.Drawing.Point(704, 586);
+            this.disneyBtn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.disneyBtn.Name = "disneyBtn";
-            this.disneyBtn.Size = new System.Drawing.Size(198, 399);
+            this.disneyBtn.Size = new System.Drawing.Size(226, 499);
             this.disneyBtn.TabIndex = 4;
             this.disneyBtn.UseSelectable = true;
             this.disneyBtn.Visible = false;
@@ -98,9 +100,10 @@
             // metroButton2
             // 
             this.metroButton2.BackgroundImage = global::LoginAgent.Resource1.wavve;
-            this.metroButton2.Location = new System.Drawing.Point(420, 26);
+            this.metroButton2.Location = new System.Drawing.Point(480, 32);
+            this.metroButton2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.metroButton2.Name = "metroButton2";
-            this.metroButton2.Size = new System.Drawing.Size(198, 399);
+            this.metroButton2.Size = new System.Drawing.Size(226, 499);
             this.metroButton2.TabIndex = 2;
             this.metroButton2.UseSelectable = true;
             this.metroButton2.Click += new System.EventHandler(this.WavveBtnClick);
@@ -108,9 +111,10 @@
             // tvingBtn
             // 
             this.tvingBtn.BackgroundImage = global::LoginAgent.Resource1.tving;
-            this.tvingBtn.Location = new System.Drawing.Point(215, 26);
+            this.tvingBtn.Location = new System.Drawing.Point(246, 32);
+            this.tvingBtn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tvingBtn.Name = "tvingBtn";
-            this.tvingBtn.Size = new System.Drawing.Size(199, 399);
+            this.tvingBtn.Size = new System.Drawing.Size(227, 499);
             this.tvingBtn.TabIndex = 0;
             this.tvingBtn.UseSelectable = true;
             this.tvingBtn.Click += new System.EventHandler(this.TvingBtnClick);
@@ -118,9 +122,10 @@
             // netFlixBtn
             // 
             this.netFlixBtn.BackgroundImage = global::LoginAgent.Resource1.netflix;
-            this.netFlixBtn.Location = new System.Drawing.Point(10, 26);
+            this.netFlixBtn.Location = new System.Drawing.Point(11, 32);
+            this.netFlixBtn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.netFlixBtn.Name = "netFlixBtn";
-            this.netFlixBtn.Size = new System.Drawing.Size(199, 400);
+            this.netFlixBtn.Size = new System.Drawing.Size(227, 500);
             this.netFlixBtn.TabIndex = 0;
             this.netFlixBtn.UseSelectable = true;
             this.netFlixBtn.Click += new System.EventHandler(this.NetFlixBtnClick);
@@ -128,9 +133,10 @@
             // metroButton3
             // 
             this.metroButton3.BackgroundImage = global::LoginAgent.Resource1.noonoo1;
-            this.metroButton3.Location = new System.Drawing.Point(624, 27);
+            this.metroButton3.Location = new System.Drawing.Point(713, 34);
+            this.metroButton3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.metroButton3.Name = "metroButton3";
-            this.metroButton3.Size = new System.Drawing.Size(198, 399);
+            this.metroButton3.Size = new System.Drawing.Size(226, 499);
             this.metroButton3.TabIndex = 5;
             this.metroButton3.UseSelectable = true;
             this.metroButton3.Click += new System.EventHandler(this.NoonooBtnClick);
@@ -138,20 +144,20 @@
             // youtubeBtn
             // 
             this.youtubeBtn.BackgroundImage = global::LoginAgent.Resource1.youtube;
-            this.youtubeBtn.Location = new System.Drawing.Point(586, 484);
+            this.youtubeBtn.Location = new System.Drawing.Point(945, 32);
+            this.youtubeBtn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.youtubeBtn.Name = "youtubeBtn";
-            this.youtubeBtn.Size = new System.Drawing.Size(198, 399);
+            this.youtubeBtn.Size = new System.Drawing.Size(226, 499);
             this.youtubeBtn.TabIndex = 6;
             this.youtubeBtn.UseSelectable = true;
-            this.youtubeBtn.Visible = false;
             this.youtubeBtn.Click += new System.EventHandler(this.YoutubeBtnClick);
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.metroButton1;
-            this.ClientSize = new System.Drawing.Size(831, 551);
+            this.ClientSize = new System.Drawing.Size(1186, 689);
             this.Controls.Add(this.youtubeBtn);
             this.Controls.Add(this.metroButton3);
             this.Controls.Add(this.disneyBtn);
@@ -163,6 +169,7 @@
             this.Controls.Add(this.tvingBtn);
             this.Controls.Add(this.netFlixBtn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;

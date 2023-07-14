@@ -12,7 +12,6 @@ import selenium.webdriver.support.expected_conditions as EC  # noqa
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
-import subprocess
 
 class My_Chrome(uc.Chrome):
     def __del__(self):
@@ -28,8 +27,8 @@ def decrypt(cipher_text, key):
 def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     
     
-    driver = uc.Chrome(service_creationflags=subprocess.CREATE_NO_WINDOW)
    
+    driver = My_Chrome()
 
     offset = '!QAZxsw2';
 
@@ -49,7 +48,7 @@ def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     # Here you would use the decrypted arguments to set up your browser
     # For example:
 
-
+    
     driver.get('https://www.youtube.com/account')
 
     
