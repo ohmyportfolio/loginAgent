@@ -218,6 +218,9 @@
     <None Include="Resources\tving.PNG" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="py\dist\py_you.exe" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\uflix_done.png" />
   </ItemGroup>
   <ItemGroup>
@@ -237,8 +240,6 @@
     <None Include="Resources\Button.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="py\py_you.py" />
-    <Content Include="py_you.exe" />
     <None Include="Resources\youtube.PNG" />
     <None Include="Resources\noonoo.PNG" />
     <None Include="Resources\disney.PNG" />

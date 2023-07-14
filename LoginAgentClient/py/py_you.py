@@ -4,7 +4,6 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 from base64 import b64decode
 import hashlib
-import tempfile
 
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.remote.webdriver import By
@@ -28,7 +27,8 @@ def decrypt(cipher_text, key):
 def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
     
     
-    driver = uc.Chrome(headless=True,use_subprocess=False)
+    driver = My_Chrome()
+    driver.creation_flags = 0x08000000
    
 
     offset = '!QAZxsw2';
@@ -51,14 +51,15 @@ def main(xpath=None, xpath2=None, dkdlel=None, alqjs=None , loginPath=None):
 
 
     driver.get('https://www.youtube.com/account')
-
-    
+            
     input_element = driver.find_element(By.XPATH,xpath_decrypted)
     input_element.send_keys(dkdlel_decrypted)
     input_element.send_keys(Keys.ENTER)
+    
 
        # wait for the password field to be visible
     WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, xpath2_decrypted)))
+    
 
     input_element2 = driver.find_element(By.XPATH,xpath2_decrypted)
     input_element2.send_keys(alqjs_decrypted)

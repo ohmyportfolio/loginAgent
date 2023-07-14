@@ -1,0 +1,1 @@
+pyinstaller --onefile .\py_you.py

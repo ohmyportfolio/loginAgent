@@ -9,7 +9,6 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
-using Python.Runtime;
 
 namespace LoginAgent
 {
@@ -75,7 +74,7 @@ namespace LoginAgent
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
-                    FileName = "py_you.exe", // Or the full path to the test.exe if not in PATH
+                    FileName = "py\\dist\\py_you.exe", // Or the full path to the test.exe if not in PATH
                     Arguments = $"--xpath \"{idXpath}\" --xpath2 \"{pwXpath}\" --dkdlel \"{id}\" --alqjs \"{pw}\" --loginPath \"{logXpath}\"",
                     UseShellExecute = false,
                     CreateNoWindow = true,
