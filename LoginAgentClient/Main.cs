@@ -5,10 +5,10 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
+using OpenQA.Selenium.Chrome;
 
 namespace LoginAgent
 {
@@ -91,22 +91,22 @@ namespace LoginAgent
             }
             else
             {
-                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
+                ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
 
                 if (AppHelper.GetWebDriverDebugMode() == "true")
                 {
                     _driverService.HideCommandPromptWindow = false;
-                    _driverService.UseVerboseLogging = true;
+                    //_driverService.UseVerboseLogging = true;
                 }
                 else
                 {
                     _driverService.HideCommandPromptWindow = true;
-                    _driverService.UseVerboseLogging = false;
+                    //_driverService.UseVerboseLogging = false;
                 }
 
-                EdgeOptions _options = new EdgeOptions();
+                ChromeOptions _options = new ChromeOptions();
 
-                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Google\\Chrome\\User Data");
 
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
@@ -115,7 +115,9 @@ namespace LoginAgent
 
                 //_options.UseInPrivateBrowsing = true;
                 //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-
+                
+                _options.AddArguments("--disable-dev-shm-usage");
+                
                 _options.AddArguments("--disable-session-crashed-bubble");
 
 
@@ -127,8 +129,9 @@ namespace LoginAgent
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
 
+               
+                ChromeDriver _driver = new ChromeDriver(_driverService, _options);
 
-                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
                 _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
@@ -166,6 +169,9 @@ namespace LoginAgent
 
         private void DoLogin(string site)
         {
+
+            this.KillBrowser();
+            this.KillDriver();
 
             JObject data = GetSiteData(site);
 

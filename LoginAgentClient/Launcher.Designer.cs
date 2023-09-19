@@ -66,14 +66,13 @@ namespace LoginAgent
             // 
             this.versionLabel.AutoSize = true;
             this.versionLabel.BackColor = System.Drawing.Color.Black;
-            this.versionLabel.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.versionLabel.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.versionLabel.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.versionLabel.Location = new System.Drawing.Point(267, 228);
+            this.versionLabel.Location = new System.Drawing.Point(3, 216);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(35, 13);
             this.versionLabel.TabIndex = 1;
             this.versionLabel.Text = "0000";
-            
             // 
             // trayIcon
             // 
@@ -84,6 +83,7 @@ namespace LoginAgent
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
@@ -101,14 +101,14 @@ namespace LoginAgent
             // 
             this.driverVer.AutoSize = true;
             this.driverVer.BackColor = System.Drawing.Color.Black;
-            this.driverVer.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.driverVer.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.driverVer.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.driverVer.Location = new System.Drawing.Point(267, 215);
+            this.driverVer.Location = new System.Drawing.Point(3, 229);
             this.driverVer.Name = "driverVer";
             this.driverVer.Size = new System.Drawing.Size(35, 13);
             this.driverVer.TabIndex = 1;
             this.driverVer.Text = "0000";
-            
+            this.driverVer.Click += new System.EventHandler(this.driverVer_Click);
             // 
             // Launcher
             // 
@@ -123,7 +123,7 @@ namespace LoginAgent
             this.Controls.Add(this.driverVer);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.metroButton1);
-            this.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Font = new System.Drawing.Font("Gulim", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(500, 500);
             this.Margin = new System.Windows.Forms.Padding(4);

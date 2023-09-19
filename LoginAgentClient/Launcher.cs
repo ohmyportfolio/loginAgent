@@ -45,11 +45,11 @@ namespace LoginAgent
             this.driverVer.Text = AppHelper.GetDriverVer();
 
         }
-
+ 
 
         public void KillDriver()
         {
-            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
+            foreach (Process process in Process.GetProcessesByName("chromedriver"))
             {
                 try
                 {
@@ -57,7 +57,7 @@ namespace LoginAgent
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Error :: Kill msedgedriver");
+                    Console.WriteLine("Error :: Kill chromedriver");
                 }
             }
         }
@@ -125,7 +125,9 @@ namespace LoginAgent
         public void KillAllSite()
         {
 
-            foreach (Process process in Process.GetProcessesByName("msedge"))
+           
+
+            foreach (Process process in Process.GetProcessesByName("chrome"))
             {
                 try
                 {
@@ -137,6 +139,7 @@ namespace LoginAgent
                 }
             }
 
+
             CheckAndSendUseInfo(null);
 
         }
@@ -147,7 +150,7 @@ namespace LoginAgent
             {
                 Console.WriteLine("Check Account Page and Kill");
                 Thread.Sleep(3000);
-                foreach (Process process in Process.GetProcessesByName("msedge"))
+                foreach (Process process in Process.GetProcessesByName("chrome"))
                 {
                     try
                     {
@@ -285,6 +288,9 @@ namespace LoginAgent
             BringToFront();
         }
 
+        private void driverVer_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }
