@@ -218,9 +218,6 @@
     <None Include="Resources\tving.PNG" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="py\dist\py_you.exe" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\uflix_done.png" />
   </ItemGroup>
   <ItemGroup>
