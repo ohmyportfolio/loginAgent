@@ -292,5 +292,11 @@ namespace LoginAgent
         {
 
         }
+
+        private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show(); // Shows the form
+            this.WindowState = FormWindowState.Normal; // Changes the window state to normal
+        }
     }
 }
