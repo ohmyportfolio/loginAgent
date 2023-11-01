@@ -33,10 +33,10 @@
             this.labelTving = new System.Windows.Forms.Label();
             this.labelWavve = new System.Windows.Forms.Label();
             this.disneyBtn = new MetroFramework.Controls.MetroButton();
-            this.metroButton2 = new MetroFramework.Controls.MetroButton();
+            this.wavveBtn = new MetroFramework.Controls.MetroButton();
             this.tvingBtn = new MetroFramework.Controls.MetroButton();
             this.netFlixBtn = new MetroFramework.Controls.MetroButton();
-            this.metroButton3 = new MetroFramework.Controls.MetroButton();
+            this.noonooBtn = new MetroFramework.Controls.MetroButton();
             this.youtubeBtn = new MetroFramework.Controls.MetroButton();
             this.SuspendLayout();
             // 
@@ -97,13 +97,13 @@
             // 
             // metroButton2
             // 
-            this.metroButton2.BackgroundImage = global::LoginAgent.Resource1.wavve;
-            this.metroButton2.Location = new System.Drawing.Point(420, 26);
-            this.metroButton2.Name = "metroButton2";
-            this.metroButton2.Size = new System.Drawing.Size(198, 399);
-            this.metroButton2.TabIndex = 2;
-            this.metroButton2.UseSelectable = true;
-            this.metroButton2.Click += new System.EventHandler(this.WavveBtnClick);
+            this.wavveBtn.BackgroundImage = global::LoginAgent.Resource1.wavve;
+            this.wavveBtn.Location = new System.Drawing.Point(420, 26);
+            this.wavveBtn.Name = "metroButton2";
+            this.wavveBtn.Size = new System.Drawing.Size(198, 399);
+            this.wavveBtn.TabIndex = 2;
+            this.wavveBtn.UseSelectable = true;
+            this.wavveBtn.Click += new System.EventHandler(this.WavveBtnClick);
             // 
             // tvingBtn
             // 
@@ -127,13 +127,13 @@
             // 
             // metroButton3
             // 
-            this.metroButton3.BackgroundImage = global::LoginAgent.Resource1.noonoo1;
-            this.metroButton3.Location = new System.Drawing.Point(624, 27);
-            this.metroButton3.Name = "metroButton3";
-            this.metroButton3.Size = new System.Drawing.Size(198, 399);
-            this.metroButton3.TabIndex = 5;
-            this.metroButton3.UseSelectable = true;
-            this.metroButton3.Click += new System.EventHandler(this.NoonooBtnClick);
+            this.noonooBtn.BackgroundImage = global::LoginAgent.Resource1.noonoo1;
+            this.noonooBtn.Location = new System.Drawing.Point(624, 27);
+            this.noonooBtn.Name = "metroButton3";
+            this.noonooBtn.Size = new System.Drawing.Size(198, 399);
+            this.noonooBtn.TabIndex = 5;
+            this.noonooBtn.UseSelectable = true;
+            this.noonooBtn.Click += new System.EventHandler(this.NoonooBtnClick);
             // 
             // youtubeBtn
             // 
@@ -153,12 +153,12 @@
             this.CancelButton = this.metroButton1;
             this.ClientSize = new System.Drawing.Size(839, 551);
             this.Controls.Add(this.youtubeBtn);
-            this.Controls.Add(this.metroButton3);
+            this.Controls.Add(this.noonooBtn);
             this.Controls.Add(this.disneyBtn);
             this.Controls.Add(this.labelWavve);
             this.Controls.Add(this.labelTving);
             this.Controls.Add(this.labelNetflix);
-            this.Controls.Add(this.metroButton2);
+            this.Controls.Add(this.wavveBtn);
             this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.tvingBtn);
             this.Controls.Add(this.netFlixBtn);
@@ -177,12 +177,12 @@
         private MetroFramework.Controls.MetroButton netFlixBtn;
         private MetroFramework.Controls.MetroButton tvingBtn;
         private MetroFramework.Controls.MetroButton metroButton1;
-        private MetroFramework.Controls.MetroButton metroButton2;
+        private MetroFramework.Controls.MetroButton wavveBtn;
         private MetroFramework.Controls.MetroButton disneyBtn;
         private System.Windows.Forms.Label labelNetflix;
         private System.Windows.Forms.Label labelTving;
         private System.Windows.Forms.Label labelWavve;
-        private MetroFramework.Controls.MetroButton metroButton3;
+        private MetroFramework.Controls.MetroButton noonooBtn;
         private MetroFramework.Controls.MetroButton youtubeBtn;
     }
 }

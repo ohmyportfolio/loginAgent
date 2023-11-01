@@ -9,6 +9,9 @@ using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Chrome;
+using System.Threading.Tasks;
+using Microsoft.Web.WebView2.WinForms;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace LoginAgent
 {
@@ -19,9 +22,16 @@ namespace LoginAgent
 
         public Action KillDriver;
 
+        
+
+
+
         public Main()
         {
             InitializeComponent();
+
+            
+    
 
             SiteUsageStatus();
         }
@@ -54,6 +64,61 @@ namespace LoginAgent
             DoLogin("tving");
             SiteUsageStatus();
             this.KillDriver();
+        }
+
+
+        private async Task LoginSiteAsync(JObject data)
+        {
+            string id = data.GetValue("user_id").ToString();
+            string pw_enc = data.GetValue("user_password").ToString();
+            string siteId = data.GetValue("id").ToString();
+            string pw = AppHelper.Decrypt(pw_enc, AppHelper.M_K);
+            string url = data.GetValue("login_url").ToString();
+            string idXpath = data.GetValue("id_xpath").ToString();
+            string pwXpath = data.GetValue("pw_xpath").ToString();
+            string logXpath = data.GetValue("login_xpath").ToString();
+            string logXpath2 = data.GetValue("login_xpath2").ToString();
+
+
+            WebViewer webViewerForm = new WebViewer();
+            webViewerForm.Show();
+            await webViewerForm.WebView21.EnsureCoreWebView2Async(null);
+            // Initialize WebView2
+            webViewerForm.WebView21.CoreWebView2.Navigate(url);
+            
+            webViewerForm.WebView21.CoreWebView2.NavigationCompleted += async (sender, args) =>
+            {
+                if (args.IsSuccess)
+                {
+
+                    
+                    if (siteId == "youtube")
+                    {
+                        // Execute YouTube specific logic
+                    }
+                    else if (siteId == "disney")
+                    {
+                        // Inject JavaScript to interact with the Disney login page
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{idXpath}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.value = '{id}';");
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{logXpath}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
+                        // Add delay if needed
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{pwXpath}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.value = '{pw}';");
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{logXpath2}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
+                    }
+                    else
+                    {
+                       // General login logic for other sites
+
+
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{idXpath}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.value = '{id}';");
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{pwXpath}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.value = '{pw}';");
+                        await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync($"document.evaluate('{logXpath}', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();");
+
+                        //await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync("document.getElementById('idField').value = 'test'"
+
+                    }
+                }
+            };
         }
 
         private void LoginSite(JObject data)
