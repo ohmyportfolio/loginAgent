@@ -49,7 +49,7 @@ namespace LoginAgent
 
         public void KillDriver()
         {
-            foreach (Process process in Process.GetProcessesByName("chromedriver"))
+            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
             {
                 try
                 {
@@ -57,7 +57,7 @@ namespace LoginAgent
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Error :: Kill chromedriver");
+                    Console.WriteLine("Error :: Kill msedgedriver");
                 }
             }
         }
@@ -125,9 +125,7 @@ namespace LoginAgent
         public void KillAllSite()
         {
 
-           
-
-            foreach (Process process in Process.GetProcessesByName("chrome"))
+            foreach (Process process in Process.GetProcessesByName("msedge"))
             {
                 try
                 {
@@ -150,7 +148,7 @@ namespace LoginAgent
             {
                 Console.WriteLine("Check Account Page and Kill");
                 Thread.Sleep(3000);
-                foreach (Process process in Process.GetProcessesByName("chrome"))
+                foreach (Process process in Process.GetProcessesByName("msedge"))
                 {
                     try
                     {

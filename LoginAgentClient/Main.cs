@@ -12,6 +12,8 @@ using OpenQA.Selenium.Chrome;
 using System.Threading.Tasks;
 using Microsoft.Web.WebView2.WinForms;
 using Microsoft.Web.WebView2.Wpf;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Interactions;
 
 namespace LoginAgent
 {
@@ -116,6 +118,8 @@ namespace LoginAgent
 
                         //await webViewerForm.WebView21.CoreWebView2.ExecuteScriptAsync("document.getElementById('idField').value = 'test'"
 
+                        
+
                     }
                 }
             };
@@ -156,37 +160,35 @@ namespace LoginAgent
             }
             else
             {
-                ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
+                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
                 if (AppHelper.GetWebDriverDebugMode() == "true")
                 {
                     _driverService.HideCommandPromptWindow = false;
-                    //_driverService.UseVerboseLogging = true;
+                    _driverService.UseVerboseLogging = true;
                 }
                 else
                 {
                     _driverService.HideCommandPromptWindow = true;
-                    //_driverService.UseVerboseLogging = false;
+                    _driverService.UseVerboseLogging = false;
                 }
 
-                ChromeOptions _options = new ChromeOptions();
+                EdgeOptions _options = new EdgeOptions();
 
-                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Google\\Chrome\\User Data");
+                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
 
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
 
 
+                //Edge
+                _options.AddArguments("-inprivate");
 
-                //_options.UseInPrivateBrowsing = true;
-                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+                //Chrome
+                //_options.AddArguments("--incognito");
                 
-                _options.AddArguments("--disable-dev-shm-usage");
-                
+                _options.AddArguments("--disable-dev-shm-usage");               
                 _options.AddArguments("--disable-session-crashed-bubble");
-                _options.AddArguments("--incognito");
-                
-
                 _options.AddExcludedArgument("enable-automation");
                 _options.AddAdditionalOption("useAutomationExtension", false);
                 _options.AddUserProfilePreference("credentials_enable_service", false);
@@ -194,9 +196,10 @@ namespace LoginAgent
 
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
+                _options.UseWebView = true;
 
-               
-                ChromeDriver _driver = new ChromeDriver(_driverService, _options);
+
+                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
 
                 _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
