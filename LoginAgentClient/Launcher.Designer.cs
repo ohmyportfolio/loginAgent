@@ -137,6 +137,8 @@ namespace LoginAgent
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.ControlBox = false;
+            this.MinimizeBox = false;
 
         }
 
