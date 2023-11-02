@@ -119,9 +119,7 @@ namespace LoginAgent
                 _options.AddArguments("--disable-dev-shm-usage");
                 
                 _options.AddArguments("--disable-session-crashed-bubble");
-                _options.AddArguments("--incognito");
                 
-
                 _options.AddExcludedArgument("enable-automation");
                 _options.AddAdditionalOption("useAutomationExtension", false);
                 _options.AddUserProfilePreference("credentials_enable_service", false);
