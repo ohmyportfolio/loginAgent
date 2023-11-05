@@ -9,6 +9,7 @@ using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Chrome;
+using System.Reflection;
 
 namespace LoginAgent
 {
@@ -91,7 +92,15 @@ namespace LoginAgent
             }
             else
             {
+                
+                string currentProcessPath = Assembly.GetExecutingAssembly().Location;
+                
+                string currentDirectory = Path.GetDirectoryName(currentProcessPath);
+                // 해당 디렉터리에 'chromeBrowser' 폴더 경로를 추가합니다.
+                string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "GoogleChromePortable.exe");
+
                 ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
+
 
                 if (AppHelper.GetWebDriverDebugMode() == "true")
                 {
@@ -105,8 +114,10 @@ namespace LoginAgent
                 }
 
                 ChromeOptions _options = new ChromeOptions();
+                // 크롬 실행 파일의 경로를 옵션에 추가합니다.
+                _options.BinaryLocation = chromeExecutablePath;
 
-                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Google\\Chrome\\User Data");
+                var userDataPath = Path.Combine(currentDirectory, "browser", "data" , "profile");
 
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
@@ -114,7 +125,7 @@ namespace LoginAgent
 
 
                 //_options.UseInPrivateBrowsing = true;
-                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
                 
                 _options.AddArguments("--disable-dev-shm-usage");
                 

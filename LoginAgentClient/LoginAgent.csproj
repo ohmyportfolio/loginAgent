@@ -263,6 +263,7 @@
     <None Include="Resources\tv icon.png" />
     <None Include="Resources\tv-youtube-icon-with-png-and-vector-format-for-free-unlimited-3888121.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
