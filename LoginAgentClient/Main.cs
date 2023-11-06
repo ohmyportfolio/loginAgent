@@ -99,7 +99,7 @@ namespace LoginAgent
 
                 string currentDirectory = Path.GetDirectoryName(currentProcessPath);
 
-                string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "GoogleChromePortable.exe");
+                string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "App", "Chrome-bin", "chrome.exe");
 
                 ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
 
@@ -121,15 +121,15 @@ namespace LoginAgent
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
 
-                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
 
 
                 _options.AddArguments("--disable-session-crashed-bubble");
                 _options.AddArguments("--disable-dev-tools");
                 _options.AddExcludedArgument("enable-automation");
                 _options.AddAdditionalOption("useAutomationExtension", false);
-                _options.AddUserProfilePreference("credentials_enable_service", false);
-                _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+                //_options.AddUserProfilePreference("credentials_enable_service", false);
+               // _options.AddUserProfilePreference("profile.password_manager_enabled", false);
 
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
@@ -175,8 +175,6 @@ namespace LoginAgent
         private void DoLogin(string site)
         {
 
-            this.KillBrowser();
-            this.KillDriver();
 
             JObject data = GetSiteData(site);
 
