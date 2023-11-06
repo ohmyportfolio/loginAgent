@@ -117,9 +117,8 @@ namespace LoginAgent
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.BackLocation = MetroFramework.Forms.BackLocation.BottomRight;
-            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(350, 250);
+            this.ControlBox = false;
             this.Controls.Add(this.driverVer);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.metroButton1);
@@ -128,6 +127,7 @@ namespace LoginAgent
             this.Location = new System.Drawing.Point(500, 500);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Launcher";
             this.Padding = new System.Windows.Forms.Padding(0, 60, 0, 0);
             this.Resizable = false;
@@ -137,8 +137,6 @@ namespace LoginAgent
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-            this.ControlBox = false;
-            this.MinimizeBox = false;
 
         }
 

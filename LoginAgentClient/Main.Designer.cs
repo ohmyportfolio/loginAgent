@@ -151,7 +151,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.metroButton1;
-            this.ClientSize = new System.Drawing.Size(839, 551);
+            this.ClientSize = new System.Drawing.Size(837, 551);
             this.Controls.Add(this.youtubeBtn);
             this.Controls.Add(this.metroButton3);
             this.Controls.Add(this.disneyBtn);

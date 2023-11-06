@@ -5,10 +5,13 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
-using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
+using OpenQA.Selenium.Chrome;
+using System.Reflection;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.DevTools;
 
 namespace LoginAgent
 {
@@ -70,7 +73,7 @@ namespace LoginAgent
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
 
-            if(siteId == "youtube")
+            if (siteId == "youtube")
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
@@ -81,44 +84,48 @@ namespace LoginAgent
                     WindowStyle = ProcessWindowStyle.Hidden
 
                 };
-                
+
                 using (Process process = new Process { StartInfo = startInfo })
                 {
                     process.Start();
-   
+
 
                 }
             }
             else
             {
-                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
-                if (AppHelper.GetWebDriverDebugMode() == "true")
-                {
-                    _driverService.HideCommandPromptWindow = false;
-                    _driverService.UseVerboseLogging = true;
-                }
-                else
-                {
-                    _driverService.HideCommandPromptWindow = true;
-                    _driverService.UseVerboseLogging = false;
-                }
+                string currentProcessPath = Assembly.GetExecutingAssembly().Location;
 
-                EdgeOptions _options = new EdgeOptions();
+                string currentDirectory = Path.GetDirectoryName(currentProcessPath);
 
-                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+                string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "GoogleChromePortable.exe");
+
+                ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
+
+                _driverService.HideCommandPromptWindow = true;
+
+
+                ChromeOptions _options = new ChromeOptions();
+                _options.BinaryLocation = chromeExecutablePath;
+
+                var userDataPath = Path.Combine(currentDirectory, "browser", "data", "profile");
+
+
+
+                // DevTools 비활성화
+                _options.AddArgument("--disable-dev-shm-usage"); // 리소스 제한 방지
+                _options.AddArgument("--no-sandbox"); // 샌드박스 모드 비활성화
+                _options.AddArgument("--remote-debugging-port=0"); // 원
 
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
 
+                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
 
-
-                //_options.UseInPrivateBrowsing = true;
-                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
 
                 _options.AddArguments("--disable-session-crashed-bubble");
-
-
+                _options.AddArguments("--disable-dev-tools");
                 _options.AddExcludedArgument("enable-automation");
                 _options.AddAdditionalOption("useAutomationExtension", false);
                 _options.AddUserProfilePreference("credentials_enable_service", false);
@@ -127,12 +134,13 @@ namespace LoginAgent
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
 
+                _options.AddArguments("--incognito");
 
-                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
+
+                ChromeDriver _driver = new ChromeDriver(_driverService, _options);
+
                 _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-
 
 
                 if (siteId == "disney")
@@ -158,14 +166,17 @@ namespace LoginAgent
                     element = _driver.FindElement(By.XPath(logXpath));
                     element.Click();
                 }
-            }
 
+            }
            
 
         }
 
         private void DoLogin(string site)
         {
+
+            this.KillBrowser();
+            this.KillDriver();
 
             JObject data = GetSiteData(site);
 
