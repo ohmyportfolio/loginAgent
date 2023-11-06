@@ -5,13 +5,10 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
-using OpenQA.Selenium.Chrome;
-using System.Reflection;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.DevTools;
 
 namespace LoginAgent
 {
@@ -94,36 +91,34 @@ namespace LoginAgent
             }
             else
             {
-                
-                string currentProcessPath = Assembly.GetExecutingAssembly().Location;
-                
-                string currentDirectory = Path.GetDirectoryName(currentProcessPath);
-                // 해당 디렉터리에 'chromeBrowser' 폴더 경로를 추가합니다.
-                string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "GoogleChromePortable.exe");
+                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
-                ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
-                
-                _driverService.HideCommandPromptWindow = true;
+                if (AppHelper.GetWebDriverDebugMode() == "true")
+                {
+                    _driverService.HideCommandPromptWindow = false;
+                    _driverService.UseVerboseLogging = true;
+                }
+                else
+                {
+                    _driverService.HideCommandPromptWindow = true;
+                    _driverService.UseVerboseLogging = false;
+                }
 
-             
+                EdgeOptions _options = new EdgeOptions();
 
+                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
 
-
-
-                ChromeOptions _options = new ChromeOptions();
-                _options.BinaryLocation = chromeExecutablePath;
-
-                
-                var userDataPath = Path.Combine(currentDirectory, "browser", "data" , "profile");
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
-       
-                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-                
-                _options.AddArguments("--disable-dev-shm-usage");
-                
+
+
+
+                //_options.UseInPrivateBrowsing = true;
+                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+
                 _options.AddArguments("--disable-session-crashed-bubble");
-                _options.AddArguments("--disable-dev-tools");
+
+
                 _options.AddExcludedArgument("enable-automation");
                 _options.AddAdditionalOption("useAutomationExtension", false);
                 _options.AddUserProfilePreference("credentials_enable_service", false);
@@ -132,12 +127,8 @@ namespace LoginAgent
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
 
-                _options.AddArguments("--incognito");
-            
-                
 
-                ChromeDriver _driver = new ChromeDriver(_driverService, _options);
-
+                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
                 _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
@@ -175,9 +166,6 @@ namespace LoginAgent
 
         private void DoLogin(string site)
         {
-
-            this.KillBrowser();
-            this.KillDriver();
 
             JObject data = GetSiteData(site);
 
