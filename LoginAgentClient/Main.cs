@@ -10,6 +10,8 @@ using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Chrome;
 using System.Reflection;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.DevTools;
 
 namespace LoginAgent
 {
@@ -100,37 +102,28 @@ namespace LoginAgent
                 string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "GoogleChromePortable.exe");
 
                 ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
+                
+                _driverService.HideCommandPromptWindow = true;
+
+             
 
 
-                if (AppHelper.GetWebDriverDebugMode() == "true")
-                {
-                    _driverService.HideCommandPromptWindow = false;
-                    //_driverService.UseVerboseLogging = true;
-                }
-                else
-                {
-                    _driverService.HideCommandPromptWindow = true;
-                    //_driverService.UseVerboseLogging = false;
-                }
+
 
                 ChromeOptions _options = new ChromeOptions();
-                // 크롬 실행 파일의 경로를 옵션에 추가합니다.
                 _options.BinaryLocation = chromeExecutablePath;
 
+                
                 var userDataPath = Path.Combine(currentDirectory, "browser", "data" , "profile");
 
-
                 _options.AddArguments("user-data-dir=" + userDataPath);
-
-
-
-                //_options.UseInPrivateBrowsing = true;
+       
                 _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
                 
                 _options.AddArguments("--disable-dev-shm-usage");
                 
                 _options.AddArguments("--disable-session-crashed-bubble");
-                
+                _options.AddArguments("--disable-dev-tools");
                 _options.AddExcludedArgument("enable-automation");
                 _options.AddAdditionalOption("useAutomationExtension", false);
                 _options.AddUserProfilePreference("credentials_enable_service", false);
@@ -139,7 +132,10 @@ namespace LoginAgent
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
 
-               
+                _options.AddArguments("--incognito");
+            
+                
+
                 ChromeDriver _driver = new ChromeDriver(_driverService, _options);
 
                 _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
