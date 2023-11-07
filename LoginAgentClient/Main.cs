@@ -8,10 +8,9 @@ using System.Text;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Diagnostics;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using System.Reflection;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.DevTools;
+
 
 namespace LoginAgent
 {
@@ -95,21 +94,18 @@ namespace LoginAgent
             else
             {
 
-                string currentProcessPath = Assembly.GetExecutingAssembly().Location;
+               
 
-                string currentDirectory = Path.GetDirectoryName(currentProcessPath);
-
-                string chromeExecutablePath = Path.Combine(currentDirectory, "browser", "App", "Chrome-bin", "chrome.exe");
-
-                ChromeDriverService _driverService = ChromeDriverService.CreateDefaultService();
+                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
                 _driverService.HideCommandPromptWindow = true;
 
 
-                ChromeOptions _options = new ChromeOptions();
-                _options.BinaryLocation = chromeExecutablePath;
+                EdgeOptions _options = new EdgeOptions();
+                _options.AddArguments("-inprivate");
 
-                var userDataPath = Path.Combine(currentDirectory, "browser", "data", "profile");
+                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+
 
                 _options.AddArguments("user-data-dir=" + userDataPath);
 
@@ -125,7 +121,7 @@ namespace LoginAgent
 
                 _options.AddArguments("--incognito");
 
-                ChromeDriver _driver = new ChromeDriver(_driverService, _options);
+                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
 
                 _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
