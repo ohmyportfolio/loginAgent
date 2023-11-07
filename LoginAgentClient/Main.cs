@@ -111,31 +111,19 @@ namespace LoginAgent
 
                 var userDataPath = Path.Combine(currentDirectory, "browser", "data", "profile");
 
-
-
-                // DevTools 비활성화
-                _options.AddArgument("--disable-dev-shm-usage"); // 리소스 제한 방지
-                _options.AddArgument("--no-sandbox"); // 샌드박스 모드 비활성화
-                _options.AddArgument("--remote-debugging-port=0"); // 원
-
-
                 _options.AddArguments("user-data-dir=" + userDataPath);
 
-                //_options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-
-
-                _options.AddArguments("--disable-session-crashed-bubble");
-                _options.AddArguments("--disable-dev-tools");
+                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+                 
                 _options.AddExcludedArgument("enable-automation");
-                _options.AddAdditionalOption("useAutomationExtension", false);
-                //_options.AddUserProfilePreference("credentials_enable_service", false);
-               // _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+            
+                _options.AddUserProfilePreference("credentials_enable_service", false);
+                _options.AddUserProfilePreference("profile.password_manager_enabled", false);
 
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
 
                 _options.AddArguments("--incognito");
-
 
                 ChromeDriver _driver = new ChromeDriver(_driverService, _options);
 

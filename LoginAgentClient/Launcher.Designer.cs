@@ -89,7 +89,7 @@ namespace LoginAgent
             this.showToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(116, 28);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
+           
             // 
             // showToolStripMenuItem
             // 
@@ -109,7 +109,7 @@ namespace LoginAgent
             this.driverVer.Size = new System.Drawing.Size(40, 17);
             this.driverVer.TabIndex = 1;
             this.driverVer.Text = "0000";
-            this.driverVer.Click += new System.EventHandler(this.driverVer_Click);
+            
             // 
             // Launcher
             // 

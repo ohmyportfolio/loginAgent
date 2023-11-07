@@ -167,6 +167,7 @@ namespace LoginAgent
                             || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
                             || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
                             || url.Contains("app-settings") || url.Contains("help.disneyplus.com")  //disney
+                            || url.Contains("passwords")
 
 
                             )
@@ -278,20 +279,14 @@ namespace LoginAgent
 
         }
 
-        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
+     
 
         private void ShowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BringToFront();
         }
 
-        private void driverVer_Click(object sender, EventArgs e)
-        {
-
-        }
+   
 
         private void TrayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
