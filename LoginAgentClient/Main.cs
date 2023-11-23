@@ -101,13 +101,23 @@ namespace LoginAgent
                 _driverService.HideCommandPromptWindow = true;
 
 
+                string currentProcessPath = Assembly.GetExecutingAssembly().Location;
+
+                string currentDirectory = Path.GetDirectoryName(currentProcessPath);
+                
+                string browserExecutablePath = Path.Combine(currentDirectory, "browser", "Application", "msedge.exe");
+
                 EdgeOptions _options = new EdgeOptions();
+
+                _options.BinaryLocation = browserExecutablePath;
+
                 _options.AddArguments("-inprivate");
 
-                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+                //var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+                var userDataPath = Path.Combine(currentDirectory, "browser", "User Data");
 
-
-                _options.AddArguments("user-data-dir=" + userDataPath);
+                
+                _options.AddArguments("--user-data-dir=" + userDataPath);
 
                 _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
                  
@@ -118,8 +128,9 @@ namespace LoginAgent
 
                 _options.AddUserProfilePreference("profile.exited_cleanly", true);
                 _options.AddUserProfilePreference("profile.exit_type", "Normal");
+                
 
-                _options.AddArguments("--incognito");
+                //_options.AddArguments("--incognito");
 
                 EdgeDriver _driver = new EdgeDriver(_driverService, _options);
 
