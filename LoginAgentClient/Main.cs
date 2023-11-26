@@ -72,27 +72,8 @@ namespace LoginAgent
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
 
-            if (siteId == "youtube")
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo()
-                {
-                    FileName = "py\\dist\\py_you.exe", // Or the full path to the test.exe if not in PATH
-                    Arguments = $"--xpath \"{idXpath}\" --xpath2 \"{pwXpath}\" --dkdlel \"{id}\" --alqjs \"{pw}\" --loginPath \"{logXpath}\"",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-
-                };
-
-                using (Process process = new Process { StartInfo = startInfo })
-                {
-                    process.Start();
-
-
-                }
-            }
-            else
-            {
+           
+           
 
                
 
@@ -138,7 +119,7 @@ namespace LoginAgent
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
 
-                if (siteId == "disney")
+                if (siteId == "disney" || siteId == "youtube")
                 {
                     var element = _driver.FindElement(By.XPath(idXpath));
                     element.SendKeys(id);
@@ -162,7 +143,7 @@ namespace LoginAgent
                     element.Click();
                 }
 
-            }
+            
            
 
         }
@@ -335,6 +316,11 @@ namespace LoginAgent
             DoLogin("youtube");
             SiteUsageStatus();
             this.KillDriver();
+
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
 
         }
     }
