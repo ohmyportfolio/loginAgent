@@ -71,81 +71,65 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
+                                      
+
+            EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
+
+            _driverService.HideCommandPromptWindow = true;
+                                   
+
+            EdgeOptions _options = new EdgeOptions();
 
            
-           
+            _options.AddArguments("-inprivate");
 
-               
+            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+                            
+            _options.AddArguments("--user-data-dir=" + userDataPath);
 
-                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
-
-                _driverService.HideCommandPromptWindow = true;
-
-
-                string currentProcessPath = Assembly.GetExecutingAssembly().Location;
-
-                string currentDirectory = Path.GetDirectoryName(currentProcessPath);
-                
-                string browserExecutablePath = Path.Combine(currentDirectory, "browser", "Application", "msedge.exe");
-
-                EdgeOptions _options = new EdgeOptions();
-
-                _options.BinaryLocation = browserExecutablePath;
-
-                _options.AddArguments("-inprivate");
-
-                //var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
-                var userDataPath = Path.Combine(currentDirectory, "browser", "User Data");
-
-                
-                _options.AddArguments("--user-data-dir=" + userDataPath);
-
-                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+            _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
                  
-                _options.AddExcludedArgument("enable-automation");
+            _options.AddExcludedArgument("enable-automation");
             
-                _options.AddUserProfilePreference("credentials_enable_service", false);
-                _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+            _options.AddUserProfilePreference("credentials_enable_service", false);
+            _options.AddUserProfilePreference("profile.password_manager_enabled", false);
 
-                _options.AddUserProfilePreference("profile.exited_cleanly", true);
-                _options.AddUserProfilePreference("profile.exit_type", "Normal");
+            _options.AddUserProfilePreference("profile.exited_cleanly", true);
+            _options.AddUserProfilePreference("profile.exit_type", "Normal");
                 
 
-                //_options.AddArguments("--incognito");
+            //_options.AddArguments("--incognito");
 
-                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
+            EdgeDriver _driver = new EdgeDriver(_driverService, _options);
 
-                _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
-                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
 
-                if (siteId == "disney" || siteId == "youtube")
-                {
-                    var element = _driver.FindElement(By.XPath(idXpath));
-                    element.SendKeys(id);
-                    element = _driver.FindElement(By.XPath(logXpath));
-                    element.Click();
-                    element = _driver.FindElement(By.XPath(pwXpath));
-                    element.SendKeys(pw);
-                    element = _driver.FindElement(By.XPath(logXpath2));
-                    element.Click();
+            if (siteId == "disney" || siteId == "youtube")
+            {
+                var element = _driver.FindElement(By.XPath(idXpath));
+                element.SendKeys(id);
+                element = _driver.FindElement(By.XPath(logXpath));
+                element.Click();
+                element = _driver.FindElement(By.XPath(pwXpath));
+                element.SendKeys(pw);
+                element = _driver.FindElement(By.XPath(logXpath2));
+                element.Click();
 
-                }
-                else
-                {
-                    //var element = _driver.FindElementByXPath(idXpath);
-                    var element = _driver.FindElement(By.XPath(idXpath));
+            }
+            else
+            {
+                //var element = _driver.FindElementByXPath(idXpath);
+                var element = _driver.FindElement(By.XPath(idXpath));
 
-                    element.SendKeys(id);
-                    element = _driver.FindElement(By.XPath(pwXpath));
-                    element.SendKeys(pw);
-                    element = _driver.FindElement(By.XPath(logXpath));
-                    element.Click();
-                }
-
-            
-           
-
+                element.SendKeys(id);
+                element = _driver.FindElement(By.XPath(pwXpath));
+                element.SendKeys(pw);
+                element = _driver.FindElement(By.XPath(logXpath));
+                element.Click();
+            }
+               
         }
 
         private void DoLogin(string site)
