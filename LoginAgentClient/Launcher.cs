@@ -96,7 +96,7 @@ namespace LoginAgent
             main.KillBrowser = this.KillAllSite;
             main.KillDriver = this.KillDriver;
 
-            await UpdateEdgeDriverAsync();
+            
 
             if (t1 == null || !t1.IsAlive)
             {
@@ -299,12 +299,22 @@ namespace LoginAgent
                 ? FileVersionInfo.GetVersionInfo(edgeDriverPath).FileVersion
                 : "";
 
+                        
+            if (string.IsNullOrEmpty(installedEdgeVersion))
+            {
+                return;
+            }
+
             // 3. 버전 비교
             if (installedEdgeVersion != currentDriverVersion)
             {
-                // 4. msedgedriver.exe 다운로드 및 교체
                 string downloadUrl = $"https://msedgedriver.azureedge.net/{installedEdgeVersion}/edgedriver_win64.zip";
-                await DownloadAndReplaceEdgeDriver(downloadUrl, edgeDriverPath);
+
+                // Create a single instance of HttpClient
+                using (var client = new HttpClient())
+                {
+                    await DownloadAndReplaceEdgeDriver(client, downloadUrl, edgeDriverPath, installedEdgeVersion);
+                }
             }
         }
 
@@ -332,59 +342,102 @@ namespace LoginAgent
             return edgeVersion;
         }
 
-        private async Task DownloadAndReplaceEdgeDriver(string url, string edgeDriverPath)
+        private async Task DownloadAndReplaceEdgeDriver(HttpClient client, string url, string edgeDriverPath, string expectedVersion)
         {
+            string tempDirectory = "";
+            string backupDriverPath = "";
+
             try
             {
-                // 임시 디렉토리 생성
-                string tempDirectory = Path.Combine(Path.GetTempPath(), "EdgeDriver");
+                // Create a temporary directory for the download process
+                tempDirectory = Path.Combine(Path.GetTempPath(), "EdgeDriver");
                 Directory.CreateDirectory(tempDirectory);
 
-                // 파일 다운로드
+                // Define the path for the downloaded zip file
                 string zipPath = Path.Combine(tempDirectory, "msedgedriver.zip");
 
-                // 기존 다운로드 파일이 존재한다면 삭제
+                // Delete the zip file if it already exists
                 if (File.Exists(zipPath))
                 {
                     File.Delete(zipPath);
                 }
 
-                using (HttpClient client = new HttpClient())
+                // Download the zip file
+                var response = await client.GetAsync(url);
+                using (var fs = new FileStream(zipPath, FileMode.CreateNew))
                 {
-                    var response = await client.GetAsync(url);
-                    using (var fs = new FileStream(zipPath, FileMode.CreateNew))
-                    {
-                        await response.Content.CopyToAsync(fs);
-                    }
+                    await response.Content.CopyToAsync(fs);
                 }
 
-                // 압축 해제
+                // Define the path for the extracted contents
                 string extractedPath = Path.Combine(tempDirectory, "extracted");
 
-                // 기존 압축 해제 디렉토리가 존재한다면 삭제
+                // Delete the extracted path if it already exists
                 if (Directory.Exists(extractedPath))
                 {
                     Directory.Delete(extractedPath, true);
                 }
 
+                // Extract the downloaded zip file
                 System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractedPath);
 
-                // 기존 드라이버 파일 삭제 및 새 파일 복사
+                // Check if the new driver exists
                 string newDriverPath = Path.Combine(extractedPath, "msedgedriver.exe");
+                if (!File.Exists(newDriverPath))
+                {
+                    Console.WriteLine("Downloaded Edge driver is not found. Update aborted.");
+                    return;
+                }
+
+                // Check the version of the downloaded driver
+                string downloadedDriverVersion = FileVersionInfo.GetVersionInfo(newDriverPath).FileVersion;
+                if (downloadedDriverVersion != expectedVersion)
+                {
+                    Console.WriteLine($"Downloaded Edge driver version mismatch: expected {expectedVersion}, but got {downloadedDriverVersion}. Update aborted.");
+                    return;
+                }
+
+                // Backup existing driver
+                backupDriverPath = edgeDriverPath + ".bak";
                 if (File.Exists(edgeDriverPath))
                 {
+                    File.Copy(edgeDriverPath, backupDriverPath, overwrite: true);
                     File.Delete(edgeDriverPath);
                 }
+
+                // Replace the existing driver with the new one
                 File.Copy(newDriverPath, edgeDriverPath);
 
-                // 임시 파일 정리
-                Directory.Delete(tempDirectory, true);
+                // Clean up backup if update is successful
+                if (File.Exists(backupDriverPath))
+                {
+                    File.Delete(backupDriverPath);
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("An error occurred while updating Edge driver: " + ex.Message);
+
+                // Restore backup in case of error
+                if (!string.IsNullOrEmpty(backupDriverPath) && File.Exists(backupDriverPath))
+                {
+                    if (File.Exists(edgeDriverPath))
+                    {
+                        File.Delete(edgeDriverPath);
+                    }
+                    File.Move(backupDriverPath, edgeDriverPath);
+                }
+            }
+            finally
+            {
+                // Clean up temp directory
+                if (!string.IsNullOrEmpty(tempDirectory) && Directory.Exists(tempDirectory))
+                {
+                    Directory.Delete(tempDirectory, true);
+                }
             }
         }
+
 
     }
 }
