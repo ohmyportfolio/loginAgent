@@ -10,6 +10,7 @@ using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Edge;
 using System.Reflection;
+using System.Threading.Tasks;
 
 
 namespace LoginAgent
@@ -25,7 +26,6 @@ namespace LoginAgent
         {
             InitializeComponent();
 
-            SiteUsageStatus();
         }
 
         
@@ -34,7 +34,6 @@ namespace LoginAgent
             
             this.KillBrowser();
             DoLogin("netflix");
-            SiteUsageStatus();
             this.KillDriver();
 
         }
@@ -44,7 +43,6 @@ namespace LoginAgent
             
             this.KillBrowser();
             DoLogin("wavve");
-            SiteUsageStatus();
             this.KillDriver();
         }
 
@@ -54,7 +52,6 @@ namespace LoginAgent
             
             this.KillBrowser();
             DoLogin("tving");
-            SiteUsageStatus();
             this.KillDriver();
         }
 
@@ -132,10 +129,9 @@ namespace LoginAgent
                
         }
 
-        private void DoLogin(string site)
+        private async void DoLogin(string site)
         {
-
-
+           
             JObject data = GetSiteData(site);
 
             if (data == null)
@@ -242,70 +238,27 @@ namespace LoginAgent
             this.Close();
         }
 
-        private void SiteUsageStatus()
-        {
-            JObject result = GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/any/getUsedAcountCount");
-
-            if(result == null)
-            {
-                return;
-            }
-
-            JArray accounList = (JArray)result.GetValue("data");
-
-            foreach (JObject row in accounList.Cast<JObject>())
-            {
-                Console.WriteLine(row.GetValue("id"));
-                Console.WriteLine(row.GetValue("total_cnt"));
-                Console.WriteLine(row.GetValue("use_cnt"));
-                row.GetValue("id").ToString().Equals("netflix");
-                if (row.GetValue("id").ToString().Equals("netflix"))
-                {
-                    labelNetflix.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
-                }
-                else if (row.GetValue("id").ToString().Equals("tving"))
-                {
-                    labelTving.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
-                }
-                else if (row.GetValue("id").ToString().Equals("wavve"))
-                {
-                    labelWavve.Text = row.GetValue("use_cnt").ToString() + " / " + row.GetValue("total_cnt").ToString();
-                }
-            }
-            
-        }
+       
 
         private void DisneyBtn_Click(object sender, EventArgs e)
         {
 
             this.KillBrowser();
             DoLogin("disney");
-            SiteUsageStatus();
             this.KillDriver();
 
         }
 
-        private void NoonooBtnClick(object sender, EventArgs e)
-        {
-            JObject data = GetSiteData("noonoo");
-            string url = data.GetValue("login_url").ToString();
-            System.Diagnostics.Process.Start(url);
-
-        }
 
         private void YoutubeBtnClick(object sender, EventArgs e)
         {
 
             this.KillBrowser();
             DoLogin("youtube");
-            SiteUsageStatus();
             this.KillDriver();
 
         }
 
-        private void Main_Load(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

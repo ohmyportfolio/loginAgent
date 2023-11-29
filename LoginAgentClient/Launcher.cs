@@ -1,8 +1,9 @@
-﻿using MetroFramework.Forms;
+﻿
+using MetroFramework.Forms;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -11,6 +12,11 @@ using System.Text;
 using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using System.IO.Compression;
+using System.Threading.Tasks;
+using System.Net.Http;
+
+
 
 namespace LoginAgent
 {
@@ -44,6 +50,7 @@ namespace LoginAgent
             this.versionLabel.Text = AppHelper.GetVersion();
             this.driverVer.Text = AppHelper.GetDriverVer();
 
+            Task.Run(async () => await UpdateEdgeDriverAsync());
         }
  
 
@@ -78,7 +85,7 @@ namespace LoginAgent
             KillAllSite();
         }
 
-        private void OpenMainBtnClick(object sender, EventArgs e)
+        private async void OpenMainBtnClick(object sender, EventArgs e)
         {
 
             KillAllSite();
@@ -88,6 +95,8 @@ namespace LoginAgent
             main.KillBrowser = this.KillAllSite;
             main.KillDriver = this.KillDriver;
 
+            await UpdateEdgeDriverAsync();
+
             if (t1 == null || !t1.IsAlive)
             {
                 t1 = new Thread(new ThreadStart(KillAccountPage));
@@ -95,24 +104,7 @@ namespace LoginAgent
                 t1.Start();
             }
 
-            /*
-            if (t2 == null || !t2.IsAlive)
-            {
-                //t2 = new Thread(new ThreadStart(CheckOpenedSite));
-                //t2.IsBackground = true;
-                //t2.Start();
-
-            }
-
-            
-            if (t3 == null || !t3.IsAlive)
-            {
-                t3 = new Thread(new ThreadStart(ThreadManager));
-                t3.IsBackground = true;
-                t3.Start();
-
-            }
-            */
+      
 
             main.ShowDialog();
         }
@@ -293,5 +285,105 @@ namespace LoginAgent
             this.Show(); // Shows the form
             this.WindowState = FormWindowState.Normal; // Changes the window state to normal
         }
+
+
+        private async Task UpdateEdgeDriverAsync()
+        {
+            // 1. Windows에 설치된 MS Edge 브라우저 버전 확인
+            string installedEdgeVersion = GetInstalledEdgeVersion();
+
+            // 2. 현재 경로에 있는 msedgedriver.exe의 버전 확인
+            string edgeDriverPath = Path.Combine(Application.StartupPath, "msedgedriver.exe");
+            string currentDriverVersion = File.Exists(edgeDriverPath)
+                ? FileVersionInfo.GetVersionInfo(edgeDriverPath).FileVersion
+                : "";
+
+            // 3. 버전 비교
+            if (installedEdgeVersion != currentDriverVersion)
+            {
+                // 4. msedgedriver.exe 다운로드 및 교체
+                string downloadUrl = $"https://msedgedriver.azureedge.net/{installedEdgeVersion}/edgedriver_win64.zip";
+                await DownloadAndReplaceEdgeDriver(downloadUrl, edgeDriverPath);
+            }
+        }
+
+        private string GetInstalledEdgeVersion()
+        {
+            string edgeVersion = "";
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Edge\\BLBeacon"))
+                {
+                    if (key != null)
+                    {
+                        Object o = key.GetValue("version");
+                        if (o != null)
+                        {
+                            edgeVersion = o.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while getting Edge version: " + ex.Message);
+            }
+            return edgeVersion;
+        }
+
+        private async Task DownloadAndReplaceEdgeDriver(string url, string edgeDriverPath)
+        {
+            try
+            {
+                // 임시 디렉토리 생성
+                string tempDirectory = Path.Combine(Path.GetTempPath(), "EdgeDriver");
+                Directory.CreateDirectory(tempDirectory);
+
+                // 파일 다운로드
+                string zipPath = Path.Combine(tempDirectory, "msedgedriver.zip");
+
+                // 기존 다운로드 파일이 존재한다면 삭제
+                if (File.Exists(zipPath))
+                {
+                    File.Delete(zipPath);
+                }
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.GetAsync(url);
+                    using (var fs = new FileStream(zipPath, FileMode.CreateNew))
+                    {
+                        await response.Content.CopyToAsync(fs);
+                    }
+                }
+
+                // 압축 해제
+                string extractedPath = Path.Combine(tempDirectory, "extracted");
+
+                // 기존 압축 해제 디렉토리가 존재한다면 삭제
+                if (Directory.Exists(extractedPath))
+                {
+                    Directory.Delete(extractedPath, true);
+                }
+
+                System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractedPath);
+
+                // 기존 드라이버 파일 삭제 및 새 파일 복사
+                string newDriverPath = Path.Combine(extractedPath, "msedgedriver.exe");
+                if (File.Exists(edgeDriverPath))
+                {
+                    File.Delete(edgeDriverPath);
+                }
+                File.Copy(newDriverPath, edgeDriverPath);
+
+                // 임시 파일 정리
+                Directory.Delete(tempDirectory, true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while updating Edge driver: " + ex.Message);
+            }
+        }
+
     }
 }
