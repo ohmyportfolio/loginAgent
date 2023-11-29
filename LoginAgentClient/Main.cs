@@ -29,32 +29,7 @@ namespace LoginAgent
         }
 
         
-        private void NetFlixBtnClick(object sender, EventArgs e)
-        {
-            
-            this.KillBrowser();
-            DoLogin("netflix");
-            this.KillDriver();
-
-        }
-
-        private void WavveBtnClick(object sender, EventArgs e)
-        {
-            
-            this.KillBrowser();
-            DoLogin("wavve");
-            this.KillDriver();
-        }
-
-
-        private void TvingBtnClick(object sender, EventArgs e)
-        {
-            
-            this.KillBrowser();
-            DoLogin("tving");
-            this.KillDriver();
-        }
-
+        
         private void LoginSite(JObject data)
         {
             string id = data.GetValue("user_id").ToString();
@@ -238,27 +213,40 @@ namespace LoginAgent
             this.Close();
         }
 
-       
+
+        private void NetFlixBtnClick(object sender, EventArgs e)
+        {
+            PerformLoginAction("netflix");
+        }
+
+        private void WavveBtnClick(object sender, EventArgs e)
+        {
+            PerformLoginAction("wavve");
+        }
+
+        private void TvingBtnClick(object sender, EventArgs e)
+        {
+            PerformLoginAction("tving");
+        }
 
         private void DisneyBtn_Click(object sender, EventArgs e)
         {
-
-            this.KillBrowser();
-            DoLogin("disney");
-            this.KillDriver();
-
+            PerformLoginAction("disney");
         }
-
 
         private void YoutubeBtnClick(object sender, EventArgs e)
         {
-
-            this.KillBrowser();
-            DoLogin("youtube");
-            this.KillDriver();
-
+            PerformLoginAction("youtube");
         }
 
-       
+        private void PerformLoginAction(string site)
+        {
+            KillBrowser();
+            DoLogin(site);
+            KillDriver();
+        }
+
+
+
     }
 }
