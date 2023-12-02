@@ -20,7 +20,6 @@ namespace LoginAgent
 
         public Action KillBrowser;
 
-        public Action KillDriver;
 
         public Main()
         {
@@ -243,7 +242,7 @@ namespace LoginAgent
         {
             KillBrowser();
             DoLogin(site);
-            KillDriver();
+            ProcessUtils.KillDriver();
         }
 
 

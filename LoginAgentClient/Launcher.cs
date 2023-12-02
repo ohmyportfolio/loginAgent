@@ -89,12 +89,11 @@ namespace LoginAgent
         {
 
             KillAllSite();
-            KillDriver();
+            ProcessUtils.KillDriver();
 
             main = new Main();
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
             main.KillBrowser = this.KillAllSite;
-            main.KillDriver = this.KillDriver;
 
             
 

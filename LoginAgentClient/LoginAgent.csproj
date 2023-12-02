@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHelper.cs" />
+    <Compile Include="ProcessUtils.cs" />
     <Compile Include="Launcher.cs">
       <SubType>Form</SubType>
     </Compile>
