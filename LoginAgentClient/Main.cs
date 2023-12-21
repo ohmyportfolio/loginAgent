@@ -52,7 +52,7 @@ namespace LoginAgent
             EdgeOptions _options = new EdgeOptions();
 
            
-            _options.AddArguments("-inprivate");
+            
 
             var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
                             
@@ -67,9 +67,15 @@ namespace LoginAgent
 
             _options.AddUserProfilePreference("profile.exited_cleanly", true);
             _options.AddUserProfilePreference("profile.exit_type", "Normal");
-                
+
 
             //_options.AddArguments("--incognito");
+
+            if (siteId != "disney")
+            {
+                _options.AddArguments("-inprivate");
+            }
+            
 
             EdgeDriver _driver = new EdgeDriver(_driverService, _options);
 
@@ -79,6 +85,8 @@ namespace LoginAgent
 
             if (siteId == "disney" || siteId == "youtube")
             {
+
+
                 var element = _driver.FindElement(By.XPath(idXpath));
                 element.SendKeys(id);
                 element = _driver.FindElement(By.XPath(logXpath));
@@ -245,7 +253,61 @@ namespace LoginAgent
             ProcessUtils.KillDriver();
         }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
 
+        }
 
+        private void settingsBtn(object sender, EventArgs e)
+        {
+            // Display a password input dialog
+            string password = Prompt.ShowDialog("Enter Code", "Code Required");
+
+            // Check if the entered password is correct
+            if (password == "!QAZxsw2")
+            {
+                // Call the testSite function
+                testSite();
+            }
+            else
+            {
+                MessageBox.Show("Incorrect Password!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // TestSite method (implement this according to your requirements)
+        private void testSite()
+        {
+      
+            disneyBtn.Visible = true;
+            this.Width = 860;
+
+        }
+
+        public static class Prompt
+        {
+            public static string ShowDialog(string text, string caption)
+            {
+                Form prompt = new Form()
+                {
+                    Width = 500,
+                    Height = 150,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+                TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+                textBox.UseSystemPasswordChar = true; // Hide password characters
+                Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+                confirmation.Click += (sender, e) => { prompt.Close(); };
+                prompt.Controls.Add(textBox);
+                prompt.Controls.Add(confirmation);
+                prompt.Controls.Add(textLabel);
+                prompt.AcceptButton = confirmation;
+
+                return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+            }
+        }
     }
 }

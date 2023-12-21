@@ -37,6 +37,7 @@
             this.metroButton2 = new MetroFramework.Controls.MetroButton();
             this.tvingBtn = new MetroFramework.Controls.MetroButton();
             this.netFlixBtn = new MetroFramework.Controls.MetroButton();
+            this.testBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // metroButton1
@@ -44,7 +45,7 @@
             this.metroButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.metroButton1.FontSize = MetroFramework.MetroButtonSize.Tall;
             this.metroButton1.Highlight = true;
-            this.metroButton1.Location = new System.Drawing.Point(317, 484);
+            this.metroButton1.Location = new System.Drawing.Point(229, 484);
             this.metroButton1.Name = "metroButton1";
             this.metroButton1.Size = new System.Drawing.Size(185, 55);
             this.metroButton1.Style = MetroFramework.MetroColorStyle.Black;
@@ -91,6 +92,7 @@
             this.disneyBtn.Size = new System.Drawing.Size(198, 399);
             this.disneyBtn.TabIndex = 4;
             this.disneyBtn.UseSelectable = true;
+            this.disneyBtn.Visible = false;
             this.disneyBtn.Click += new System.EventHandler(this.DisneyBtn_Click);
             // 
             // metroButton2
@@ -123,12 +125,22 @@
             this.netFlixBtn.UseSelectable = true;
             this.netFlixBtn.Click += new System.EventHandler(this.NetFlixBtnClick);
             // 
+            // testBtn
+            // 
+            this.testBtn.Location = new System.Drawing.Point(-1, 528);
+            this.testBtn.Name = "testBtn";
+            this.testBtn.Size = new System.Drawing.Size(27, 23);
+            this.testBtn.TabIndex = 6;
+            this.testBtn.UseVisualStyleBackColor = true;
+            this.testBtn.Click += new System.EventHandler(this.settingsBtn);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.metroButton1;
-            this.ClientSize = new System.Drawing.Size(834, 551);
+            this.ClientSize = new System.Drawing.Size(635, 551);
+            this.Controls.Add(this.testBtn);
             this.Controls.Add(this.disneyBtn);
             this.Controls.Add(this.labelWavve);
             this.Controls.Add(this.labelTving);
@@ -142,6 +154,7 @@
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,6 +170,7 @@
         private System.Windows.Forms.Label labelNetflix;
         private System.Windows.Forms.Label labelTving;
         private System.Windows.Forms.Label labelWavve;
+        private System.Windows.Forms.Button testBtn;
     }
 }
 
