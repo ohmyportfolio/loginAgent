@@ -27,14 +27,15 @@ namespace LoginAgent
 
         }
 
-        
-        
+
+
         private void LoginSite(JObject data)
         {
             string id = data.GetValue("user_id").ToString();
             string pw_enc = data.GetValue("user_password").ToString();
-            string siteId = data.GetValue("id").ToString();
 
+            string siteId = data.GetValue("id").ToString();
+            
             string pw = AppHelper.Decrypt(pw_enc, AppHelper.M_K);
 
             string url = data.GetValue("login_url").ToString();
@@ -42,78 +43,114 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
-                                      
 
-            EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
-
-            _driverService.HideCommandPromptWindow = true;
-                                   
-
-            EdgeOptions _options = new EdgeOptions();
-
-           
             
 
-            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
-                            
-            _options.AddArguments("--user-data-dir=" + userDataPath);
-
-            _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-                 
-            _options.AddExcludedArgument("enable-automation");
-            
-            _options.AddUserProfilePreference("credentials_enable_service", false);
-            _options.AddUserProfilePreference("profile.password_manager_enabled", false);
-
-            _options.AddUserProfilePreference("profile.exited_cleanly", true);
-            _options.AddUserProfilePreference("profile.exit_type", "Normal");
-
-
-            //_options.AddArguments("--incognito");
-
-            if (siteId != "disney")
+            if (siteId == "disney")
             {
-                _options.AddArguments("-inprivate");
-            }
-            
-
-            EdgeDriver _driver = new EdgeDriver(_driverService, _options);
-
-            _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-
-            if (siteId == "disney" || siteId == "youtube")
-            {
-
-
-                var element = _driver.FindElement(By.XPath(idXpath));
-                element.SendKeys(id);
-                element = _driver.FindElement(By.XPath(logXpath));
-                element.Click();
-                element = _driver.FindElement(By.XPath(pwXpath));
-                element.SendKeys(pw);
-                element = _driver.FindElement(By.XPath(logXpath2));
-                element.Click();
-
+                RunPyYouExe(url, idXpath, pwXpath, id, EncodeToBase64(pw));
             }
             else
             {
-                //var element = _driver.FindElementByXPath(idXpath);
-                var element = _driver.FindElement(By.XPath(idXpath));
+                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
-                element.SendKeys(id);
-                element = _driver.FindElement(By.XPath(pwXpath));
-                element.SendKeys(pw);
-                element = _driver.FindElement(By.XPath(logXpath));
-                element.Click();
+                _driverService.HideCommandPromptWindow = true;
+
+
+                EdgeOptions _options = new EdgeOptions();
+
+
+
+
+                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+
+                _options.AddArguments("--user-data-dir=" + userDataPath);
+
+                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+
+                _options.AddExcludedArgument("enable-automation");
+
+                _options.AddUserProfilePreference("credentials_enable_service", false);
+                _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+
+                _options.AddUserProfilePreference("profile.exited_cleanly", true);
+                _options.AddUserProfilePreference("profile.exit_type", "Normal");
+             
+
+                //_options.AddArguments("--incognito");
+
+                if (siteId != "disney")
+                {
+                    _options.AddArguments("-inprivate");
+                }
+
+
+                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
+
+                _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
+                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+
+                if (siteId == "disney" || siteId == "youtube")
+                {
+
+
+                    var element = _driver.FindElement(By.XPath(idXpath));
+                    element.SendKeys(id);
+                    element = _driver.FindElement(By.XPath(logXpath));
+                    element.Click();
+                    element = _driver.FindElement(By.XPath(pwXpath));
+                    element.SendKeys(pw);
+                    element = _driver.FindElement(By.XPath(logXpath2));
+                    element.Click();
+
+                }
+                else
+                {
+                    //var element = _driver.FindElementByXPath(idXpath);
+                    var element = _driver.FindElement(By.XPath(idXpath));
+
+                    element.SendKeys(id);
+                    element = _driver.FindElement(By.XPath(pwXpath));
+                    element.SendKeys(pw);
+                    element = _driver.FindElement(By.XPath(logXpath));
+                    element.Click();
+                }
+
             }
-               
+
+
+
+
         }
+
+        private void RunPyYouExe(string url, string idXpath, string pwXpath, string id, string encryptedPassword)
+        {
+            string args = $"--url \"{url}\" --id_xpath \"{idXpath}\" --pw_xpath \"{pwXpath}\" --dkdlel \"{id}\" --alqjs \"{encryptedPassword}\"";
+
+            ProcessStartInfo startInfo = new ProcessStartInfo()
+            {
+                FileName = "py_you.exe",
+                Arguments = args,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            Process proc = new Process() { StartInfo = startInfo };
+            proc.Start();
+        }
+
+        public string EncodeToBase64(string plainText)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(plainText);
+            return Convert.ToBase64String(bytes);
+        }
+
 
         private async void DoLogin(string site)
         {
-           
+
             JObject data = GetSiteData(site);
 
             if (data == null)
@@ -148,7 +185,7 @@ namespace LoginAgent
 
         private JObject GetSiteData(string site)
         {
-             return GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
+            return GetObjectData("http://" + AppHelper.GetServerUrl() + "/api/sites/" + site + "/selectAvailableAccountSeq?select=accounts" + "&pc_ip=" + AppHelper.GetLocalIp());
 
         }
 
@@ -166,12 +203,12 @@ namespace LoginAgent
             {
                 return null;
             }
-            
+
         }
 
-        private void LoginAccount(string siteId , string accountId , string userId)
+        private void LoginAccount(string siteId, string accountId, string userId)
         {
-          
+
 
             string url = "http://" + AppHelper.GetServerUrl() + "/api/occupieds";
             string localIp = AppHelper.GetLocalIp();
@@ -278,7 +315,7 @@ namespace LoginAgent
         // TestSite method (implement this according to your requirements)
         private void testSite()
         {
-      
+
             disneyBtn.Visible = true;
             this.Width = 860;
 

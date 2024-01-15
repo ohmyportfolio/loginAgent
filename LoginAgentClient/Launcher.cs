@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Linq;
 
 
 
@@ -142,11 +143,16 @@ namespace LoginAgent
             {
                 Console.WriteLine("Check Account Page and Kill");
                 Thread.Sleep(3000);
-                foreach (Process process in Process.GetProcessesByName("msedge"))
+
+                // Edge와 Chrome 프로세스 리스트 생성
+                var processes = Process.GetProcessesByName("msedge").Concat(Process.GetProcessesByName("chrome")).ToList();
+
+
+                foreach (Process process in processes)
                 {
                     try
                     {
-                        string url = GetEdgeBrowserUrl(process);
+                        string url = GetBrowserUrl(process);
                         if (url == null)
                             continue;
 
@@ -159,7 +165,7 @@ namespace LoginAgent
                             || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
                             || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
                             || url.Contains("app-settings") || url.Contains("help.disneyplus.com") || url.Contains("/edit-profile/") //disney
-                            || url.Contains("passwords")
+                            || url.Contains("passwords") || url.Contains("/account")
 
 
                             )
@@ -177,7 +183,7 @@ namespace LoginAgent
 
             } while (true);
         }
-        public string GetEdgeBrowserUrl(Process process)
+        public string GetBrowserUrl(Process process)
         {
             if (process == null)
                 throw new ArgumentNullException("process");
@@ -189,11 +195,21 @@ namespace LoginAgent
             if (element == null)
                 return null;
 
-            AutomationElementCollection edits5 = element.FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
-            AutomationElement edit = edits5[0];
-            string vp = ((ValuePattern)edit.GetCurrentPattern(ValuePattern.Pattern)).Current.Value as string;
-            Console.WriteLine(vp);
-            return vp;
+            AutomationElementCollection edits = element.FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+            if (edits == null || edits.Count == 0)
+                return null;
+
+            AutomationElement edit = edits[0]; // Assuming the first edit control is the address bar
+            if (edit == null)
+                return null;
+
+            object valuePattern;
+            if (!edit.TryGetCurrentPattern(ValuePattern.Pattern, out valuePattern))
+                return null;
+
+            string url = ((ValuePattern)valuePattern).Current.Value as string;
+            Console.WriteLine(url);
+            return url;
         }
 
         private void CheckAndSendUseInfo(AutomationElementCollection tabs)
