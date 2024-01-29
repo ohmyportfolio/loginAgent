@@ -34,7 +34,7 @@ class My_Chrome(uc.Chrome):
         # chrome_options.add_argument("--headless")
         # chrome_options.add_argument("--window-size=1920,1080")
 
-        super().__init__(*args, options=chrome_options, **kwargs)
+        super().__init__(*args,driver_executable_path="./chromedriver.exe", options=chrome_options, **kwargs)
     def __del__(self):
         pass
 

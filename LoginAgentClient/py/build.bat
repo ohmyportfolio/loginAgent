@@ -1,1 +1,1 @@
-pyinstaller --onefile .\py_you.py
+pyinstaller  --hidden-import=undetected_chromedriver .\py_you.py
