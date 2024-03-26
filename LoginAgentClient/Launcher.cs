@@ -9,14 +9,12 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Threading;
 using System.Linq;
-
 
 
 namespace LoginAgent
@@ -25,9 +23,6 @@ namespace LoginAgent
     {
         private Main main;
         public Thread t1;
-        public Thread t2;
-        public Thread t3;
-
 
         public Launcher()
         {
@@ -41,7 +36,6 @@ namespace LoginAgent
                 Environment.Exit(0);
             }
 
-            KillDriver();
 
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
@@ -53,22 +47,6 @@ namespace LoginAgent
 
             Task.Run(async () => await UpdateEdgeDriverAsync());
         }
- 
-
-        public void KillDriver()
-        {
-            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
-            {
-                try
-                {
-                    process.Kill();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Error :: Kill msedgedriver");
-                }
-            }
-        }
 
 
         private void MainFormCloedEvent(object sender, FormClosedEventArgs e)
@@ -79,24 +57,21 @@ namespace LoginAgent
             {
                 t1.Abort();
             }
-            if (t2 != null && t2.IsAlive)
-            {
-                t2.Abort();
-            }
             KillAllSite();
+            ProcessUtils.KillProcessByName("msedgedriver.exe");
         }
 
         private async void OpenMainBtnClick(object sender, EventArgs e)
         {
 
             KillAllSite();
-            ProcessUtils.KillDriver();
+            ProcessUtils.KillProcessByName("msedgedriver.exe");
 
             main = new Main();
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
             main.KillBrowser = this.KillAllSite;
 
-            
+         
 
             if (t1 == null || !t1.IsAlive)
             {
@@ -104,8 +79,6 @@ namespace LoginAgent
                 t1.IsBackground = true;
                 t1.Start();
             }
-
-
             await UpdateEdgeDriverAsync();
             main.ShowDialog();
         }
@@ -118,25 +91,11 @@ namespace LoginAgent
         public void KillAllSite()
         {
 
-           
-
-            foreach (Process process in Process.GetProcessesByName("msedge"))
-            {
-                try
-                {
-                    process.Kill();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Error :: KillAccountPage");
-                }
-            }
-
-
+            ProcessUtils.KillProcessByName("msedge.exe");
             CheckAndSendUseInfo(null);
 
         }
-
+        
         private void KillAccountPage()
         {
             do
@@ -165,7 +124,7 @@ namespace LoginAgent
                             || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
                             || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
                             || url.Contains("app-settings") || url.Contains("help.disneyplus.com") || url.Contains("/edit-profile/") //disney
-                            || url.Contains("passwords") || url.Contains("/account")
+                            || url.Contains("passwords") || url.Contains("/account") || url.Contains("netflix.com/profiles/manage")
 
 
                             )
@@ -288,7 +247,6 @@ namespace LoginAgent
         }
 
      
-
         private void ShowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BringToFront();
