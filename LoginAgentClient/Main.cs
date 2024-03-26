@@ -119,56 +119,12 @@ namespace LoginAgent
                 }
 
 
-                string[] targetUrls = {
-                    "netflix.com/YourAccount",
-                    
-                    "uflix.co.kr/uws/web/mine/userInfo",
-                    "member.wavve.com/me",
-                    "tving.com/my/main",
-                    "tving.com/my/watch",
-                    "netflix.com/ManageProfiles",
-                    "edit-profiles",
-                    "profiles/manage",
-                    "profilesForEdit",
-                    "profileForEdit",
-                    "wavve.com/my",
-                    "wavve.com/voucher",
-                    "membership/tving",
-                    "app-settings",
-                    "help.disneyplus.com",
-                    "/edit-profile/",
-                    "passwords",
-                    "/account"
-                };
-                Task.Run(() => MonitorAndCloseBrowserAsync(_driver, targetUrls));
+               
             }
                   
         }
 
 
-
-        private async Task MonitorAndCloseBrowserAsync(EdgeDriver driver, string[] targetUrls)
-        {
-            bool isRunning = true;
-            while (isRunning)
-            {
-                await Task.Delay(2000); // 1초 간격으로 URL 체크
-
-                foreach (var windowHandle in driver.WindowHandles)
-                {
-                    driver.SwitchTo().Window(windowHandle); // 다른 탭/창으로 전환
-                    string currentUrl = driver.Url; // 현재 탭/창의 URL 가져오기
-
-                    if (targetUrls.Any(url => currentUrl.Contains(url)))
-                    {
-                        driver.Quit(); // 조건에 맞는 URL이면 드라이버 종료 및 모든 브라우저 창 닫기
-                        isRunning = false;
-                        this.Close();
-                        break;
-                    }
-                }
-            }
-        }
 
         private void RunPyYouExe(string url, string idXpath, string pwXpath, string id, string encryptedPassword)
         {
