@@ -22,7 +22,7 @@ namespace LoginAgent
     public partial class Launcher : MetroForm
     {
         private Main main;
-        public Thread t1;
+        private CancellationTokenSource cancellationTokenSource;
 
         public Launcher()
         {
@@ -53,9 +53,10 @@ namespace LoginAgent
         {
             Console.WriteLine("MainForm Closed");
             Console.WriteLine("Thread Stop");
-            if (t1 != null && t1.IsAlive)
+            if (cancellationTokenSource != null)
             {
-                t1.Abort();
+                cancellationTokenSource.Cancel();
+                cancellationTokenSource = null;
             }
             KillAllSite();
             ProcessUtils.KillProcessByName("msedgedriver.exe");
@@ -63,9 +64,18 @@ namespace LoginAgent
 
         private async void OpenMainBtnClick(object sender, EventArgs e)
         {
+            cancellationTokenSource?.Cancel();
+            await Task.Delay(100); // 필요에 따라 대기 시간 조정
+            cancellationTokenSource = new CancellationTokenSource();
 
             KillAllSite();
             ProcessUtils.KillProcessByName("msedgedriver.exe");
+
+            cancellationTokenSource = new CancellationTokenSource();
+
+            // Start the background task without awaiting it
+            var backgroundTask = Task.Run(() => RunKillAccountPageAsync(cancellationTokenSource.Token));
+
 
             main = new Main();
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
@@ -73,14 +83,24 @@ namespace LoginAgent
 
          
 
-            if (t1 == null || !t1.IsAlive)
-            {
-                t1 = new Thread(new ThreadStart(KillAccountPage));
-                t1.IsBackground = true;
-                t1.Start();
-            }
             await UpdateEdgeDriverAsync();
             main.ShowDialog();
+        }
+
+        private async Task RunKillAccountPageAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                KillAccountPage(cancellationToken); // Adapt this method as needed
+                try
+                {
+                    await Task.Delay(5000, cancellationToken);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+            }
         }
 
         private void Launcher_Load(object sender, EventArgs e)
@@ -96,12 +116,12 @@ namespace LoginAgent
 
         }
         
-        private void KillAccountPage()
+        private async void KillAccountPage(CancellationToken cancellationToken)
         {
-            do
+            while (!cancellationToken.IsCancellationRequested)
             {
                 Console.WriteLine("Check Account Page and Kill");
-                Thread.Sleep(3000);
+               
 
                 // Edge와 Chrome 프로세스 리스트 생성
                 var processes = Process.GetProcessesByName("msedge").Concat(Process.GetProcessesByName("chrome")).ToList();
@@ -111,19 +131,19 @@ namespace LoginAgent
                 {
                     try
                     {
-                        string url = GetBrowserUrl(process);
+                        string url = await GetBrowserUrlAsync(process);
                         if (url == null)
                             continue;
 
 
                         //DB화해서 관리하도록 변경 해야함.
                         Console.WriteLine("Edge Url for '" + process.MainWindowTitle + "' is " + url);
-                        if (url.Contains("netflix.com/YourAccount") || url.Contains("uflix.co.kr/uws/web/mine/userInfo")
+                        if (url.Contains("YourAccount") || url.Contains("uflix.co.kr/uws/web/mine/userInfo")
                             || url.Contains("member.wavve.com/me") || url.Contains("tving.com/my/main") || url.Contains("tving.com/my/watch")
                             || url.Contains("netflix.com/ManageProfiles") || url.Contains("edit-profiles")
                             || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
                             || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
-                            || url.Contains("app-settings") || url.Contains("help.disneyplus.com") || url.Contains("/edit-profile/") //disney
+                            || url.Contains("app-settings") || url.Contains("help.disneyplus.com") || url.Contains("/edit-profile/") 
                             || url.Contains("passwords") || url.Contains("/account") || url.Contains("netflix.com/profiles/manage")
 
 
@@ -139,37 +159,44 @@ namespace LoginAgent
                         Console.WriteLine("Error :: KillAccountPage");
                     }
                 }
-
-            } while (true);
+            }
         }
-        public string GetBrowserUrl(Process process)
+        public async Task<string> GetBrowserUrlAsync(Process process)
         {
             if (process == null)
-                throw new ArgumentNullException("process");
+                throw new ArgumentNullException(nameof(process));
 
             if (process.MainWindowHandle == IntPtr.Zero)
                 return null;
 
-            AutomationElement element = AutomationElement.FromHandle(process.MainWindowHandle);
-            if (element == null)
-                return null;
+            // 비동기적으로 UI Automation 작업을 백그라운드 스레드에서 실행
+            return await Task.Run(() =>
+            {
+                var element = AutomationElement.FromHandle(process.MainWindowHandle);
+                if (element == null)
+                    return null;
 
-            AutomationElementCollection edits = element.FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
-            if (edits == null || edits.Count == 0)
-                return null;
+                // TreeScope를 Subtree에서 Children으로 변경할 수 있으나, 여기서는 주소 표시줄을 찾기 위해 Subtree를 유지
+                var edits = element.FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+                if (edits == null || edits.Count == 0)
+                    return null;
 
-            AutomationElement edit = edits[0]; // Assuming the first edit control is the address bar
-            if (edit == null)
+                foreach (AutomationElement edit in edits)
+                {
+                    if (edit.TryGetCurrentPattern(ValuePattern.Pattern, out object valuePattern))
+                    {
+                        var url = ((ValuePattern)valuePattern).Current.Value as string;
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            Console.WriteLine(url);
+                            return url;
+                        }
+                    }
+                }
                 return null;
-
-            object valuePattern;
-            if (!edit.TryGetCurrentPattern(ValuePattern.Pattern, out valuePattern))
-                return null;
-
-            string url = ((ValuePattern)valuePattern).Current.Value as string;
-            Console.WriteLine(url);
-            return url;
+            });
         }
+
 
         private void CheckAndSendUseInfo(AutomationElementCollection tabs)
         {
