@@ -255,9 +255,6 @@
     <Content Include="py_you.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="taskkill.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\youtube.PNG" />
     <None Include="Resources\noonoo.PNG" />
     <None Include="Resources\disney.PNG" />

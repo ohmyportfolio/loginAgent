@@ -10,13 +10,12 @@ namespace LoginAgent
         // 프로세스 이름을 인자로 받아 종료하는 메서드
         public static void KillProcessByName(string processName)
         {
-            string taskKillPath = Path.Combine(Application.StartupPath, "taskkill.exe");
             try
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = taskKillPath,
-                    Arguments = $"/im {processName} /f",
+                    FileName = "cmd.exe",
+                    Arguments = $"/c taskkill /im {processName} /f",
                     CreateNoWindow = true,
                     UseShellExecute = false
                 });
