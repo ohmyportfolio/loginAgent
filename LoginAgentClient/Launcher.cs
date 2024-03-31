@@ -22,7 +22,7 @@ namespace LoginAgent
     public partial class Launcher : MetroForm
     {
         private Main main;
-        private CancellationTokenSource cancellationTokenSource;
+        //private CancellationTokenSource cancellationTokenSource;
 
         public Launcher()
         {
@@ -53,28 +53,30 @@ namespace LoginAgent
         {
             Console.WriteLine("MainForm Closed");
             Console.WriteLine("Thread Stop");
+            /*
             if (cancellationTokenSource != null)
             {
                 cancellationTokenSource.Cancel();
                 cancellationTokenSource = null;
             }
+            */
             KillAllSite();
             ProcessUtils.KillProcessByName("msedgedriver.exe");
         }
 
         private async void OpenMainBtnClick(object sender, EventArgs e)
         {
-            cancellationTokenSource?.Cancel();
-            await Task.Delay(100); // 필요에 따라 대기 시간 조정
-            cancellationTokenSource = new CancellationTokenSource();
+            //cancellationTokenSource?.Cancel();
+            //await Task.Delay(100); // 필요에 따라 대기 시간 조정
+            //cancellationTokenSource = new CancellationTokenSource();
 
             KillAllSite();
             ProcessUtils.KillProcessByName("msedgedriver.exe");
 
-            cancellationTokenSource = new CancellationTokenSource();
+            //cancellationTokenSource = new CancellationTokenSource();
 
             // Start the background task without awaiting it
-            var backgroundTask = Task.Run(() => RunKillAccountPageAsync(cancellationTokenSource.Token));
+            //var backgroundTask = Task.Run(() => RunKillAccountPageAsync(cancellationTokenSource.Token));
 
 
             main = new Main();

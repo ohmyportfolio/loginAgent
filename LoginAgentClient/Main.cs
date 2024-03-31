@@ -6,13 +6,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using OpenQA.Selenium;
-using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Edge;
-using System.Reflection;
-using System.Threading.Tasks;
-using Selenium.Extensions;
-using System.Threading;
 
 
 namespace LoginAgent
