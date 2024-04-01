@@ -1,22 +1,41 @@
-import configparser
-import requests
 import psutil
+from pywinauto.application import Application
+from pywinauto.findwindows import find_window
 
-# config.ini 파일에서 URL 읽기
-config = configparser.ConfigParser()
-config.read('config.ini')
-server_url = f"http://{config['server']['url']}/dist/urllist.txt"
-
-# 서버에서 URL 리스트 다운로드
-response = requests.get(server_url)
-url_list = response.text.splitlines()
-
-# 현재 실행 중인 프로세스 검색
-for proc in psutil.process_iter(['name', 'cmdline']):
+def get_browser_url(process_id):
     try:
-        # 프로세스의 명령줄 인수 중 하나가 URL 리스트에 있는지 확인
-        if any(url in cmd for url in url_list for cmd in proc.info['cmdline']):
-            proc.kill()  # URL 리스트에 해당하는 프로세스를 강제 종료
-            print(f"Process {proc.pid} terminated.")
-    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-        pass
+        app = Application(backend="uia").connect(process=process_id)
+        dlg = app.window()
+        # 주소 표시줄(Edit 컨트롤) 찾기
+        url_bar = dlg.child_window(control_type="Edit", found_index=0)
+        url = url_bar.get_value()
+        if url:
+            print(url)
+            return url
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+def kill_account_page():
+    target_urls = [
+        "YourAccount", "uflix.co.kr/uws/web/mine/userInfo", "member.wavve.com/me", "tving.com/my/main",
+        "tving.com/my/watch", "netflix.com/ManageProfiles", "edit-profiles", "profiles/manage", "profilesForEdit",
+        "profileForEdit", "wavve.com/my", "wavve.com/voucher", "membership/tving", "app-settings",
+        "help.disneyplus.com", "/edit-profile/", "passwords", "/account", "netflix.com/profiles/manage"
+    ]
+
+    # Edge와 Chrome 프로세스 리스트 생성
+    processes = [p for p in psutil.process_iter(attrs=['pid', 'name']) if p.info['name'] in ('msedge.exe', 'chrome.exe')]
+
+    for process in processes:
+        try:
+            url = get_browser_url(process.info['pid'])
+            if url and any(target in url for target in target_urls):
+                print(f"Killing process {process.info['name']} with URL {url}")
+                process.kill()
+        except Exception as e:
+            print(f"Error in kill_account_page: {e}")
+
+# 메인 실행 함수
+if __name__ == "__main__":
+    kill_account_page()

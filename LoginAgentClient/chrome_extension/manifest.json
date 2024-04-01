@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "URL Sender",
+  "version": "1.0",
+  "permissions": [
+    "tabs", "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "incognito": "split"
+}
