@@ -22,6 +22,8 @@ namespace LoginAgent
 
         public static String M_K = "!QAZxsw2";
 
+        public static String extensionId = null;
+
         static AppHelper()
         {
             IniFile ini = new IniFile();
@@ -30,6 +32,7 @@ namespace LoginAgent
             driverVer = ini["application"]["driverVer"].GetString();
             url = ini["server"]["url"].GetString();
             webDriverDebugMode = ini["webdriver"]["debug"].GetString();
+            extensionId = ini["server"]["extensionId"].GetString();
 
         }
 
@@ -67,6 +70,11 @@ namespace LoginAgent
         public static string GetDriverVer()
         {
             return driverVer;
+        }
+
+        public static string GetExtensionId()
+        {
+            return extensionId;
         }
 
         public static string Decrypt(string textToDecrypt, string key)
