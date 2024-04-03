@@ -22,7 +22,10 @@ namespace LoginAgent
     public partial class Launcher : MetroForm
     {
         private Main main;
-        //private CancellationTokenSource cancellationTokenSource;
+        private CancellationTokenSource cancellationTokenSource;
+
+        private string[] DistrictTitle;
+        private string[] DistrictUrls;
 
         public Launcher()
         {
@@ -46,37 +49,69 @@ namespace LoginAgent
             this.driverVer.Text = AppHelper.GetDriverVer();
 
             Task.Run(async () => await UpdateEdgeDriverAsync());
+           
         }
+
+
+
+        private async Task<string[]> DownloadDistrictListAsync(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = await client.GetStringAsync(url);
+                    // URL에서 데이터를 성공적으로 다운로드한 경우,
+                    // 개행 문자를 기준으로 분리하여 문자열 배열로 반환합니다.
+                    return response.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                }
+                catch (HttpRequestException e)
+                {
+                    // HttpRequestException은 주로 네트워크 오류나 요청 실패 시 발생합니다.
+                    Console.WriteLine($"HTTP Request Exception: {e.Message}");
+                }
+                catch (Exception e)
+                {
+                    // 기타 예외 상황에 대한 처리
+                    Console.WriteLine($"An error occurred: {e.Message}");
+                }
+            }
+
+            // 에러 발생 시 빈 배열 반환
+            return new string[] { };
+        }
+
+
 
 
         private void MainFormCloedEvent(object sender, FormClosedEventArgs e)
         {
             Console.WriteLine("MainForm Closed");
             Console.WriteLine("Thread Stop");
-            /*
+            
             if (cancellationTokenSource != null)
             {
                 cancellationTokenSource.Cancel();
                 cancellationTokenSource = null;
             }
-            */
+            
             KillAllSite();
             ProcessUtils.KillProcessByName("msedgedriver.exe");
         }
 
         private async void OpenMainBtnClick(object sender, EventArgs e)
         {
-            //cancellationTokenSource?.Cancel();
-            //await Task.Delay(100); // 필요에 따라 대기 시간 조정
-            //cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource?.Cancel();
+            await Task.Delay(100); // 필요에 따라 대기 시간 조정
+            cancellationTokenSource = new CancellationTokenSource();
 
             KillAllSite();
             ProcessUtils.KillProcessByName("msedgedriver.exe");
 
-            //cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource = new CancellationTokenSource();
 
-            // Start the background task without awaiting it
-            //var backgroundTask = Task.Run(() => RunKillAccountPageAsync(cancellationTokenSource.Token));
+             //Start the background task without awaiting it
+            var backgroundTask = Task.Run(() => RunKillAccountPageAsync(cancellationTokenSource.Token));
 
 
             main = new Main();
@@ -93,10 +128,10 @@ namespace LoginAgent
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                KillAccountPage(cancellationToken); // Adapt this method as needed
+                KillAccountPage(); // Adapt this method as needed
                 try
                 {
-                    await Task.Delay(5000, cancellationToken);
+                    await Task.Delay(3000, cancellationToken);
                 }
                 catch (TaskCanceledException)
                 {
@@ -105,9 +140,12 @@ namespace LoginAgent
             }
         }
 
-        private void Launcher_Load(object sender, EventArgs e)
+        private async void Launcher_Load(object sender, EventArgs e)
         {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            DistrictUrls = await DownloadDistrictListAsync("http://" + AppHelper.GetServerUrl() + "/dist/urllist.txt");
+            DistrictTitle = await DownloadDistrictListAsync("http://" + AppHelper.GetServerUrl() + "/dist/titlelist.txt");
         }
 
         public void KillAllSite()
@@ -117,52 +155,49 @@ namespace LoginAgent
             CheckAndSendUseInfo(null);
 
         }
-        
-        private async void KillAccountPage(CancellationToken cancellationToken)
+
+        private async void KillAccountPage()
         {
-            while (!cancellationToken.IsCancellationRequested)
+            Console.WriteLine("Check Account Page and Kill");
+
+            // Edge와 Chrome 프로세스를 모두 가져옵니다.
+            var processes = Process.GetProcesses()
+                                   .Where(p => p.ProcessName.ToLower().Contains("chrome") || p.ProcessName.ToLower().Contains("edge"))
+                                   .ToList();
+
+            foreach (var process in processes)
             {
-                Console.WriteLine("Check Account Page and Kill");
-               
-
-                // Edge와 Chrome 프로세스 리스트 생성
-                var processes = Process.GetProcessesByName("msedge").Concat(Process.GetProcessesByName("chrome")).ToList();
-
-
-                foreach (Process process in processes)
+                try
                 {
-                    try
+                    // Edge 프로세스에 대해서만 URL을 확인합니다.
+                    if (process.ProcessName.ToLower().Contains("edge"))
                     {
                         string url = await GetBrowserUrlAsync(process);
-                        if (url == null)
-                            continue;
-
-
-                        //DB화해서 관리하도록 변경 해야함.
-                        Console.WriteLine("Edge Url for '" + process.MainWindowTitle + "' is " + url);
-                        if (url.Contains("YourAccount") || url.Contains("uflix.co.kr/uws/web/mine/userInfo")
-                            || url.Contains("member.wavve.com/me") || url.Contains("tving.com/my/main") || url.Contains("tving.com/my/watch")
-                            || url.Contains("netflix.com/ManageProfiles") || url.Contains("edit-profiles")
-                            || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
-                            || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
-                            || url.Contains("app-settings") || url.Contains("help.disneyplus.com") || url.Contains("/edit-profile/") 
-                            || url.Contains("passwords") || url.Contains("/account") || url.Contains("netflix.com/profiles/manage")
-
-
-                            )
+                        if (url != null && DistrictUrls.Any(districtUrl => url.Contains(districtUrl)))
                         {
+                            Console.WriteLine($"Killing Edge process for URL match: {process.ProcessName}, URL: {url}");
                             process.Kill();
+                            continue; // 다음 프로세스로 넘어갑니다.
                         }
-
-
                     }
-                    catch (Exception)
+
+                    // 프로세스의 창 제목이 DistrictTitle에 정의된 제목을 포함하는지 확인합니다.
+                    var title = process.MainWindowTitle.ToLower();
+                    if (!string.IsNullOrEmpty(title) && DistrictTitle.Any(districtTitle => title.Contains(districtTitle.ToLower())))
                     {
-                        Console.WriteLine("Error :: KillAccountPage");
+                        Console.WriteLine($"Killing process for Title match: {process.ProcessName}, Title: {title}");
+                        process.Kill();
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while processing '{process.ProcessName}': {ex.Message}");
                 }
             }
         }
+
+
+
         public async Task<string> GetBrowserUrlAsync(Process process)
         {
             if (process == null)
@@ -198,6 +233,7 @@ namespace LoginAgent
                 return null;
             });
         }
+
 
 
         private void CheckAndSendUseInfo(AutomationElementCollection tabs)

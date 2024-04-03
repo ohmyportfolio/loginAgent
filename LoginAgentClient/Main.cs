@@ -24,7 +24,6 @@ namespace LoginAgent
 
         }
 
-
         private void LoginSite(JObject data)
         {
             string id = data.GetValue("user_id").ToString();
@@ -145,7 +144,7 @@ namespace LoginAgent
         }
 
 
-        private async void DoLogin(string site)
+        private void DoLogin(string site)
         {
 
             JObject data = GetSiteData(site);
