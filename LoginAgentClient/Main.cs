@@ -6,11 +6,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using OpenQA.Selenium;
-using System.Linq;
 using System.Diagnostics;
 using OpenQA.Selenium.Edge;
-using System.Reflection;
-using System.Threading.Tasks;
 
 
 namespace LoginAgent
@@ -26,8 +23,6 @@ namespace LoginAgent
             InitializeComponent();
 
         }
-
-
 
         private void LoginSite(JObject data)
         {
@@ -117,12 +112,13 @@ namespace LoginAgent
                     element.Click();
                 }
 
+
+               
             }
-
-
-
-
+                  
         }
+
+
 
         private void RunPyYouExe(string url, string idXpath, string pwXpath, string id, string encryptedPassword)
         {
@@ -148,7 +144,7 @@ namespace LoginAgent
         }
 
 
-        private async void DoLogin(string site)
+        private void DoLogin(string site)
         {
 
             JObject data = GetSiteData(site);
@@ -285,9 +281,9 @@ namespace LoginAgent
 
         private void PerformLoginAction(string site)
         {
-            KillBrowser();
+            ProcessUtils.KillProcessByName("msedge.exe");
             DoLogin(site);
-            ProcessUtils.KillDriver();
+            ProcessUtils.KillProcessByName("msedgedriver.exe");
         }
 
         private void Main_Load(object sender, EventArgs e)

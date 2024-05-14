@@ -1,26 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoginAgent
 {
     public static class ProcessUtils
     {
-        public static void KillDriver()
+        // 프로세스 이름을 인자로 받아 종료하는 메서드
+        public static void KillProcessByName(string processName)
         {
-            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
+            try
             {
-                try
+                Process.Start(new ProcessStartInfo
                 {
-                    process.Kill();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Error :: Kill msedgedriver");
-                }
+                    FileName = "cmd.exe",
+                    Arguments = $"/c taskkill /im {processName} /f",
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error :: Could not kill process {processName}: {e.Message}");
             }
         }
     }

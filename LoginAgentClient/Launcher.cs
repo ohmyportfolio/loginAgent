@@ -9,14 +9,12 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Forms;
-using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Threading;
 using System.Linq;
-
 
 
 namespace LoginAgent
@@ -24,10 +22,10 @@ namespace LoginAgent
     public partial class Launcher : MetroForm
     {
         private Main main;
-        public Thread t1;
-        public Thread t2;
-        public Thread t3;
+        private CancellationTokenSource cancellationTokenSource;
 
+        private string[] DistrictTitle;
+        private string[] DistrictUrls;
 
         public Launcher()
         {
@@ -41,7 +39,6 @@ namespace LoginAgent
                 Environment.Exit(0);
             }
 
-            KillDriver();
 
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
@@ -52,165 +49,192 @@ namespace LoginAgent
             this.driverVer.Text = AppHelper.GetDriverVer();
 
             Task.Run(async () => await UpdateEdgeDriverAsync());
+           
         }
- 
 
-        public void KillDriver()
+
+
+        private async Task<string[]> DownloadDistrictListAsync(string url)
         {
-            foreach (Process process in Process.GetProcessesByName("msedgedriver"))
+            using (var client = new HttpClient())
             {
                 try
                 {
-                    process.Kill();
+                    var response = await client.GetStringAsync(url);
+                    // URL에서 데이터를 성공적으로 다운로드한 경우,
+                    // 개행 문자를 기준으로 분리하여 문자열 배열로 반환합니다.
+                    return response.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 }
-                catch (Exception)
+                catch (HttpRequestException e)
                 {
-                    Console.WriteLine("Error :: Kill msedgedriver");
+                    // HttpRequestException은 주로 네트워크 오류나 요청 실패 시 발생합니다.
+                    Console.WriteLine($"HTTP Request Exception: {e.Message}");
+                }
+                catch (Exception e)
+                {
+                    // 기타 예외 상황에 대한 처리
+                    Console.WriteLine($"An error occurred: {e.Message}");
                 }
             }
+
+            // 에러 발생 시 빈 배열 반환
+            return new string[] { };
         }
+
+
 
 
         private void MainFormCloedEvent(object sender, FormClosedEventArgs e)
         {
             Console.WriteLine("MainForm Closed");
             Console.WriteLine("Thread Stop");
-            if (t1 != null && t1.IsAlive)
+            
+            if (cancellationTokenSource != null)
             {
-                t1.Abort();
+                cancellationTokenSource.Cancel();
+                cancellationTokenSource = null;
             }
-            if (t2 != null && t2.IsAlive)
-            {
-                t2.Abort();
-            }
+            
             KillAllSite();
+            ProcessUtils.KillProcessByName("msedgedriver.exe");
         }
 
         private async void OpenMainBtnClick(object sender, EventArgs e)
         {
+            cancellationTokenSource?.Cancel();
+            await Task.Delay(100); // 필요에 따라 대기 시간 조정
+            cancellationTokenSource = new CancellationTokenSource();
 
             KillAllSite();
-            ProcessUtils.KillDriver();
+            ProcessUtils.KillProcessByName("msedgedriver.exe");
+
+            cancellationTokenSource = new CancellationTokenSource();
+
+             //Start the background task without awaiting it
+            var backgroundTask = Task.Run(() => RunKillAccountPageAsync(cancellationTokenSource.Token));
+
 
             main = new Main();
             main.FormClosed += new FormClosedEventHandler(MainFormCloedEvent);
             main.KillBrowser = this.KillAllSite;
 
-            
-
-            if (t1 == null || !t1.IsAlive)
-            {
-                t1 = new Thread(new ThreadStart(KillAccountPage));
-                t1.IsBackground = true;
-                t1.Start();
-            }
-
+         
 
             await UpdateEdgeDriverAsync();
             main.ShowDialog();
         }
 
-        private void Launcher_Load(object sender, EventArgs e)
+        private async Task RunKillAccountPageAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                KillAccountPage(); // Adapt this method as needed
+                try
+                {
+                    await Task.Delay(3000, cancellationToken);
+                }
+                catch (TaskCanceledException)
+                {
+                    break;
+                }
+            }
+        }
+
+        private async void Launcher_Load(object sender, EventArgs e)
         {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            DistrictUrls = await DownloadDistrictListAsync("http://" + AppHelper.GetServerUrl() + "/dist/urllist.txt");
+            DistrictTitle = await DownloadDistrictListAsync("http://" + AppHelper.GetServerUrl() + "/dist/titlelist.txt");
         }
 
         public void KillAllSite()
         {
 
-           
-
-            foreach (Process process in Process.GetProcessesByName("msedge"))
-            {
-                try
-                {
-                    process.Kill();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Error :: KillAccountPage");
-                }
-            }
-
-
+            ProcessUtils.KillProcessByName("msedge.exe");
             CheckAndSendUseInfo(null);
 
         }
 
-        private void KillAccountPage()
+        private async void KillAccountPage()
         {
-            do
+            Console.WriteLine("Check Account Page and Kill");
+
+            // Edge와 Chrome 프로세스를 모두 가져옵니다.
+            var processes = Process.GetProcesses()
+                                   .Where(p => p.ProcessName.ToLower().Contains("chrome") || p.ProcessName.ToLower().Contains("edge"))
+                                   .ToList();
+
+            foreach (var process in processes)
             {
-                Console.WriteLine("Check Account Page and Kill");
-                Thread.Sleep(3000);
-
-                // Edge와 Chrome 프로세스 리스트 생성
-                var processes = Process.GetProcessesByName("msedge").Concat(Process.GetProcessesByName("chrome")).ToList();
-
-
-                foreach (Process process in processes)
+                try
                 {
-                    try
+                    // Edge 프로세스에 대해서만 URL을 확인합니다.
+                    if (process.ProcessName.ToLower().Contains("edge"))
                     {
-                        string url = GetBrowserUrl(process);
-                        if (url == null)
-                            continue;
-
-
-                        //DB화해서 관리하도록 변경 해야함.
-                        Console.WriteLine("Edge Url for '" + process.MainWindowTitle + "' is " + url);
-                        if (url.Contains("netflix.com/YourAccount") || url.Contains("uflix.co.kr/uws/web/mine/userInfo")
-                            || url.Contains("member.wavve.com/me") || url.Contains("tving.com/my/main") || url.Contains("tving.com/my/watch")
-                            || url.Contains("netflix.com/ManageProfiles") || url.Contains("edit-profiles")
-                            || url.Contains("profiles/manage") || url.Contains("profilesForEdit") || url.Contains("profileForEdit")
-                            || url.Contains("wavve.com/my") || url.Contains("wavve.com/voucher") || url.Contains("membership/tving")
-                            || url.Contains("app-settings") || url.Contains("help.disneyplus.com") || url.Contains("/edit-profile/") //disney
-                            || url.Contains("passwords") || url.Contains("/account")
-
-
-                            )
+                        string url = await GetBrowserUrlAsync(process);
+                        if (url != null && DistrictUrls.Any(districtUrl => url.Contains(districtUrl)))
                         {
+                            Console.WriteLine($"Killing Edge process for URL match: {process.ProcessName}, URL: {url}");
                             process.Kill();
+                            continue; // 다음 프로세스로 넘어갑니다.
                         }
-
-
                     }
-                    catch (Exception)
+
+                    // 프로세스의 창 제목이 DistrictTitle에 정의된 제목을 포함하는지 확인합니다.
+                    var title = process.MainWindowTitle.ToLower();
+                    if (!string.IsNullOrEmpty(title) && DistrictTitle.Any(districtTitle => title.Contains(districtTitle.ToLower())))
                     {
-                        Console.WriteLine("Error :: KillAccountPage");
+                        Console.WriteLine($"Killing process for Title match: {process.ProcessName}, Title: {title}");
+                        process.Kill();
                     }
                 }
-
-            } while (true);
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while processing '{process.ProcessName}': {ex.Message}");
+                }
+            }
         }
-        public string GetBrowserUrl(Process process)
+
+
+
+        public async Task<string> GetBrowserUrlAsync(Process process)
         {
             if (process == null)
-                throw new ArgumentNullException("process");
+                throw new ArgumentNullException(nameof(process));
 
             if (process.MainWindowHandle == IntPtr.Zero)
                 return null;
 
-            AutomationElement element = AutomationElement.FromHandle(process.MainWindowHandle);
-            if (element == null)
-                return null;
+            // 비동기적으로 UI Automation 작업을 백그라운드 스레드에서 실행
+            return await Task.Run(() =>
+            {
+                var element = AutomationElement.FromHandle(process.MainWindowHandle);
+                if (element == null)
+                    return null;
 
-            AutomationElementCollection edits = element.FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
-            if (edits == null || edits.Count == 0)
-                return null;
+                // TreeScope를 Subtree에서 Children으로 변경할 수 있으나, 여기서는 주소 표시줄을 찾기 위해 Subtree를 유지
+                var edits = element.FindAll(TreeScope.Subtree, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit));
+                if (edits == null || edits.Count == 0)
+                    return null;
 
-            AutomationElement edit = edits[0]; // Assuming the first edit control is the address bar
-            if (edit == null)
+                foreach (AutomationElement edit in edits)
+                {
+                    if (edit.TryGetCurrentPattern(ValuePattern.Pattern, out object valuePattern))
+                    {
+                        var url = ((ValuePattern)valuePattern).Current.Value as string;
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            Console.WriteLine(url);
+                            return url;
+                        }
+                    }
+                }
                 return null;
-
-            object valuePattern;
-            if (!edit.TryGetCurrentPattern(ValuePattern.Pattern, out valuePattern))
-                return null;
-
-            string url = ((ValuePattern)valuePattern).Current.Value as string;
-            Console.WriteLine(url);
-            return url;
+            });
         }
+
+
 
         private void CheckAndSendUseInfo(AutomationElementCollection tabs)
         {
@@ -288,7 +312,6 @@ namespace LoginAgent
         }
 
      
-
         private void ShowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BringToFront();

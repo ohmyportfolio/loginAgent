@@ -22,6 +22,7 @@ namespace LoginAgent
 
         public static String M_K = "!QAZxsw2";
 
+
         static AppHelper()
         {
             IniFile ini = new IniFile();
@@ -68,6 +69,8 @@ namespace LoginAgent
         {
             return driverVer;
         }
+
+       
 
         public static string Decrypt(string textToDecrypt, string key)
         {
