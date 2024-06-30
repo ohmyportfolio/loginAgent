@@ -17,3 +17,4 @@ help.disneyplus.com
 /edit-profile/
 passwords
 /account
+/commerce
