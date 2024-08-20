@@ -41,83 +41,71 @@ namespace LoginAgent
 
             
 
-            if (siteId == "disney")
+           
+            EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
+
+            _driverService.HideCommandPromptWindow = true;
+
+
+            EdgeOptions _options = new EdgeOptions();
+
+
+
+
+            var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
+
+            _options.AddArguments("--user-data-dir=" + userDataPath);
+
+            _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+                
+            // 게스트 모드 적용 하면 비밀번호 저장 등 기타 셋팅 모두 초기화되므로 훨씬 안전 그러나 현재 inprivate 모드에서 문제가 없으므로 보류 2024.08.20
+            _options.AddArguments("--guest");
+
+            _options.AddExcludedArgument("enable-automation");
+
+            _options.AddUserProfilePreference("credentials_enable_service", false);
+            _options.AddUserProfilePreference("profile.password_manager_enabled", false);
+
+            _options.AddUserProfilePreference("profile.exited_cleanly", true);
+            _options.AddUserProfilePreference("profile.exit_type", "Normal");
+             
+                      
+
+
+            EdgeDriver _driver = new EdgeDriver(_driverService, _options);
+
+            _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+
+            if (siteId == "disney" || siteId == "youtube")
             {
-                RunPyYouExe(url, idXpath, pwXpath, id, EncodeToBase64(pw));
+
+
+                var element = _driver.FindElement(By.XPath(idXpath));
+                element.SendKeys(id);
+                element = _driver.FindElement(By.XPath(logXpath));
+                element.Click();
+                element = _driver.FindElement(By.XPath(pwXpath));
+                element.SendKeys(pw);
+                element = _driver.FindElement(By.XPath(logXpath2));
+                element.Click();
+
             }
             else
             {
-                EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
+                //var element = _driver.FindElementByXPath(idXpath);
+                var element = _driver.FindElement(By.XPath(idXpath));
 
-                _driverService.HideCommandPromptWindow = true;
-
-
-                EdgeOptions _options = new EdgeOptions();
-
-
-
-
-                var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
-
-                _options.AddArguments("--user-data-dir=" + userDataPath);
-
-                _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-                
-                // 게스트 모드 적용 하면 비밀번호 저장 등 기타 셋팅 모두 초기화되므로 훨씬 안전 그러나 현재 inprivate 모드에서 문제가 없으므로 보류 2024.08.20
-                //_options.AddArguments("--guest");
-
-                _options.AddExcludedArgument("enable-automation");
-
-                _options.AddUserProfilePreference("credentials_enable_service", false);
-                _options.AddUserProfilePreference("profile.password_manager_enabled", false);
-
-                _options.AddUserProfilePreference("profile.exited_cleanly", true);
-                _options.AddUserProfilePreference("profile.exit_type", "Normal");
-             
-
-                //_options.AddArguments("--incognito");
-
-                if (siteId != "disney")
-                {
-                    _options.AddArguments("-inprivate");
-                }
-
-
-                EdgeDriver _driver = new EdgeDriver(_driverService, _options);
-
-                _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
-                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-
-                if (siteId == "disney" || siteId == "youtube")
-                {
-
-
-                    var element = _driver.FindElement(By.XPath(idXpath));
-                    element.SendKeys(id);
-                    element = _driver.FindElement(By.XPath(logXpath));
-                    element.Click();
-                    element = _driver.FindElement(By.XPath(pwXpath));
-                    element.SendKeys(pw);
-                    element = _driver.FindElement(By.XPath(logXpath2));
-                    element.Click();
-
-                }
-                else
-                {
-                    //var element = _driver.FindElementByXPath(idXpath);
-                    var element = _driver.FindElement(By.XPath(idXpath));
-
-                    element.SendKeys(id);
-                    element = _driver.FindElement(By.XPath(pwXpath));
-                    element.SendKeys(pw);
-                    element = _driver.FindElement(By.XPath(logXpath));
-                    element.Click();
-                }
-
-
-               
+                element.SendKeys(id);
+                element = _driver.FindElement(By.XPath(pwXpath));
+                element.SendKeys(pw);
+                element = _driver.FindElement(By.XPath(logXpath));
+                element.Click();
             }
+
+
+          
                   
         }
 
