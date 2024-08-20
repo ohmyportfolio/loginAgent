@@ -27,7 +27,9 @@ class My_Chrome(uc.Chrome):
         chrome_options.binary_location = "./GoogleChromePortable/App/Chrome-bin/chrome.exe"
         # 사용자 프로필 디렉토리 지정
         chrome_options.add_argument("--user-data-dir=./GoogleChromePortable/App/DefaultData/profile")
-        chrome_options.add_argument("--incognito")
+        #chrome_options.add_argument("--incognito")
+        #guest 모드로 열면 비번 저장 비활성화됨 
+        chrome_options.add_argument("--guest")
         
         # 추가적인 Chrome 옵션들이 필요하면 여기에 추가
         # 예: headless 모드, 창 크기 등

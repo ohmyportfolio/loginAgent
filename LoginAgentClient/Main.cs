@@ -62,6 +62,9 @@ namespace LoginAgent
                 _options.AddArguments("--user-data-dir=" + userDataPath);
 
                 _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
+                
+                // 게스트 모드 적용 하면 비밀번호 저장 등 기타 셋팅 모두 초기화되므로 훨씬 안전 그러나 현재 inprivate 모드에서 문제가 없으므로 보류 2024.08.20
+                //_options.AddArguments("--guest");
 
                 _options.AddExcludedArgument("enable-automation");
 
