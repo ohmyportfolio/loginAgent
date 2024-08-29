@@ -43,15 +43,8 @@ namespace LoginAgent
 
                     // AgentUpdater2.exe 실행
                     Process.Start(updater2Path);
-
-                    // 업데이터가 완료될 때까지 잠시 대기 (예: 5초)
-                    Thread.Sleep(5000);
-
-                    // 업데이트 완료 후 AgentUpdater2.exe 삭제 (선택사항)
-                    if (File.Exists(updater2Path))
-                    {
-                        File.Delete(updater2Path);
-                    }
+             
+                  
                 }
             }
             catch (Exception ex)

@@ -268,12 +268,6 @@
     <None Include="Resources\noonoo.PNG" />
     <None Include="Resources\disney.PNG" />
     <None Include="Resources\launcher_img.jpg" />
-    <Content Include="AgentUpdater.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="chromedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Pixelresort-Peely-Video.ico" />
     <None Include="Resources\tv icon.png" />
     <None Include="Resources\tv-youtube-icon-with-png-and-vector-format-for-free-unlimited-3888121.png" />
