@@ -38,19 +38,12 @@ namespace LoginAgent
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
-
-            
-
-           
+                       
             EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
 
             _driverService.HideCommandPromptWindow = true;
 
-
             EdgeOptions _options = new EdgeOptions();
-
-
-
 
             var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
 
@@ -68,9 +61,7 @@ namespace LoginAgent
 
             _options.AddUserProfilePreference("profile.exited_cleanly", true);
             _options.AddUserProfilePreference("profile.exit_type", "Normal");
-             
-                      
-
+            
 
             EdgeDriver _driver = new EdgeDriver(_driverService, _options);
 
@@ -104,8 +95,6 @@ namespace LoginAgent
                 element.Click();
             }
 
-
-          
                   
         }
 
