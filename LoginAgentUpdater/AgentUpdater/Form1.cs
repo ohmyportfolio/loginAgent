@@ -61,13 +61,12 @@ namespace AgentUpdater
                     string zipPath = await DownloadUpdate(serverVersion);
                     await CloseRunningProcesses();
                     ExtractUpdate(zipPath, AppDomain.CurrentDomain.BaseDirectory);
-                    UpdateConfigVersion(configFile, serverVersion);
                     RestartApplication(AppDomain.CurrentDomain.BaseDirectory);
                 }
                 else
                 {
-                    SetStatus("최신 버전입니다. 프로그램을 종료합니다.");
-                    await Task.Delay(3000);
+                    SetStatus("최신 버전입니다");
+                    await Task.Delay(1000);
                     Application.Exit();
                 }
             }
@@ -178,20 +177,7 @@ namespace AgentUpdater
             File.Delete(zipPath);
         }
 
-        private void UpdateConfigVersion(string configPath, string newVersion)
-        {
-            SetStatus("설정 파일 업데이트 중...");
-            var lines = File.ReadAllLines(configPath);
-            for (int i = 0; i < lines.Length; i++)
-            {
-                if (lines[i].StartsWith("version="))
-                {
-                    lines[i] = $"version={newVersion}";
-                    break;
-                }
-            }
-            File.WriteAllLines(configPath, lines);
-        }
+       
 
         private void RestartApplication(string currentPath)
         {

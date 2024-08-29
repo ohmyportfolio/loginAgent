@@ -29,28 +29,41 @@ namespace LoginAgent
 
         public Launcher()
         {
-            // AgentUpdater 실행
+            // AgentUpdater 복사 및 실행
             try
             {
-                string updaterPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AgentUpdater.exe");
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string updaterPath = Path.Combine(baseDir, "AgentUpdater.exe");
+                string updater2Path = Path.Combine(baseDir, "AgentUpdater2.exe");
+
                 if (File.Exists(updaterPath))
                 {
-                    Process.Start(updaterPath);
+                    // AgentUpdater.exe를 AgentUpdater2.exe로 복사
+                    File.Copy(updaterPath, updater2Path, true);
+
+                    // AgentUpdater2.exe 실행
+                    Process.Start(updater2Path);
+
                     // 업데이터가 완료될 때까지 잠시 대기 (예: 5초)
                     Thread.Sleep(5000);
+
+                    // 업데이트 완료 후 AgentUpdater2.exe 삭제 (선택사항)
+                    if (File.Exists(updater2Path))
+                    {
+                        File.Delete(updater2Path);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 // 업데이터 실행 중 오류 발생 시 로그 기록 (선택사항)
-                Console.WriteLine($"AgentUpdater 실행 중 오류 발생: {ex.Message}");
+                Console.WriteLine($"AgentUpdater2 실행 중 오류 발생: {ex.Message}");
             }
 
+            // 기존 코드
             Process[] procs = Process.GetProcessesByName("LoginAgent");
-            // 두번 이상 실행되었을 때 처리할 내용을 작성합니다.
             if (procs.Length > 1)
             {
-                //MessageBox.Show("프로그램이 이미 실행되고 있습니다.\n다시 한번 확인해주시기 바랍니다.");
                 Application.ExitThread();
                 Environment.Exit(0);
             }
