@@ -7,20 +7,33 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace AgentUpdater
 {
+    public class Configuration
+    {
+        public string Version { get; set; }
+        public string ServerUrl { get; set; }
+    }
+
     public partial class Form1 : Form
     {
-        private readonly HttpClient client = new HttpClient();
-        private string serverUrl;
+        private readonly HttpClient client;
         private readonly string configFile = "config.ini";
         private readonly string[] processesToKill = { "LoginAgent", "msedgedriver" };
+        private bool isUpdating = false;
 
         public Form1()
         {
             InitializeComponent();
             InitializeCustomComponents();
+
+            // HttpClient 설정
+            client = new HttpClient
+            {
+                Timeout = TimeSpan.FromMinutes(5)
+            };
         }
 
         private void InitializeCustomComponents()
@@ -29,7 +42,6 @@ namespace AgentUpdater
             this.Text = "Agent Updater";
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // These controls are now defined in the Designer file
             statusLabel.Location = new Point(10, 10);
             statusLabel.Size = new Size(280, 20);
             statusLabel.Text = "업데이트 확인 중...";
@@ -48,29 +60,64 @@ namespace AgentUpdater
         {
             try
             {
+                if (isUpdating) return;
+                isUpdating = true;
+
                 string localVersion = GetConfigValue("version");
-                serverUrl = GetConfigValue("updateServer");
+                string serverUrl = GetConfigValue("updateServer");
+                string serverVersion = await GetServerVersion(serverUrl);
 
                 SetStatus($"현재 버전: {localVersion}");
-                string serverVersion = await GetServerVersion();
                 SetStatus($"서버 버전: {serverVersion}");
 
                 if (CompareVersions(serverVersion, localVersion) > 0)
                 {
-                    SetStatus("새 버전이 있습니다. 업데이트를 시작합니다.");
-                    string zipPath = await DownloadUpdate(serverVersion);
-                    await CloseRunningProcesses();
-                    ExtractUpdate(zipPath, AppDomain.CurrentDomain.BaseDirectory);
-                    RestartApplication(AppDomain.CurrentDomain.BaseDirectory);
+                    await PerformUpdate(serverUrl, serverVersion);
                 }
                 else
                 {
                     Application.Exit();
                 }
             }
-            catch (Exception)
+            catch
+            {
+                // 예외 발생 시 조용히 종료
+                Application.Exit();
+            }
+            finally
+            {
+                isUpdating = false;
+            }
+        }
+
+        private async Task PerformUpdate(string serverUrl, string newVersion)
+        {
+            string zipPath = null;
+            try
+            {
+                zipPath = await DownloadUpdate(serverUrl, newVersion);
+                await CloseRunningProcesses();
+          
+                ExtractUpdate(zipPath);
+                RestartApplication();
+            }
+            catch
             {
                 Application.Exit();
+            }
+            finally
+            {
+                if (zipPath != null && File.Exists(zipPath))
+                {
+                    try
+                    {
+                        File.Delete(zipPath);
+                    }
+                    catch
+                    {
+                        // 임시 파일 삭제 실패 시 무시
+                    }
+                }
             }
         }
 
@@ -88,14 +135,14 @@ namespace AgentUpdater
             throw new FormatException($"config.ini 파일에서 {key} 정보를 찾을 수 없습니다.");
         }
 
-        private async Task<string> GetServerVersion()
+        private async Task<string> GetServerVersion(string serverUrl)
         {
             try
             {
                 string response = await client.GetStringAsync($"http://{serverUrl}/dist/_CHECK");
                 if (string.IsNullOrWhiteSpace(response))
                 {
-                    // 파일 내용이 없으면 프로그램 종료
+                    // 내용이 없을 경우 프로그램 종료
                     Application.Exit();
                 }
                 return response.Trim();
@@ -104,7 +151,7 @@ namespace AgentUpdater
             {
                 // 예외 발생 시 프로그램 종료
                 Application.Exit();
-                return null; // 이 코드는 실행되지 않지만 컴파일러 경고 방지용
+                return null; // 컴파일러 경고 방지용
             }
         }
 
@@ -125,7 +172,7 @@ namespace AgentUpdater
             return 0;
         }
 
-        private async Task<string> DownloadUpdate(string version)
+        private async Task<string> DownloadUpdate(string serverUrl, string version)
         {
             string zipFile = $"Login-Agent_{version}.zip";
             string downloadUrl = $"http://{serverUrl}/dist/{zipFile}";
@@ -171,7 +218,7 @@ namespace AgentUpdater
                     try
                     {
                         process.Kill();
-                        await process.WaitForExitAsync();
+                        await Task.Delay(1000); // 프로세스가 완전히 종료되기를 기다림
                     }
                     catch (Exception ex)
                     {
@@ -181,19 +228,19 @@ namespace AgentUpdater
             }
         }
 
-        private void ExtractUpdate(string zipPath, string targetPath)
+        
+
+      
+
+        private void ExtractUpdate(string zipPath)
         {
             SetStatus("파일 압축 해제 중...");
-            ZipFile.ExtractToDirectory(zipPath, targetPath, true);
-            File.Delete(zipPath);
+            ZipFile.ExtractToDirectory(zipPath, AppDomain.CurrentDomain.BaseDirectory, true);
         }
 
-       
-
-        private void RestartApplication(string currentPath)
+        private void RestartApplication()
         {
-            SetStatus("LoginAgent.exe 재시작 중...");
-            string exePath = Path.Combine(currentPath, "LoginAgent.exe");
+            string exePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LoginAgent.exe");
             if (File.Exists(exePath))
             {
                 Process.Start(exePath);
@@ -208,22 +255,30 @@ namespace AgentUpdater
 
         private void SetStatus(string status)
         {
-            if (InvokeRequired)
+            if (!IsDisposed && statusLabel != null)
             {
-                Invoke(new Action<string>(SetStatus), status);
-                return;
+                if (InvokeRequired)
+                    Invoke(new Action(() => statusLabel.Text = status));
+                else
+                    statusLabel.Text = status;
             }
-            statusLabel.Text = status;
         }
 
         private void SetProgress(int progress)
         {
-            if (InvokeRequired)
+            if (!IsDisposed && progressBar != null)
             {
-                Invoke(new Action<int>(SetProgress), progress);
-                return;
+                if (InvokeRequired)
+                    Invoke(new Action(() => progressBar.Value = progress));
+                else
+                    progressBar.Value = progress;
             }
-            progressBar.Value = progress;
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            client?.Dispose();
         }
     }
 }
