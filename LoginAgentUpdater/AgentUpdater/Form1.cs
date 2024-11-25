@@ -65,14 +65,11 @@ namespace AgentUpdater
                 }
                 else
                 {
-                    SetStatus("최신 버전입니다");
-                    await Task.Delay(1000);
                     Application.Exit();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show($"오류 발생: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
@@ -93,8 +90,22 @@ namespace AgentUpdater
 
         private async Task<string> GetServerVersion()
         {
-            string response = await client.GetStringAsync($"http://{serverUrl}/dist/_CHECK");
-            return response.Trim();
+            try
+            {
+                string response = await client.GetStringAsync($"http://{serverUrl}/dist/_CHECK");
+                if (string.IsNullOrWhiteSpace(response))
+                {
+                    // 파일 내용이 없으면 프로그램 종료
+                    Application.Exit();
+                }
+                return response.Trim();
+            }
+            catch
+            {
+                // 예외 발생 시 프로그램 종료
+                Application.Exit();
+                return null; // 이 코드는 실행되지 않지만 컴파일러 경고 방지용
+            }
         }
 
         private int CompareVersions(string v1, string v2)
