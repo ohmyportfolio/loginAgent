@@ -264,16 +264,10 @@
     <None Include="Resources\Button.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="py_you.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\youtube.PNG" />
     <None Include="Resources\noonoo.PNG" />
     <None Include="Resources\disney.PNG" />
     <None Include="Resources\launcher_img.jpg" />
-    <Content Include="chromedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Pixelresort-Peely-Video.ico" />
     <None Include="Resources\tv icon.png" />
     <None Include="Resources\tv-youtube-icon-with-png-and-vector-format-for-free-unlimited-3888121.png" />

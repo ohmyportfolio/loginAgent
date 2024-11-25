@@ -29,17 +29,37 @@ namespace LoginAgent
 
         public Launcher()
         {
+            // AgentUpdater 복사 및 실행
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string updaterPath = Path.Combine(baseDir, "AgentUpdater.exe");
+                string updater2Path = Path.Combine(baseDir, "AgentUpdater2.exe");
 
+                if (File.Exists(updaterPath))
+                {
+                    // AgentUpdater.exe를 AgentUpdater2.exe로 복사
+                    File.Copy(updaterPath, updater2Path, true);
+
+                    // AgentUpdater2.exe 실행
+                    Process.Start(updater2Path);
+             
+                  
+                }
+            }
+            catch (Exception ex)
+            {
+                // 업데이터 실행 중 오류 발생 시 로그 기록 (선택사항)
+                Console.WriteLine($"AgentUpdater2 실행 중 오류 발생: {ex.Message}");
+            }
+
+            // 기존 코드
             Process[] procs = Process.GetProcessesByName("LoginAgent");
-            // 두번 이상 실행되었을 때 처리할 내용을 작성합니다.
             if (procs.Length > 1)
             {
-                //MessageBox.Show("프로그램이 이미 실행되고 있습니다.\n다시 한번 확인해주시기 바랍니다.");
                 Application.ExitThread();
                 Environment.Exit(0);
             }
-
-
             InitializeComponent();
             Rectangle workingArea = Screen.GetWorkingArea(this);
             this.Location = new Point(workingArea.Right - Size.Width,
@@ -47,9 +67,7 @@ namespace LoginAgent
             this.ShowInTaskbar = false;
             this.versionLabel.Text = AppHelper.GetVersion();
             this.driverVer.Text = AppHelper.GetDriverVer();
-
             Task.Run(async () => await UpdateEdgeDriverAsync());
-           
         }
 
 
