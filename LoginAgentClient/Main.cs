@@ -8,6 +8,7 @@ using System.Text;
 using OpenQA.Selenium;
 using System.Diagnostics;
 using OpenQA.Selenium.Edge;
+using System.Threading;
 
 
 namespace LoginAgent
@@ -28,51 +29,34 @@ namespace LoginAgent
         {
             string id = data.GetValue("user_id").ToString();
             string pw_enc = data.GetValue("user_password").ToString();
-
             string siteId = data.GetValue("id").ToString();
-            
             string pw = AppHelper.Decrypt(pw_enc, AppHelper.M_K);
-
             string url = data.GetValue("login_url").ToString();
             string idXpath = data.GetValue("id_xpath").ToString();
             string pwXpath = data.GetValue("pw_xpath").ToString();
             string logXpath = data.GetValue("login_xpath").ToString();
             string logXpath2 = data.GetValue("login_xpath2").ToString();
-                       
+
             EdgeDriverService _driverService = EdgeDriverService.CreateDefaultService();
-
             _driverService.HideCommandPromptWindow = true;
-
             EdgeOptions _options = new EdgeOptions();
 
             var userDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Microsoft\\Edge\\User Data");
-
             _options.AddArguments("--user-data-dir=" + userDataPath);
-
             _options.AddArguments("--disable-notifications --disable-infobars --start-maximized");
-                
-            // 게스트 모드 적용 하면 비밀번호 저장 등 기타 셋팅 모두 초기화되므로 훨씬 안전 그러나 현재 inprivate 모드에서 문제가 없으므로 보류 2024.08.20
             _options.AddArguments("--guest");
-
             _options.AddExcludedArgument("enable-automation");
-
             _options.AddUserProfilePreference("credentials_enable_service", false);
             _options.AddUserProfilePreference("profile.password_manager_enabled", false);
-
             _options.AddUserProfilePreference("profile.exited_cleanly", true);
             _options.AddUserProfilePreference("profile.exit_type", "Normal");
-            
 
             EdgeDriver _driver = new EdgeDriver(_driverService, _options);
-
-            _driver.Navigate().GoToUrl(url); // 웹 사이트에 접속합니다.
+            _driver.Navigate().GoToUrl(url);
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
 
             if (siteId == "disney" || siteId == "youtube")
             {
-
-
                 var element = _driver.FindElement(By.XPath(idXpath));
                 element.SendKeys(id);
                 element = _driver.FindElement(By.XPath(logXpath));
@@ -81,21 +65,44 @@ namespace LoginAgent
                 element.SendKeys(pw);
                 element = _driver.FindElement(By.XPath(logXpath2));
                 element.Click();
-
             }
-            else
+            else if (siteId == "netflix")
             {
-                //var element = _driver.FindElementByXPath(idXpath);
-                var element = _driver.FindElement(By.XPath(idXpath));
+                Thread.Sleep(1000);
+                try
+                {
+                    var useCodeButton = _driver.FindElement(By.CssSelector("[data-uia='use-code-button']"));
+                    useCodeButton.Click();
+                    Thread.Sleep(1000);
+                }
+                catch (NoSuchElementException) { }
+                catch (ElementNotInteractableException) { }
 
+                try
+                {
+                    var usePasswordButton = _driver.FindElement(By.CssSelector("[data-uia='use-password-button']"));
+                    usePasswordButton.Click();
+                    Thread.Sleep(1000);
+                }
+                catch (NoSuchElementException) { }
+                catch (ElementNotInteractableException) { }
+
+                var element = _driver.FindElement(By.XPath(idXpath));
                 element.SendKeys(id);
                 element = _driver.FindElement(By.XPath(pwXpath));
                 element.SendKeys(pw);
                 element = _driver.FindElement(By.XPath(logXpath));
                 element.Click();
             }
-
-                  
+            else
+            {
+                var element = _driver.FindElement(By.XPath(idXpath));
+                element.SendKeys(id);
+                element = _driver.FindElement(By.XPath(pwXpath));
+                element.SendKeys(pw);
+                element = _driver.FindElement(By.XPath(logXpath));
+                element.Click();
+            }
         }
 
 
