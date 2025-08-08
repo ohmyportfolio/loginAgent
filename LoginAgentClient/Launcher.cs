@@ -364,7 +364,8 @@ namespace LoginAgent
             // 3. 버전 비교
             if (installedEdgeVersion != currentDriverVersion)
             {
-                string downloadUrl = $"https://msedgedriver.azureedge.net/{installedEdgeVersion}/edgedriver_win64.zip";
+                //string downloadUrl = $"https://msedgedriver.azureedge.net/{installedEdgeVersion}/edgedriver_win64.zip";
+                string downloadUrl = $"https://msedgedriver.microsoft.com/{installedEdgeVersion}/edgedriver_win64.zip";
 
                 // Create a single instance of HttpClient
                 using (var client = new HttpClient())
